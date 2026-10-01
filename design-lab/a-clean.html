@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>i3City · Direction A, Clean</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;--surface:#F5F6F9;--text:#121826;--muted:#5A6377;--line:#E4E7EE;
+  --accent:#1A4FE0;--on-accent:#FFFFFF;--accent-soft:#E8EEFF;
+  --t1:#EEF1F7;--t2:#E6EEFF;--t3:#E9F4F0;--t4:#F2ECF7;
+  --d1:#7D89A6;--d2:#161C2C;--d3:#1A4FE0;
+  --ok:#0B7A4B;--warn:#B45309;--bad:#B42318;
+  --bar:#121826;--on-bar:#FFFFFF;
+  --r-s:8px;--r-m:14px;--r-l:20px;
+  --font:"Manrope",system-ui,sans-serif;
+  --gutter:16px;
+}
+:root[data-theme="dark"]{
+  --bg:#0E1320;--surface:#161D2E;--text:#EEF1F8;--muted:#9AA5BF;--line:#26304A;
+  --accent:#7F9DFF;--on-accent:#0E1320;--accent-soft:#1B2644;
+  --t1:#1B2336;--t2:#18244A;--t3:#17302B;--t4:#2A2140;
+  --d1:#8E9CC0;--d2:#0E1320;--d3:#7F9DFF;
+  --ok:#5FD3A0;--warn:#F5B15A;--bad:#FF8D84;
+  --bar:#1B2644;--on-bar:#EEF1F8;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:500 1rem/1.55 var(--font);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+svg{display:block}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.price{font-variant-numeric:tabular-nums lining-nums}
+.w{max-width:1280px;margin-inline:auto;padding-inline:var(--gutter)}
+
+.promo{background:var(--bar);color:var(--on-bar);font-size:.85rem;font-weight:600;text-align:center;padding:9px var(--gutter)}
+
+/* header */
+.hd{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hd-in{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"logo tools tools" "search search search";gap:10px 12px;align-items:center;padding-block:12px}
+.logo{grid-area:logo;font-weight:800;font-size:1.65rem;letter-spacing:-.04em;color:var(--text)}
+.logo b{color:var(--accent)}
+.search{grid-area:search;display:flex;height:48px;border:2px solid var(--text);border-radius:var(--r-s);overflow:hidden;background:var(--bg)}
+.search input{flex:1;min-width:0;border:0;padding:0 14px;font:inherit;background:transparent;color:var(--text)}
+.search input::placeholder{color:var(--muted)}
+.search input:focus-visible{outline:0}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.search button{border:0;background:var(--accent);color:var(--on-accent);padding:0 18px;font-weight:700;display:flex;align-items:center;gap:8px}
+.search button span{display:none}
+.tools{grid-area:tools;justify-self:end;display:flex;align-items:center;gap:4px}
+.ti{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;padding:0 10px;border-radius:var(--r-s);background:none;border:0;font-weight:600;font-size:.92rem;justify-content:center}
+.ti:hover{background:var(--surface)}
+.ti .tx{display:none}
+.cartn{background:var(--accent);color:var(--on-accent);font-size:.75rem;font-weight:800;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 5px}
+.theme{width:44px;height:44px;border-radius:var(--r-s);border:0;background:none;display:grid;place-items:center}
+.theme:hover{background:var(--surface)}
+
+.cats{border-top:1px solid var(--line)}
+.cats ul{list-style:none;padding:0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.cats a{display:block;white-space:nowrap;padding:12px 12px;font-weight:600;font-size:.93rem;color:var(--muted);border-bottom:2px solid transparent}
+.cats a:hover{color:var(--text);border-color:var(--accent)}
+.cats .all{color:var(--text);font-weight:800}
+
+/* hero */
+.hero{display:grid;gap:12px;padding-block:20px}
+.bn{position:relative;border-radius:var(--r-l);overflow:hidden;display:grid;padding:26px 22px;isolation:isolate}
+.bn.main{background:var(--t2);min-height:380px;align-content:center}
+.bn h1{font-size:clamp(2rem,7vw,3.4rem);line-height:1.04;letter-spacing:-.035em;font-weight:800;max-width:11ch}
+.bn p{color:var(--muted);margin-top:12px;max-width:34ch;font-size:1.05rem}
+.bn .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.bn .art{position:absolute;right:-6%;bottom:-8%;width:56%;max-width:420px;z-index:-1}
+.bn .art svg{width:100%;height:auto;aspect-ratio:1}
+.bn.side{min-height:180px;align-content:end}
+.bn.side h2{font-size:1.35rem;line-height:1.15;letter-spacing:-.025em;font-weight:800;max-width:12ch}
+.bn.side span{margin-top:8px;font-weight:700;color:var(--accent)}
+.bn.side .art{width:42%;right:-2%;bottom:-6%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:var(--r-s);font-weight:700;border:2px solid transparent}
+.btn-p{background:var(--accent);color:var(--on-accent)}
+.btn-p:hover{filter:brightness(.92)}
+.btn-o{border-color:var(--text);background:transparent}
+.btn-o:hover{background:var(--text);color:var(--bg)}
+
+/* trust */
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;padding-block:20px;border-block:1px solid var(--line)}
+.tr{display:flex;gap:12px;align-items:flex-start}
+.tr svg{flex:none;color:var(--accent);margin-top:2px}
+.tr b{display:block;font-size:.95rem;line-height:1.25}
+.tr span{color:var(--muted);font-size:.85rem;line-height:1.35;display:block;margin-top:2px}
+
+section.s{padding-block:40px 8px}
+.sh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
+.sh h2{font-size:clamp(1.35rem,4.4vw,1.8rem);letter-spacing:-.03em;font-weight:800}
+.sh a{font-weight:700;color:var(--accent);font-size:.95rem;white-space:nowrap}
+
+/* category circles */
+.cc{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px;list-style:none;padding:0}
+.cc a{display:grid;justify-items:center;gap:10px;text-align:center;font-weight:700;font-size:.88rem;line-height:1.25}
+.cc .c{width:100%;max-width:132px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:var(--t1);transition:background .2s}
+.cc li:nth-child(2n) .c{background:var(--t2)}
+.cc li:nth-child(3n) .c{background:var(--t3)}
+.cc a:hover .c{background:var(--accent-soft)}
+.cc svg{width:58%;height:58%}
+
+/* product cards */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 12px}
+.pc{display:flex;flex-direction:column;min-width:0}
+.im{position:relative;aspect-ratio:1;border-radius:var(--r-m);display:grid;place-items:center;overflow:hidden}
+.im .dev{width:68%;height:68%;transition:transform .25s}
+.im:hover .dev{transform:scale(1.04)}
+.tone-1{background:var(--t1)}.tone-2{background:var(--t2)}.tone-3{background:var(--t3)}.tone-4{background:var(--t4)}
+.is-out .dev{opacity:.35}
+.bdg{position:absolute;left:10px;top:10px;font-size:.75rem;font-weight:800;padding:4px 9px;border-radius:6px;background:var(--text);color:var(--bg)}
+.bdg-sale{background:var(--accent);color:var(--on-accent)}
+.bdg-low{background:var(--bg);color:var(--warn);border:1px solid var(--line)}
+.bdg-new{background:var(--bg);color:var(--text);border:1px solid var(--line)}
+.bdg-out{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.bd{display:flex;flex-direction:column;gap:2px;padding-top:12px;flex:1}
+.cat{color:var(--muted);font-size:.8rem;font-weight:600}
+.pc h3{font-size:.98rem;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.pc h3 a:hover{color:var(--accent)}
+.pr{display:flex;gap:8px;align-items:baseline;margin-top:4px}
+.pr b{font-size:1.15rem;font-weight:800}
+.was{color:var(--muted);font-size:.85rem;font-weight:500}
+.add{margin-top:12px;min-height:44px;border-radius:var(--r-s);border:2px solid var(--text);background:none;font-weight:700;width:100%}
+.add:hover{background:var(--text);color:var(--bg)}
+.add:disabled{border-color:var(--line);color:var(--muted);cursor:not-allowed;background:none}
+.pc.lead{grid-column:span 2}
+.pc.lead .bd{padding-top:14px;flex:0 0 auto}
+.pc.lead .im{aspect-ratio:16/10}
+
+/* promo band */
+.band{margin-top:48px;background:var(--surface);border-radius:var(--r-l);padding:28px 22px;display:grid;gap:18px;align-items:center}
+.band h2{font-size:clamp(1.4rem,4.6vw,2rem);letter-spacing:-.03em;font-weight:800;max-width:20ch}
+.band p{color:var(--muted);max-width:46ch;margin-top:6px}
+
+.rail{display:flex;gap:12px;overflow-x:auto;margin-inline:calc(var(--gutter)*-1);padding:0 var(--gutter) 12px;scroll-snap-type:x proximity}
+.rail .pc{flex:0 0 170px;scroll-snap-align:start}
+
+/* footer */
+.ft{margin-top:64px;background:var(--surface);border-top:1px solid var(--line);color:var(--muted)}
+.ft-in{max-width:1280px;margin-inline:auto;padding:40px var(--gutter);display:grid;gap:28px}
+.ft h4{color:var(--text);font-size:.95rem;margin-bottom:10px}
+.ft nav{display:grid;gap:8px;align-content:start}
+.ft a:hover{color:var(--accent)}
+.logo-f{font-weight:800;font-size:1.5rem;letter-spacing:-.04em;color:var(--text)}
+.ft-brand p{margin-top:8px;max-width:30ch}
+.ft address{font-style:normal;color:var(--text)}
+.hrs{margin-top:8px;font-size:.92rem}
+.wa{display:inline-flex;margin-top:14px;min-height:44px;align-items:center;padding:0 18px;border-radius:var(--r-s);background:var(--accent);color:var(--on-accent)!important;font-weight:700}
+.ft-base{max-width:1280px;margin-inline:auto;padding:18px var(--gutter);border-top:1px solid var(--line);display:grid;gap:4px;font-size:.88rem}
+
+@media (min-width:720px){
+  :root{--gutter:28px}
+  .hd-in{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"logo search tools";gap:24px}
+  .search button span{display:inline}
+  .ti .tx{display:inline}
+  .cats ul{gap:12px}
+  .hero{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:16px}
+  .bn.main{grid-row:span 2;padding:48px 44px;min-height:520px}
+  .bn.main .art{width:52%;right:0}
+  .bn.side{min-height:0}
+  .trust{grid-template-columns:repeat(4,1fr);gap:24px}
+  .cc{grid-template-columns:repeat(6,1fr);gap:20px}
+  .grid{grid-template-columns:repeat(3,1fr);gap:28px 20px}
+  .grid.g-lead .lead{grid-column:span 2;grid-row:span 2}
+  .grid.g-lead .lead .im{aspect-ratio:auto}
+  .grid.g-lead .lead .im{flex:1;min-height:340px}
+  .grid.g-lead .lead .im .dev{width:56%;height:auto;aspect-ratio:1}
+  .band{grid-template-columns:1fr auto;padding:40px 44px}
+  .rail{display:grid;grid-template-columns:repeat(5,1fr);overflow:visible;margin-inline:0;padding:0;gap:20px}
+  .rail .pc{flex:none}
+  .ft-in{grid-template-columns:1.2fr 1fr 1fr 1.2fr;gap:40px}
+  .ft-base{grid-template-columns:1fr auto}
+}
+@media (min-width:1040px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="phone" viewBox="0 0 100 100">
+    <rect x="31" y="9" width="38" height="82" rx="8" fill="var(--d1,#888)"/>
+    <rect x="34" y="12" width="32" height="76" rx="5.5" fill="var(--d2,#444)"/>
+    <rect x="44" y="15" width="12" height="3.2" rx="1.6" fill="var(--d1,#888)"/>
+    <rect x="37" y="24" width="26" height="30" rx="4" fill="var(--d3,#ccc)" opacity=".85"/>
+    <rect x="37" y="58" width="12" height="10" rx="3" fill="var(--d3,#ccc)" opacity=".45"/>
+    <rect x="51" y="58" width="12" height="10" rx="3" fill="var(--d3,#ccc)" opacity=".3"/>
+  </symbol>
+  <symbol id="buds" viewBox="0 0 100 100">
+    <rect x="18" y="38" width="64" height="46" rx="20" fill="var(--d1,#888)"/>
+    <path d="M18 56h64" stroke="var(--d2,#444)" stroke-width="2.4" fill="none"/>
+    <circle cx="50" cy="70" r="3.6" fill="var(--d3,#ccc)"/>
+    <ellipse cx="37" cy="26" rx="8.5" ry="11" fill="var(--d3,#ccc)" transform="rotate(-14 37 26)"/>
+    <ellipse cx="63" cy="26" rx="8.5" ry="11" fill="var(--d3,#ccc)" transform="rotate(14 63 26)"/>
+    <rect x="34" y="32" width="5" height="13" rx="2.5" fill="var(--d2,#444)" transform="rotate(-14 36 38)"/>
+    <rect x="61" y="32" width="5" height="13" rx="2.5" fill="var(--d2,#444)" transform="rotate(14 64 38)"/>
+  </symbol>
+  <symbol id="powerbank" viewBox="0 0 100 100">
+    <rect x="22" y="12" width="56" height="76" rx="11" fill="var(--d1,#888)"/>
+    <rect x="27" y="17" width="46" height="66" rx="7" fill="var(--d2,#444)"/>
+    <rect x="35" y="26" width="30" height="5" rx="2.5" fill="var(--d3,#ccc)"/>
+    <rect x="35" y="36" width="30" height="5" rx="2.5" fill="var(--d3,#ccc)" opacity=".55"/>
+    <rect x="35" y="46" width="30" height="5" rx="2.5" fill="var(--d3,#ccc)" opacity=".3"/>
+    <rect x="40" y="68" width="20" height="7" rx="3.5" fill="var(--d1,#888)"/>
+  </symbol>
+  <symbol id="charger" viewBox="0 0 100 100">
+    <rect x="35" y="12" width="5" height="16" rx="2" fill="var(--d3,#ccc)"/>
+    <rect x="60" y="12" width="5" height="16" rx="2" fill="var(--d3,#ccc)"/>
+    <rect x="24" y="26" width="52" height="62" rx="12" fill="var(--d1,#888)"/>
+    <rect x="29" y="31" width="42" height="52" rx="8" fill="var(--d2,#444)"/>
+    <rect x="40" y="66" width="20" height="8" rx="4" fill="var(--d1,#888)"/>
+    <path d="M52 38l-8 14h7l-3 11 9-15h-7z" fill="var(--d3,#ccc)"/>
+  </symbol>
+  <symbol id="watch" viewBox="0 0 100 100">
+    <rect x="35" y="4" width="30" height="30" rx="6" fill="var(--d2,#444)"/>
+    <rect x="35" y="66" width="30" height="30" rx="6" fill="var(--d2,#444)"/>
+    <rect x="24" y="24" width="52" height="52" rx="15" fill="var(--d1,#888)"/>
+    <rect x="29" y="29" width="42" height="42" rx="11" fill="var(--d2,#444)"/>
+    <rect x="76" y="42" width="4" height="12" rx="2" fill="var(--d1,#888)"/>
+    <path d="M50 36v15l9 5" stroke="var(--d3,#ccc)" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+  </symbol>
+  <symbol id="case" viewBox="0 0 100 100">
+    <rect x="27" y="7" width="46" height="86" rx="12" fill="var(--d1,#888)"/>
+    <rect x="31" y="11" width="38" height="78" rx="9" fill="var(--d2,#444)"/>
+    <rect x="35" y="15" width="19" height="19" rx="6" fill="var(--d1,#888)"/>
+    <circle cx="41" cy="21" r="3.6" fill="var(--d3,#ccc)"/>
+    <circle cx="49" cy="21" r="3.6" fill="var(--d3,#ccc)" opacity=".6"/>
+    <circle cx="41" cy="29" r="3.6" fill="var(--d3,#ccc)" opacity=".6"/>
+    <rect x="40" y="62" width="20" height="3" rx="1.5" fill="var(--d3,#ccc)" opacity=".5"/>
+  </symbol>
+  <symbol id="cable" viewBox="0 0 100 100">
+    <rect x="14" y="40" width="14" height="20" rx="3" fill="var(--d3,#ccc)"/>
+    <rect x="28" y="44" width="8" height="12" rx="2" fill="var(--d1,#888)"/>
+    <path d="M36 50c14 0 14-22 28-22s14 44 0 44-14-22 0-22" stroke="var(--d2,#444)" stroke-width="5" stroke-linecap="round" fill="none" opacity=".001"/>
+    <path d="M36 50h10c12 0 12-24 24-24s12 48 0 48-12-24 0-24" stroke="var(--d1,#888)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect x="76" y="40" width="10" height="20" rx="3" fill="var(--d1,#888)"/>
+    <rect x="86" y="44" width="5" height="12" rx="1.5" fill="var(--d3,#ccc)"/>
+  </symbol>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.5l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8a1.5 1.5 0 0 0 1.5-1.1L20.5 8H6.4"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5.5c0 4.3 2.9 7.5 7 9 4.1-1.5 7-4.7 7-9V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-card" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h3"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H10l-4.5 3.5V16H4z"/><path d="M8 10h8M8 13h5"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.2v9.6L12 21l-8-4.2V7.2z"/><path d="M4.5 7.5 12 11.5l7.5-4M12 11.5V20"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6.5-5.6 6.5-11a6.5 6.5 0 0 0-13 0c0 5.4 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+</svg>
+
+<div class="promo">Free shipping on orders above ₦100,000. We deliver to every state in Nigeria.</div>
+
+<header class="hd">
+  <div class="w hd-in">
+    <a class="logo" href="#" aria-label="i3City home">i3<b>city</b></a>
+    <form class="search" role="search" onsubmit="return false">
+      <input type="search" aria-label="Search products" placeholder="Search phones, chargers, earbuds">
+      <button type="submit" aria-label="Search"><svg width="22" height="22"><use href="#i-search"/></svg><span>Search</span></button>
+    </form>
+    <div class="tools">
+      <a class="ti" href="#"><svg width="22" height="22"><use href="#i-box"/></svg><span class="tx">Track order</span></a>
+      <a class="ti" href="#" aria-label="Cart, 2 items"><svg width="22" height="22"><use href="#i-cart"/></svg><span class="tx">Cart</span><span class="cartn">2</span></a>
+      <button class="theme" id="theme" aria-pressed="false" aria-label="Switch to dark mode"><svg width="22" height="22"><use href="#i-moon"/></svg></button>
+    </div>
+  </div>
+  <nav class="cats" aria-label="Categories"><div class="w"><ul>
+    <li><a class="all" href="#">All products</a></li>
+    <li><a href="#">Phones</a></li><li><a href="#">Chargers and power banks</a></li><li><a href="#">Earbuds and audio</a></li>
+    <li><a href="#">Smartwatches</a></li><li><a href="#">Cases and protection</a></li><li><a href="#">Cables and adapters</a></li>
+  </ul></div></nav>
+</header>
+
+<main class="w">
+  <section class="hero" aria-label="Featured">
+    <div class="bn main">
+      <div>
+        <h1>The new Nova X5 is here</h1>
+        <p>6.6 inch 90Hz display and a battery that lasts the day. ₦17,000 off this week.</p>
+        <div class="row"><a class="btn btn-p" href="#">Shop now</a><a class="btn btn-o" href="#">Ask on WhatsApp</a></div>
+      </div>
+      <div class="art"><svg><use href="#phone"/></svg></div>
+    </div>
+    <a class="bn side" style="background:var(--t3)" href="#"><h2>Earbuds from ₦22,500</h2><span>Shop audio</span><div class="art"><svg><use href="#buds"/></svg></div></a>
+    <a class="bn side" style="background:var(--t4)" href="#"><h2>Fast chargers and power banks</h2><span>Shop chargers</span><div class="art"><svg><use href="#charger"/></svg></div></a>
+  </section>
+
+  <div class="trust">
+    <div class="tr"><svg width="28" height="28"><use href="#i-truck"/></svg><div><b>Nationwide delivery</b><span>All 36 states and Abuja</span></div></div>
+    <div class="tr"><svg width="28" height="28"><use href="#i-card"/></svg><div><b>Flexible payment</b><span>Card, transfer or WhatsApp</span></div></div>
+    <div class="tr"><svg width="28" height="28"><use href="#i-shield"/></svg><div><b>Genuine products</b><span>Warranty on every device</span></div></div>
+    <div class="tr"><svg width="28" height="28"><use href="#i-chat"/></svg><div><b>Real people on chat</b><span>Ask us before you buy</span></div></div>
+  </div>
+
+  <section class="s" aria-labelledby="h-cat">
+    <div class="sh"><h2 id="h-cat">Shop by category</h2></div>
+    <ul class="cc">
+      <li><a href="#"><span class="c"><svg><use href="#phone"/></svg></span>Phones</a></li>
+      <li><a href="#"><span class="c"><svg><use href="#powerbank"/></svg></span>Chargers and power banks</a></li>
+      <li><a href="#"><span class="c"><svg><use href="#buds"/></svg></span>Earbuds and audio</a></li>
+      <li><a href="#"><span class="c"><svg><use href="#watch"/></svg></span>Smartwatches</a></li>
+      <li><a href="#"><span class="c"><svg><use href="#case"/></svg></span>Cases and protection</a></li>
+      <li><a href="#"><span class="c"><svg><use href="#cable"/></svg></span>Cables and adapters</a></li>
+    </ul>
+  </section>
+
+  <section class="s" aria-labelledby="h-feat">
+    <div class="sh"><h2 id="h-feat">Featured products</h2><a href="#">View all</a></div>
+    <div class="grid g-lead">
+      <article class="pc lead"><a class="im tone-2" href="#" aria-label="Nova X5, 128GB"><svg class="dev"><use href="#phone"/></svg><span class="bdg bdg-sale">Save ₦17,000</span></a><div class="bd"><span class="cat">Phones</span><h3><a href="#">Nova X5, 128GB</a></h3><div class="pr"><b class="price">₦148,000</b><s class="was price">₦165,000</s></div><button class="add">Add to cart</button></div></article>
+      <article class="pc "><a class="im tone-2" href="#" aria-label="AirPulse Pro earbuds"><svg class="dev"><use href="#buds"/></svg><span class="bdg bdg-sale">Save ₦4,500</span></a><div class="bd"><span class="cat">Earbuds and audio</span><h3><a href="#">AirPulse Pro earbuds</a></h3><div class="pr"><b class="price">₦22,500</b><s class="was price">₦27,000</s></div><button class="add">Add to cart</button></div></article>
+<article class="pc "><a class="im tone-3 is-out" href="#" aria-label="20,000mAh power bank"><svg class="dev"><use href="#powerbank"/></svg><span class="bdg bdg-out">Out of stock</span></a><div class="bd"><span class="cat">Chargers and power banks</span><h3><a href="#">20,000mAh power bank</a></h3><div class="pr"><b class="price">₦18,900</b></div><button class="add" disabled>Out of stock</button></div></article>
+<article class="pc "><a class="im tone-4" href="#" aria-label="65W GaN charger"><svg class="dev"><use href="#charger"/></svg><span class="bdg bdg-low">Only 3 left</span></a><div class="bd"><span class="cat">Chargers and power banks</span><h3><a href="#">65W GaN charger</a></h3><div class="pr"><b class="price">₦14,500</b></div><button class="add">Add to cart</button></div></article>
+<article class="pc "><a class="im tone-1" href="#" aria-label="Pulse Band 3"><svg class="dev"><use href="#watch"/></svg><span class="bdg bdg-sale">Save ₦4,200</span></a><div class="bd"><span class="cat">Smartwatches</span><h3><a href="#">Pulse Band 3</a></h3><div class="pr"><b class="price">₦27,800</b><s class="was price">₦32,000</s></div><button class="add">Add to cart</button></div></article>
+    </div>
+  </section>
+
+  <div class="band">
+    <div><h2>Not sure which one to get? Ask us on WhatsApp.</h2><p>Send the product link and we reply with stock, photos and the final price. You can finish your order right in the chat.</p></div>
+    <a class="btn btn-p" href="#">Chat on WhatsApp</a>
+  </div>
+
+  <section class="s" aria-labelledby="h-new" style="padding-top:48px">
+    <div class="sh"><h2 id="h-new">New arrivals</h2><a href="#">View all</a></div>
+    <div class="rail">
+      <article class="pc "><a class="im tone-3" href="#" aria-label="Spark 20 Pro"><svg class="dev"><use href="#phone"/></svg><span class="bdg bdg-new">New</span></a><div class="bd"><span class="cat">Phones</span><h3><a href="#">Spark 20 Pro</a></h3><div class="pr"><b class="price">₦72,500</b></div><button class="add">Add to cart</button></div></article>
+<article class="pc "><a class="im tone-4" href="#" aria-label="AirPulse Max"><svg class="dev"><use href="#buds"/></svg><span class="bdg bdg-new">New</span></a><div class="bd"><span class="cat">Earbuds and audio</span><h3><a href="#">AirPulse Max</a></h3><div class="pr"><b class="price">₦31,000</b></div><button class="add">Add to cart</button></div></article>
+<article class="pc "><a class="im tone-1" href="#" aria-label="33W fast charger"><svg class="dev"><use href="#charger"/></svg><span class="bdg bdg-new">New</span></a><div class="bd"><span class="cat">Chargers and power banks</span><h3><a href="#">33W fast charger</a></h3><div class="pr"><b class="price">₦9,800</b></div><button class="add">Add to cart</button></div></article>
+<article class="pc "><a class="im tone-2" href="#" aria-label="Clear shock case"><svg class="dev"><use href="#case"/></svg><span class="bdg bdg-new">New</span></a><div class="bd"><span class="cat">Cases and protection</span><h3><a href="#">Clear shock case</a></h3><div class="pr"><b class="price">₦5,400</b></div><button class="add">Add to cart</button></div></article>
+<article class="pc "><a class="im tone-3" href="#" aria-label="Braided USB-C cable, 1m"><svg class="dev"><use href="#cable"/></svg><span class="bdg bdg-new">New</span></a><div class="bd"><span class="cat">Cables and adapters</span><h3><a href="#">Braided USB-C cable, 1m</a></h3><div class="pr"><b class="price">₦3,200</b></div><button class="add">Add to cart</button></div></article>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="ft-in">
+    <div class="ft-brand"><span class="logo-f">i3city</span><p>Phones, accessories and gadgets, delivered across Nigeria.</p></div>
+    <nav aria-label="Shop"><h4>Shop</h4><a href="#">Phones</a><a href="#">Chargers and power banks</a><a href="#">Earbuds and audio</a><a href="#">Smartwatches</a><a href="#">Cases and protection</a><a href="#">Cables and adapters</a></nav>
+    <nav aria-label="Help"><h4>Help</h4><a href="#">Track your order</a><a href="#">Delivery policy</a><a href="#">Returns and warranty</a><a href="#">Privacy</a></nav>
+    <div><h4>Visit the store</h4><address>i3City<br>Egbeda, Ibadan<br>Oyo State</address><p class="hrs">Monday to Saturday, 9am to 7pm</p><a class="wa" href="#">Chat on WhatsApp</a></div>
+  </div>
+  <div class="ft-base"><span>© 2026 i3City. Prices in Nigerian naira.</span><span>Pay by card, bank transfer or WhatsApp</span></div>
+</footer>
+<script>
+(function(){
+  var k='i3-theme',r=document.documentElement,b=document.getElementById('theme');
+  function set(t){r.setAttribute('data-theme',t);if(b){b.setAttribute('aria-pressed',String(t==='dark'));b.setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode');b.querySelector('use').setAttribute('href',t==='dark'?'#i-sun':'#i-moon');}}
+  var s=null;try{s=localStorage.getItem(k)}catch(e){}
+  set(s==='dark'?'dark':'light');
+  if(b)b.addEventListener('click',function(){var t=r.getAttribute('data-theme')==='dark'?'light':'dark';set(t);try{localStorage.setItem(k,t)}catch(e){}});
+})();
+</script>
+</body>
+</html>
