@@ -126,10 +126,14 @@ The admin and storefront use shadcn components built on Base UI, installed into 
 
 ## Motion
 
-- Motion only responds to a user action: hover, focus, press, opening a panel.
-- Product image: scale to 1.05 and rotate -2deg on hover, 300ms. Bento tile: lift 3px, 200ms.
-- Honour `prefers-reduced-motion` by turning all transitions off.
-- No auto-playing carousels, entrance animations or looping effects.
+Animation uses `motion` (Framer Motion) through small client wrappers in `apps/web/components/motion`, so pages stay server components. Timings and easing live in `apps/web/lib/motion.ts`.
+
+- `Stagger` and `RevealItem` fade and lift a group of elements in one after another. `Reveal` does the same for a single block. Below-the-fold content reveals once as it scrolls into view. The hero animates on load.
+- Page changes slide the storefront content up 10px over 250ms (`app/(store)/template.tsx`). Content is never hidden during a page change.
+- Reveals run once, last 500ms with the shared ease-out curve, and stagger by 60 to 100ms. Never delay content by more than about a second in total.
+- Hover and press: product image scales to 1.05 and rotates -2deg over 300ms. Tiles lift 4px over 200ms and shrink slightly on press.
+- `MotionProvider` sets `reducedMotion="user"`, so visitors who prefer less motion get no movement. The global reduced-motion rule also turns CSS transitions off.
+- No auto-playing carousels, looping or ambient effects, and no parallax.
 
 ## Accessibility
 
@@ -154,6 +158,6 @@ The admin and storefront use shadcn components built on Base UI, installed into 
 - Don't use all-caps labels, numbered section markers, or middle-dot meta strings.
 - Don't mention the Egbeda store in heroes or headlines. It belongs in the footer and contact areas.
 - Don't use red for out-of-stock. Use `muted`.
-- Don't use auto-playing or scroll-triggered animation.
+- Don't use auto-playing or looping animation. Reveal on scroll once, through the motion wrappers.
 - Don't switch to dark mode automatically from the OS setting on first visit.
 - Don't vary the product image ratio. It is always square.

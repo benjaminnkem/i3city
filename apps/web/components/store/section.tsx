@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 
 export function Container({
@@ -19,7 +20,7 @@ export function SectionHeading({
   linkLabel = "View all",
 }: Readonly<{ title: string; href?: string; linkLabel?: string }>) {
   return (
-    <div className="mb-6 flex items-end justify-between gap-4">
+    <Reveal className="mb-6 flex items-end justify-between gap-4">
       <h2 className="text-h2 font-extrabold">{title}</h2>
       {href ? (
         <Link
@@ -29,6 +30,6 @@ export function SectionHeading({
           {linkLabel}
         </Link>
       ) : null}
-    </div>
+    </Reveal>
   );
 }

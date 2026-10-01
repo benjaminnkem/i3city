@@ -508,7 +508,7 @@ Light-first design system with a dark mode toggle, mobile-first, built for a Nig
 - Product photography is the visual centre. Consistent square image ratio, generous image area, minimal chrome around it.
 - Sticky bottom bar on mobile product pages with price and add to cart.
 - Cart and checkout optimised for thumb use: large tap targets, numeric keyboard for phone, minimal fields.
-- Respect `prefers-reduced-motion`. Motion only in response to user actions.
+- Respect `prefers-reduced-motion`. Entrance and scroll-reveal animation plays once with `motion`. No looping or auto-playing motion.
 - Logo and brand assets are supplied by the owner. Use a wordmark placeholder until they arrive.
 
 ## 12. Non-functional requirements
