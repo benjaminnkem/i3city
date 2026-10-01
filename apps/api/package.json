@@ -5,19 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "prisma generate && nest build",
+    "build": "nest build",
     "start": "node dist/main",
     "lint": "oxlint --type-aware src/ test/",
-    "check-types": "prisma generate && tsc --noEmit",
+    "check-types": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@nestjs/common": "^12.1.2",

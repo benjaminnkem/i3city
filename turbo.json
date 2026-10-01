@@ -3,43 +3,28 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**",
-        "!.next/dev/**"
-      ]
+      "dependsOn": ["^build", "generate"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "lint": {
-      "dependsOn": [
-        "^lint",
-        "^build"
-      ]
+      "dependsOn": ["^lint", "^build", "generate"]
     },
     "check-types": {
-      "dependsOn": [
-        "^check-types",
-        "^build"
-      ]
+      "dependsOn": ["^check-types", "^build", "generate"]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build", "generate"]
+    },
+    "generate": {
+      "cache": true,
+      "outputs": ["src/generated/**"],
+      "inputs": ["prisma/schema.prisma", "prisma.config.ts"]
     }
   }
 }

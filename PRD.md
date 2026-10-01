@@ -126,8 +126,8 @@ Each phase ends in something deployable. Do not start a phase until the previous
 - [x] Scaffold `packages/types`, built with `tsc` to `dist` and consumed by both apps.
 - [x] Prisma schema, migrations, seed script (categories, sample products, shipping rates, store settings, admin user).
 - [x] Docker Compose for local Postgres.
-- [ ] CI: lint, typecheck and build on every push, with a Postgres service for the API e2e tests.
-- [ ] Write `CLAUDE.md` from section 14. It currently holds the styling and no-comments rules only.
+- [x] CI: lint, typecheck and build on every push, with a Postgres service for the API e2e tests.
+- [x] Write `CLAUDE.md` from section 14.
 
 Acceptance: `pnpm dev` runs both apps, the API connects to the database, seed runs cleanly, CI is green.
 
