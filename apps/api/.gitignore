@@ -1,3 +1,5 @@
 dist
 *.tsbuildinfo
+.env
 .env*.local
+src/generated
