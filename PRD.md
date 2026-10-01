@@ -181,7 +181,7 @@ Status: the flow is covered by API end-to-end tests with a signed webhook and a 
 - [x] SEO: product, store, website, breadcrumb and item list JSON-LD, default Open Graph image, canonical URLs, noindex for search results, web manifest and icon.
 - Analytics and Meta Pixel.
 - Rate limiting, security headers, error monitoring (Sentry).
-- Legal pages: delivery policy, returns policy, privacy.
+- [x] Legal pages: delivery policy, returns policy, privacy. The returns window (48 hours for faults, 3 days for unopened items) is a default for the owner to confirm.
 - Custom domain, production environment, backups.
 - Owner walkthrough and short admin guide.
 

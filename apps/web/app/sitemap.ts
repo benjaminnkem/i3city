@@ -12,6 +12,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [
     { url: site, changeFrequency: "daily", priority: 1 },
     { url: `${site}/shop`, changeFrequency: "daily", priority: 0.8 },
+    {
+      url: `${site}/delivery-policy`,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    { url: `${site}/returns-policy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${site}/privacy`, changeFrequency: "yearly", priority: 0.3 },
   ];
   try {
     const categories = await fetchCategories();

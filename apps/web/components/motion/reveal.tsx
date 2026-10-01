@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import {
   itemVariants,
   REVEAL_VIEWPORT,
@@ -20,9 +20,9 @@ type StaggerProps = Readonly<{
 }>;
 
 const containers = {
-  div: motion.div,
-  ul: motion.ul,
-  section: motion.section,
+  div: m.div,
+  ul: m.ul,
+  section: m.section,
 } as const;
 
 export function Stagger({
@@ -63,8 +63,8 @@ export function Stagger({
 }
 
 const items = {
-  div: motion.div,
-  li: motion.li,
+  div: m.div,
+  li: m.li,
 } as const;
 
 export function RevealItem({
@@ -96,7 +96,7 @@ export function Reveal({
   variant?: RevealVariant;
 }>) {
   return (
-    <motion.div
+    <m.div
       className={className}
       variants={itemVariants[variant]}
       initial="hidden"
@@ -104,6 +104,6 @@ export function Reveal({
       viewport={REVEAL_VIEWPORT}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

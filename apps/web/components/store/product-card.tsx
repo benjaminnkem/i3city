@@ -24,7 +24,8 @@ export function ProductCard({
     <article className="flex min-w-0 flex-col gap-3">
       <Link
         href={`/product/${product.slug}`}
-        aria-label={product.name}
+        aria-hidden
+        tabIndex={-1}
         className={cn(
           "relative block aspect-square overflow-hidden rounded-md",
           TONES[index % TONES.length],

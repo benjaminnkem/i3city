@@ -41,6 +41,15 @@ export async function StoreFooter() {
           <Link href="/cart" className="hover:text-primary">
             Your cart
           </Link>
+          <Link href="/delivery-policy" className="hover:text-primary">
+            Delivery policy
+          </Link>
+          <Link href="/returns-policy" className="hover:text-primary">
+            Returns policy
+          </Link>
+          <Link href="/privacy" className="hover:text-primary">
+            Privacy policy
+          </Link>
           {settings?.supportEmail ? (
             <a
               href={`mailto:${settings.supportEmail}`}

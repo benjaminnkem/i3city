@@ -36,23 +36,15 @@ export default async function HomePage() {
           aria-label="Welcome"
           className="bg-tone-1 grid items-center gap-8 overflow-hidden rounded-lg md:grid-cols-[1.1fr_1fr]"
         >
-          <Stagger
-            trigger="mount"
-            gap="loose"
-            className="flex flex-col gap-5 p-6 md:p-14"
-          >
-            <RevealItem>
-              <h1 className="text-h1 max-w-[11ch] font-extrabold">
-                Gadgets that earn their place.
-              </h1>
-            </RevealItem>
-            <RevealItem>
-              <p className="text-muted-foreground max-w-[34ch] text-lg">
-                Phones, audio and everyday accessories, delivered anywhere in
-                Nigeria.
-              </p>
-            </RevealItem>
-            <RevealItem className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-5 p-6 md:p-14">
+            <h1 className="text-h1 animate-rise-1 max-w-[11ch] font-extrabold">
+              Gadgets that earn their place.
+            </h1>
+            <p className="text-muted-foreground animate-rise-2 max-w-[34ch] text-lg">
+              Phones, audio and everyday accessories, delivered anywhere in
+              Nigeria.
+            </p>
+            <div className="animate-rise-3 flex flex-wrap gap-3">
               <Button
                 size="lg"
                 nativeButton={false}
@@ -75,30 +67,26 @@ export default async function HomePage() {
               >
                 Ask on WhatsApp
               </Button>
-            </RevealItem>
-          </Stagger>
+            </div>
+          </div>
           {hero ? (
-            <Stagger trigger="mount" delay={0.25} className="contents">
-              <RevealItem variant="scale" className="m-6 mt-0 md:m-8 md:ml-0">
-                <Link
-                  href={`/product/${hero.slug}`}
-                  className="bg-tone-2 relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-md p-5"
-                >
-                  <ProductImage
-                    src={hero.imageUrls[0]}
-                    alt={hero.name}
-                    sizes="(min-width: 768px) 40vw, 90vw"
-                    priority
-                  />
-                  <div className="bg-background/95 relative w-fit rounded-md px-4 py-3 shadow-sm">
-                    <p className="font-extrabold">{hero.name}</p>
-                    <p className="price text-primary font-bold">
-                      {formatNaira(hero.price)}
-                    </p>
-                  </div>
-                </Link>
-              </RevealItem>
-            </Stagger>
+            <Link
+              href={`/product/${hero.slug}`}
+              className="bg-tone-2 animate-scale-in relative m-6 mt-0 flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-md p-5 md:m-8 md:ml-0"
+            >
+              <ProductImage
+                src={hero.imageUrls[0]}
+                alt={hero.name}
+                sizes="(min-width: 768px) 40vw, 90vw"
+                priority
+              />
+              <div className="bg-background/95 relative w-fit rounded-md px-4 py-3 shadow-sm">
+                <p className="font-extrabold">{hero.name}</p>
+                <p className="price text-primary font-bold">
+                  {formatNaira(hero.price)}
+                </p>
+              </div>
+            </Link>
           ) : null}
         </section>
       </Container>

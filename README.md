@@ -207,7 +207,7 @@ Environment variables for Production:
 
 ## Project status
 
-Phases 0 to 4 are complete: setup, catalog and admin, storefront, checkout with WhatsApp orders, and Paystack payments. Next up is launch polish (Phase 5): structured data, analytics, error monitoring, legal pages and the production deployment. The checklist lives in [`PRD.md`](./PRD.md).
+Phases 0 to 4 are complete: setup, catalog and admin, storefront, checkout with WhatsApp orders, and Paystack payments. Launch polish (Phase 5) is under way: structured data, legal pages and a Lighthouse pass are done. Analytics, error monitoring, the custom domain and the owner guide remain. The checklist lives in [`PRD.md`](./PRD.md).
 
 ## Conventions
 
