@@ -16,7 +16,9 @@ export function normaliseNigerianPhone(input: string): string | null {
 }
 
 export function formatNigerianPhone(international: string): string {
-  const local = international.startsWith("234") ? `0${international.slice(3)}` : international;
+  const local = international.startsWith("234")
+    ? `0${international.slice(3)}`
+    : international;
   return local.length === 11
     ? `${local.slice(0, 4)} ${local.slice(4, 7)} ${local.slice(7)}`
     : local;

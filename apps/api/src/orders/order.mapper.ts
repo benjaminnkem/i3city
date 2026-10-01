@@ -39,6 +39,7 @@ function timeline(row: OrderRow): OrderTimelineEntry[] {
 export function toPublicOrder(
   row: OrderRow,
   storage: StorageService,
+  canPayOnline = false,
 ): PublicOrder {
   return {
     code: row.code,
@@ -54,6 +55,11 @@ export function toPublicOrder(
     courier: row.courier,
     trackingNumber: row.trackingNumber,
     timeline: timeline(row),
+    paymentExpiresAt:
+      row.status === "PENDING_PAYMENT"
+        ? (row.expiresAt?.toISOString() ?? null)
+        : null,
+    canPayOnline,
   };
 }
 
@@ -93,6 +99,8 @@ export function toAdminOrder(
     courier: row.courier,
     trackingNumber: row.trackingNumber,
     paidAt: row.paidAt?.toISOString() ?? null,
+    expiresAt: row.expiresAt?.toISOString() ?? null,
+    paystackRef: row.paystackRef,
     timeline: timeline(row),
   };
 }

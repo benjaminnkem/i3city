@@ -110,6 +110,10 @@ export function CheckoutForm({
       setErrors(next);
       return;
     }
+    if (method === "PAYSTACK" && parsed.data.email === "") {
+      setErrors({ email: "Enter your email address to pay online" });
+      return;
+    }
     setErrors({});
     setSubmitting(true);
     try {
@@ -123,14 +127,20 @@ export function CheckoutForm({
         })),
       });
       try {
-        sessionStorage.setItem(
-          whatsappSessionKey(result.order.code),
-          result.whatsappUrl,
-        );
+        if (result.whatsappUrl) {
+          sessionStorage.setItem(
+            whatsappSessionKey(result.order.code),
+            result.whatsappUrl,
+          );
+        }
       } catch {
         void 0;
       }
       clear();
+      if (result.authorizationUrl) {
+        window.location.assign(result.authorizationUrl);
+        return;
+      }
       router.push(`/order/${result.order.code}?placed=1`);
     } catch (error) {
       const apiError = toApiError(error);
@@ -404,12 +414,17 @@ export function CheckoutForm({
             className="mt-6 w-full"
             disabled={submitting}
           >
-            {submitting ? "Placing your order" : "Place order"}
+            {submitting
+              ? "Placing your order"
+              : method === "PAYSTACK"
+                ? "Place order and pay"
+                : "Place order"}
           </Button>
           <FieldDescription className="mt-3 flex items-start gap-2">
             <LockIcon className="mt-0.5 size-4 shrink-0" />
-            Prices and stock are checked again when you place the order. You
-            will be taken to WhatsApp to send it to us.
+            {method === "PAYSTACK"
+              ? "Prices and stock are checked again when you place the order. You will pay securely on Paystack, and we hold your items for 30 minutes."
+              : "Prices and stock are checked again when you place the order. You will be taken to WhatsApp to send it to us."}
           </FieldDescription>
         </aside>
       </form>

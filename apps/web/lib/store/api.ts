@@ -60,3 +60,23 @@ export const fetchOrder = cache((code: string) =>
     request<PublicOrder>({ url: `/orders/${encodeURIComponent(code)}` }),
   ),
 );
+
+export async function fetchOrderChecked(
+  code: string,
+  reference?: string,
+): Promise<PublicOrder | null> {
+  const order = await fetchOrder(code);
+  if (!order) return null;
+  const needsCheck =
+    order.paymentStatus !== "PAID" &&
+    (reference !== undefined || order.status === "PENDING_PAYMENT");
+  if (!needsCheck) return order;
+  try {
+    return await request<PublicOrder>({
+      url: `/orders/${encodeURIComponent(code)}/verify`,
+      params: reference ? { reference } : {},
+    });
+  } catch {
+    return order;
+  }
+}

@@ -3,12 +3,13 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  ServiceUnavailableException,
   UnprocessableEntityException,
 } from "@nestjs/common";
 import {
   ORDER_TRANSITIONS,
+  PAYMENT_WINDOW_MINUTES,
   calculateShipping,
-  formatNigerianPhone,
   type AdminOrder,
   type AdminOrderListItem,
   type AdminSettings,
@@ -24,7 +25,6 @@ import {
   customerConfirmationEmail,
   customerShippedEmail,
   ownerNewOrderEmail,
-  type OrderEmailData,
 } from "../email/order-emails.js";
 import type { Prisma } from "../generated/prisma/client.js";
 import { PrismaService } from "../prisma/prisma.service.js";
@@ -35,7 +35,10 @@ import type {
   OrderListQueryDto,
   UpdateOrderDto,
 } from "./dto/order.dto.js";
+import { PaymentsService } from "../payments/payments.service.js";
 import { ORDER_CODE_PATTERN, generateOrderCode } from "./order-code.js";
+import { orderEmailData } from "./order-email-data.js";
+import { restockItems } from "./order-stock.js";
 import {
   ORDER_INCLUDE,
   toAdminOrder,
@@ -90,28 +93,6 @@ function listWhere(query: OrderListQueryDto): Prisma.OrderWhereInput {
   };
 }
 
-function emailData(row: OrderRow): OrderEmailData {
-  return {
-    code: row.code,
-    customerName: row.customerName,
-    phone: formatNigerianPhone(row.phone),
-    email: row.email,
-    address: row.address,
-    city: row.city,
-    state: row.state,
-    note: row.note,
-    items: row.items.map((item) => ({
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-    })),
-    subtotal: row.subtotal,
-    shippingFee: row.shippingFee,
-    total: row.total,
-    paymentMethod: row.paymentMethod,
-  };
-}
-
 @Injectable()
 export class OrdersService {
   constructor(
@@ -119,14 +100,23 @@ export class OrdersService {
     private readonly storage: StorageService,
     private readonly settings: SettingsService,
     private readonly email: EmailService,
+    private readonly payments: PaymentsService,
     @Inject(ENV) private readonly env: Env,
   ) {}
 
   async create(dto: CreateOrderDto): Promise<CreateOrderResult> {
-    if (dto.paymentMethod === "PAYSTACK") {
-      throw new UnprocessableEntityException(
-        "Card payments are not available yet",
-      );
+    const online = dto.paymentMethod === "PAYSTACK";
+    if (online) {
+      if (!(await this.payments.available())) {
+        throw new UnprocessableEntityException(
+          "Card payments are not available right now",
+        );
+      }
+      if (!dto.email) {
+        throw new UnprocessableEntityException(
+          "Add your email address to pay online",
+        );
+      }
     }
     const [settings, rates] = await Promise.all([
       this.settings.get(),
@@ -151,9 +141,26 @@ export class OrdersService {
       );
     }
     const trackingUrl = `${this.env.WEB_URL}/order/${row.code}`;
+    if (online && dto.email) {
+      let authorizationUrl: string;
+      try {
+        authorizationUrl = await this.payments.start(row, dto.email);
+      } catch {
+        await this.payments.cancelUnpaid(row.id, "Could not start the payment");
+        throw new ServiceUnavailableException(
+          "We could not start the payment. Please try again.",
+        );
+      }
+      return {
+        order: toPublicOrder(row, this.storage, true),
+        whatsappUrl: null,
+        authorizationUrl,
+      };
+    }
     void this.notifyCreated(row, settings, trackingUrl);
     return {
-      order: toPublicOrder(row, this.storage),
+      order: await this.payments.toPublic(row),
+      authorizationUrl: null,
       whatsappUrl: whatsappLink(
         settings.whatsappNumber,
         buildOrderMessage({
@@ -187,7 +194,7 @@ export class OrdersService {
     if (!row) {
       throw new NotFoundException("We could not find that order");
     }
-    return toPublicOrder(row, this.storage);
+    return this.payments.toPublic(row);
   }
 
   async list(query: OrderListQueryDto): Promise<Paginated<AdminOrderListItem>> {
@@ -237,14 +244,7 @@ export class OrdersService {
         data.events = { create: { status: dto.status } };
         shippedNow = dto.status === "SHIPPED";
         if (dto.status === "CANCELLED") {
-          for (const item of current.items) {
-            if (item.productId) {
-              await tx.product.updateMany({
-                where: { id: item.productId },
-                data: { stock: { increment: item.quantity } },
-              });
-            }
-          }
+          await restockItems(tx, current.items);
         }
       }
       if (
@@ -271,7 +271,7 @@ export class OrdersService {
     if (shipped && row.email) {
       const settings = await this.settings.get();
       const message = customerShippedEmail(
-        emailData(row),
+        orderEmailData(row),
         settings.storeName,
         `${this.env.WEB_URL}/order/${row.code}`,
         row.courier,
@@ -333,6 +333,10 @@ export class OrdersService {
       defaultFee: settings.defaultShippingFee,
       freeShippingOver: settings.freeShippingOver,
     });
+    const initialStatus =
+      dto.paymentMethod === "PAYSTACK"
+        ? "PENDING_PAYMENT"
+        : "AWAITING_CONFIRMATION";
     return tx.order.create({
       data: {
         code: generateOrderCode(),
@@ -347,9 +351,13 @@ export class OrdersService {
         shippingFee: quote.fee,
         total: subtotal + quote.fee,
         paymentMethod: dto.paymentMethod,
-        status: "AWAITING_CONFIRMATION",
+        status: initialStatus,
+        expiresAt:
+          dto.paymentMethod === "PAYSTACK"
+            ? new Date(Date.now() + PAYMENT_WINDOW_MINUTES * 60_000)
+            : null,
         items: { create: items },
-        events: { create: { status: "AWAITING_CONFIRMATION" } },
+        events: { create: { status: initialStatus } },
       },
       include: ORDER_INCLUDE,
     });
@@ -360,7 +368,7 @@ export class OrdersService {
     settings: AdminSettings,
     trackingUrl: string,
   ): Promise<void> {
-    const data = emailData(row);
+    const data = orderEmailData(row);
     if (settings.supportEmail) {
       const owner = ownerNewOrderEmail(
         data,

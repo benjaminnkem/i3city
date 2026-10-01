@@ -17,7 +17,7 @@ export function getSettings(): Promise<AdminSettings> {
 }
 
 export function saveSettings(
-  settings: Omit<AdminSettings, "paystackEnabled">,
+  settings: Omit<AdminSettings, "paystackConfigured">,
 ): Promise<AdminSettings> {
   return adminRequest<AdminSettings>({
     method: "put",

@@ -9,7 +9,6 @@ const optionalString = <T extends z.ZodType>(schema: T) =>
 const publicSchema = z.object({
   NEXT_PUBLIC_API_URL: z.url().default("http://localhost:4000/api"),
   NEXT_PUBLIC_SITE_URL: z.url().default("http://localhost:3000"),
-  NEXT_PUBLIC_WHATSAPP_NUMBER: optionalString(z.string().regex(/^\d{10,15}$/)),
   NEXT_PUBLIC_CDN_URL: optionalString(z.url()),
 });
 
@@ -40,7 +39,6 @@ function parseOrThrow<T extends z.ZodType>(
 export const publicEnv = parseOrThrow(publicSchema, {
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || undefined,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || undefined,
-  NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER,
   NEXT_PUBLIC_CDN_URL: process.env.NEXT_PUBLIC_CDN_URL,
 });
 

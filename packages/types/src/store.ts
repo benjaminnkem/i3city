@@ -49,6 +49,7 @@ export interface AdminSettings {
   defaultShippingFee: number;
   freeShippingOver: number | null;
   paystackEnabled: boolean;
+  paystackConfigured: boolean;
 }
 
 export interface CartLineInput {

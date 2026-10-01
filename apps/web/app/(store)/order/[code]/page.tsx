@@ -10,10 +10,13 @@ import { notFound } from "next/navigation";
 import { OrderTimeline } from "@/components/store/order-timeline";
 import { ProductImage } from "@/components/store/product-image";
 import { Container } from "@/components/store/section";
+import { PayOnlineButton } from "@/components/store/payment-actions";
+import { PaymentCountdown } from "@/components/store/payment-countdown";
+import { VerifyPayment } from "@/components/store/verify-payment";
 import { WhatsAppContinue } from "@/components/store/whatsapp-continue";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { fetchOrder, fetchSettings } from "@/lib/store/api";
+import { fetchOrderChecked, fetchSettings } from "@/lib/store/api";
 import { whatsappLink } from "@/lib/store/whatsapp";
 
 export const dynamic = "force-dynamic";
@@ -30,12 +33,27 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function OrderPage({ params, searchParams }: Props) {
   const { code } = await params;
-  const placed = (await searchParams).placed === "1";
+  const query = await searchParams;
+  const placed = query.placed === "1";
+  const reference = [query.reference, query.trxref]
+    .flat()
+    .find((value): value is string => typeof value === "string");
   const [order, settings] = await Promise.all([
-    fetchOrder(code),
+    fetchOrderChecked(code, reference),
     fetchSettings(),
   ]);
   if (!order) notFound();
+
+  const awaitingPayment =
+    order.status === "PENDING_PAYMENT" && order.paymentStatus !== "PAID";
+  const verifying = order.paymentStatus !== "PAID" && reference !== undefined;
+  const justPaid =
+    order.paymentStatus === "PAID" &&
+    (query.paid === "1" || reference !== undefined);
+  const expired =
+    order.status === "CANCELLED" &&
+    order.paymentMethod === "PAYSTACK" &&
+    order.paymentStatus !== "PAID";
 
   const help = whatsappLink(
     settings.whatsappNumber,
@@ -44,7 +62,48 @@ export default async function OrderPage({ params, searchParams }: Props) {
 
   return (
     <Container className="max-w-3xl py-8">
-      {placed ? (
+      {verifying ? (
+        <div className="mb-8">
+          <VerifyPayment code={order.code} reference={reference} />
+        </div>
+      ) : null}
+
+      {justPaid ? (
+        <div className="bg-tone-3 mb-8 flex items-start gap-3 rounded-lg p-6">
+          <CheckCircle2Icon className="text-success mt-1 size-7 shrink-0" />
+          <div>
+            <h1 className="text-h2 font-extrabold">
+              Payment received, thank you
+            </h1>
+            <p className="text-muted-foreground">
+              Your order is confirmed and we are getting it ready. You can
+              follow it on this page.
+            </p>
+          </div>
+        </div>
+      ) : null}
+
+      {awaitingPayment && order.canPayOnline && !verifying ? (
+        <div className="bg-tone-4 mb-8 flex flex-col gap-4 rounded-lg p-6">
+          <h1 className="text-h2 font-extrabold">Complete your payment</h1>
+          {order.paymentExpiresAt ? (
+            <PaymentCountdown expiresAt={order.paymentExpiresAt} />
+          ) : null}
+          <PayOnlineButton code={order.code} label="Pay now" />
+        </div>
+      ) : null}
+
+      {expired ? (
+        <div className="bg-muted mb-8 flex flex-col gap-3 rounded-lg p-6">
+          <h1 className="text-h2 font-extrabold">This order expired</h1>
+          <p className="text-muted-foreground">
+            We did not receive payment in time, so we released the items. If you
+            have paid, message us on WhatsApp and we will sort it out.
+          </p>
+        </div>
+      ) : null}
+
+      {placed && !awaitingPayment ? (
         <div className="bg-tone-1 mb-8 flex flex-col gap-4 rounded-lg p-6">
           <div className="flex items-start gap-3">
             <CheckCircle2Icon className="text-success mt-1 size-7 shrink-0" />
@@ -60,9 +119,9 @@ export default async function OrderPage({ params, searchParams }: Props) {
           </div>
           <WhatsAppContinue code={order.code} autoOpen />
         </div>
-      ) : (
+      ) : !awaitingPayment && !justPaid && !expired ? (
         <h1 className="text-h2 mb-6 font-extrabold">Order {order.code}</h1>
-      )}
+      ) : null}
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <span className="text-muted-foreground">Order code</span>
@@ -155,8 +214,13 @@ export default async function OrderPage({ params, searchParams }: Props) {
       </div>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        {!placed ? (
+        {!placed && order.paymentMethod === "WHATSAPP" ? (
           <WhatsAppContinue code={order.code} autoOpen={false} />
+        ) : null}
+        {order.canPayOnline &&
+        order.paymentMethod === "WHATSAPP" &&
+        !awaitingPayment ? (
+          <PayOnlineButton code={order.code} variant="outline" />
         ) : null}
         <Button
           variant="outline"

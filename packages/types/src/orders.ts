@@ -3,10 +3,18 @@ import type { OrderStatusName } from "./stats.js";
 export const PAYMENT_METHODS = ["WHATSAPP", "PAYSTACK"] as const;
 export type PaymentMethodName = (typeof PAYMENT_METHODS)[number];
 
-export const PAYMENT_STATUSES = ["UNPAID", "PAID", "FAILED", "REFUNDED"] as const;
+export const PAYMENT_STATUSES = [
+  "UNPAID",
+  "PAID",
+  "FAILED",
+  "REFUNDED",
+] as const;
 export type PaymentStatusName = (typeof PAYMENT_STATUSES)[number];
 
-export const ORDER_TRANSITIONS: Record<OrderStatusName, readonly OrderStatusName[]> = {
+export const ORDER_TRANSITIONS: Record<
+  OrderStatusName,
+  readonly OrderStatusName[]
+> = {
   PENDING_PAYMENT: ["CONFIRMED", "CANCELLED"],
   AWAITING_CONFIRMATION: ["CONFIRMED", "CANCELLED"],
   CONFIRMED: ["PACKED", "CANCELLED"],
@@ -45,6 +53,8 @@ export interface OrderTimelineEntry {
   at: string;
 }
 
+export const PAYMENT_WINDOW_MINUTES = 30;
+
 export interface PublicOrder {
   code: string;
   status: OrderStatusName;
@@ -59,11 +69,18 @@ export interface PublicOrder {
   courier: string | null;
   trackingNumber: string | null;
   timeline: OrderTimelineEntry[];
+  paymentExpiresAt: string | null;
+  canPayOnline: boolean;
 }
 
 export interface CreateOrderResult {
   order: PublicOrder;
-  whatsappUrl: string;
+  whatsappUrl: string | null;
+  authorizationUrl: string | null;
+}
+
+export interface PaymentLink {
+  authorizationUrl: string;
 }
 
 export interface AdminOrderListItem {
@@ -91,6 +108,8 @@ export interface AdminOrder extends AdminOrderListItem {
   courier: string | null;
   trackingNumber: string | null;
   paidAt: string | null;
+  expiresAt: string | null;
+  paystackRef: string | null;
   timeline: OrderTimelineEntry[];
 }
 

@@ -1,4 +1,9 @@
-import type { CreateOrderResult, ValidatedCartLine } from "@repo/types";
+import type {
+  CreateOrderResult,
+  PaymentLink,
+  PublicOrder,
+  ValidatedCartLine,
+} from "@repo/types";
 import { request } from "@/lib/api";
 import type { CartLine } from "@/lib/cart/store";
 
@@ -33,5 +38,26 @@ export function placeOrder(input: OrderInput): Promise<CreateOrderResult> {
     method: "post",
     url: "/orders",
     data: input,
+  });
+}
+
+export function payForOrder(
+  code: string,
+  email?: string,
+): Promise<PaymentLink> {
+  return request<PaymentLink>({
+    method: "post",
+    url: `/orders/${encodeURIComponent(code)}/pay`,
+    data: email ? { email } : {},
+  });
+}
+
+export function verifyOrderPayment(
+  code: string,
+  reference?: string,
+): Promise<PublicOrder> {
+  return request<PublicOrder>({
+    url: `/orders/${encodeURIComponent(code)}/verify`,
+    params: reference ? { reference } : {},
   });
 }

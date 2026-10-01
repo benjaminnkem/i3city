@@ -1,6 +1,6 @@
 "use client";
 
-import { formatNaira } from "@repo/types";
+import { formatNaira, isPlaceholderWhatsApp } from "@repo/types";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import {
@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { getSettings, settingsKeys } from "@/lib/admin/settings";
 import { getStats, statsKeys } from "@/lib/admin/stats";
 import { toApiError } from "@/lib/api";
 import { CategoryCard } from "./category-card";
@@ -61,6 +62,10 @@ export function DashboardView() {
     queryKey: statsKeys.all,
     queryFn: getStats,
     refetchInterval: REFRESH_INTERVAL_MS,
+  });
+  const settings = useQuery({
+    queryKey: settingsKeys.settings,
+    queryFn: getSettings,
   });
   const stats = query.data;
   const days = Number(range);
@@ -118,6 +123,23 @@ export function DashboardView() {
           </>
         }
       />
+
+      {settings.data && isPlaceholderWhatsApp(settings.data.whatsappNumber) ? (
+        <Alert>
+          <AlertTitle>Set your WhatsApp number</AlertTitle>
+          <AlertDescription className="flex flex-col items-start gap-3">
+            Customers are being sent to a placeholder number, so their orders
+            will not reach you.
+            <Button
+              size="sm"
+              nativeButton={false}
+              render={<Link href="/admin/settings" />}
+            >
+              Open settings
+            </Button>
+          </AlertDescription>
+        </Alert>
+      ) : null}
 
       {query.isError ? (
         <Alert>

@@ -40,6 +40,12 @@ All styling must use the design tokens defined in `DESIGN.md` and `apps/web/app/
 - Shipping fees come from `calculateShipping` in `@repo/types`, used by both the API and the checkout screen.
 - Storefront pages are server components that read from the public API. The cart lives in `lib/cart/store.ts` (Zustand, persisted) and is revalidated with `/cart/validate`.
 
+## Payments
+
+- Paystack lives in `apps/api/src/payments`. Never mark an order paid from a client request or a callback query string. `PaymentsService.settle(reference)` is the only place that does it. It verifies with Paystack, checks currency and amount in kobo, then claims the order with a conditional update so it runs once however many times it is called.
+- Webhooks must pass `verifyPaystackSignature` on the raw request body. Do not change the raw body setting in `main.ts`.
+- The payment reference is the order code for the first attempt, then `CODE-2`, `CODE-3` for retries.
+
 ## Process
 
 - Each phase: write the code, run lint, typecheck and tests, then summarise what changed in a few lines before moving on.

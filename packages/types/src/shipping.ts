@@ -18,7 +18,8 @@ export function calculateShipping(input: {
   freeShippingOver: number | null;
 }): ShippingQuote {
   const rate = input.rates.find((entry) => entry.state === input.state);
-  const free = input.freeShippingOver !== null && input.subtotal >= input.freeShippingOver;
+  const free =
+    input.freeShippingOver !== null && input.subtotal >= input.freeShippingOver;
   return {
     fee: free ? 0 : (rate?.fee ?? input.defaultFee),
     etaDays: rate?.etaDays ?? null,

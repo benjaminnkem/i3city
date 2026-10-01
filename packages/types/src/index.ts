@@ -9,3 +9,4 @@ export * from "./phone.js";
 export * from "./shipping.js";
 export * from "./orders.js";
 export * from "./store.js";
+export * from "./contact.js";

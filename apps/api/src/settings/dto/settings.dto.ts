@@ -4,6 +4,7 @@ import {
   ArrayMaxSize,
   ArrayUnique,
   IsArray,
+  IsBoolean,
   IsEmail,
   IsIn,
   IsInt,
@@ -75,6 +76,10 @@ export class UpdateSettingsDto {
   @Min(0)
   @Max(100_000_000)
   freeShippingOver?: number | null;
+
+  @IsOptional()
+  @IsBoolean()
+  paystackEnabled?: boolean;
 }
 
 export class ShippingRateDto {

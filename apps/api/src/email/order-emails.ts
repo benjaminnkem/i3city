@@ -132,3 +132,57 @@ export function customerShippedEmail(
     text: [...lines, "", `Track your order: ${trackingUrl}`].join("\n"),
   };
 }
+
+export function customerPaymentEmail(
+  data: OrderEmailData,
+  storeName: string,
+  trackingUrl: string,
+): EmailBody {
+  const lines = [
+    `Hi ${data.customerName}, we received your payment of ${formatNaira(data.total)} for order ${data.code}.`,
+    "",
+    ...itemLines(data),
+    "",
+    "We are getting your order ready and will email you when it ships.",
+  ];
+  return {
+    subject: `Payment received for ${storeName} order ${data.code}`,
+    html: wrap("Payment received", lines, {
+      href: trackingUrl,
+      label: "Track your order",
+    }),
+    text: [...lines, "", `Track your order: ${trackingUrl}`].join("\n"),
+  };
+}
+
+export function ownerPaymentEmail(
+  data: OrderEmailData,
+  adminUrl: string,
+  cancelled: boolean,
+): EmailBody {
+  const lines = [
+    cancelled
+      ? `Payment of ${formatNaira(data.total)} arrived for order ${data.code}, which was already cancelled. Refund it or reinstate the order.`
+      : `${data.customerName} paid ${formatNaira(data.total)} for order ${data.code}.`,
+    "",
+    ...itemLines(data),
+    "",
+    `Phone: ${data.phone}`,
+    `Deliver to: ${data.address}, ${data.city}, ${data.state}`,
+    ...(data.note ? [`Note: ${data.note}`] : []),
+  ];
+  return {
+    subject: cancelled
+      ? `Payment received for cancelled order ${data.code}`
+      : `Paid order ${data.code}, ${formatNaira(data.total)}`,
+    html: wrap(
+      cancelled ? "Payment for a cancelled order" : `Paid order ${data.code}`,
+      lines,
+      {
+        href: adminUrl,
+        label: "Open order",
+      },
+    ),
+    text: [...lines, "", adminUrl].join("\n"),
+  };
+}

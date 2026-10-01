@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnprocessableEntityException } from "@nestjs/common";
+import { PaystackService } from "../payments/paystack.service.js";
 import type { AdminSettings, ShippingRateInfo } from "@repo/types";
 import { PrismaService } from "../prisma/prisma.service.js";
 import type {
@@ -6,11 +7,14 @@ import type {
   UpdateShippingRatesDto,
 } from "./dto/settings.dto.js";
 
-const DEFAULT_WHATSAPP = "2348000000000";
+const DEFAULT_WHATSAPP = "2348133961439";
 
 @Injectable()
 export class SettingsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly paystack: PaystackService,
+  ) {}
 
   async get(): Promise<AdminSettings> {
     const row = await this.prisma.storeSettings.upsert({
@@ -28,11 +32,17 @@ export class SettingsService {
       defaultShippingFee: row.defaultShippingFee,
       freeShippingOver: row.freeShippingOver,
       paystackEnabled: row.paystackEnabled,
+      paystackConfigured: this.paystack.configured,
     };
   }
 
   async update(dto: UpdateSettingsDto): Promise<AdminSettings> {
     await this.get();
+    if (dto.paystackEnabled && !this.paystack.configured) {
+      throw new UnprocessableEntityException(
+        "Add the Paystack secret key to the server before turning on card payments",
+      );
+    }
     await this.prisma.storeSettings.update({
       where: { id: 1 },
       data: {
@@ -44,6 +54,7 @@ export class SettingsService {
         bankDetails: dto.bankDetails ?? null,
         defaultShippingFee: dto.defaultShippingFee,
         freeShippingOver: dto.freeShippingOver ?? null,
+        paystackEnabled: dto.paystackEnabled,
       },
     });
     return this.get();

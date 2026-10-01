@@ -1,6 +1,6 @@
 "use client";
 
-import { type AdminSettings } from "@repo/types";
+import { isPlaceholderWhatsApp, type AdminSettings } from "@repo/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -56,6 +56,9 @@ function SettingsForm({ settings }: Readonly<{ settings: AdminSettings }>) {
     bankDetails: settings.bankDetails ?? "",
   });
   const [errors, setErrors] = useState<Errors>({});
+  const [paystackEnabled, setPaystackEnabled] = useState(
+    settings.paystackEnabled,
+  );
 
   const save = useMutation({
     mutationFn: (values: FormState) =>
@@ -68,6 +71,7 @@ function SettingsForm({ settings }: Readonly<{ settings: AdminSettings }>) {
         bankDetails: values.bankDetails.trim() || null,
         defaultShippingFee: settings.defaultShippingFee,
         freeShippingOver: settings.freeShippingOver,
+        paystackEnabled,
       }),
     onSuccess: async (saved) => {
       queryClient.setQueryData(settingsKeys.settings, saved);
@@ -153,7 +157,8 @@ function SettingsForm({ settings }: Readonly<{ settings: AdminSettings }>) {
         <CardHeader>
           <CardTitle>Contact</CardTitle>
           <CardDescription>
-            Customers message this WhatsApp number to send their orders.
+            Customers message this WhatsApp number to send their orders. Changes
+            apply to the store straight away.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -170,7 +175,9 @@ function SettingsForm({ settings }: Readonly<{ settings: AdminSettings }>) {
                 aria-invalid={invalid("whatsappNumber")}
               />
               <FieldDescription>
-                Saved in international format, for example 2348012345678.
+                {isPlaceholderWhatsApp(settings.whatsappNumber)
+                  ? "This is still a placeholder. Enter your real number so customers can reach you."
+                  : "Saved in international format, for example 2348012345678."}
               </FieldDescription>
               <FieldError>{errors.whatsappNumber}</FieldError>
             </Field>
@@ -220,15 +227,18 @@ function SettingsForm({ settings }: Readonly<{ settings: AdminSettings }>) {
             <Field orientation="horizontal">
               <Switch
                 id="paystack"
-                checked={settings.paystackEnabled}
-                disabled
+                checked={paystackEnabled}
+                disabled={!settings.paystackConfigured}
+                onCheckedChange={setPaystackEnabled}
               />
               <div className="flex flex-col gap-0.5">
                 <FieldLabel htmlFor="paystack">
                   Card and transfer with Paystack
                 </FieldLabel>
                 <FieldDescription>
-                  Not available yet. Orders are confirmed on WhatsApp.
+                  {settings.paystackConfigured
+                    ? "Customers can pay by card or transfer at checkout, and unpaid WhatsApp orders get a pay link. Orders are confirmed automatically when payment arrives."
+                    : "Add PAYSTACK_SECRET_KEY to the API server to turn this on. Orders are confirmed on WhatsApp until then."}
                 </FieldDescription>
               </div>
             </Field>

@@ -70,6 +70,7 @@ function DeliveryDefaults({ settings }: Readonly<{ settings: AdminSettings }>) {
         bankDetails: settings.bankDetails,
         defaultShippingFee: values.fee,
         freeShippingOver: values.free,
+        paystackEnabled: settings.paystackEnabled,
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(settingsKeys.settings, saved);

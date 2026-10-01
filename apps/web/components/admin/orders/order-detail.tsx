@@ -276,6 +276,21 @@ export function OrderDetail({ orderId }: Readonly<{ orderId: string }>) {
                 {data.email ? (
                   <Detail label="Email">{data.email}</Detail>
                 ) : null}
+                <Detail label="Payment method">
+                  {data.paymentMethod === "PAYSTACK"
+                    ? "Card or transfer (Paystack)"
+                    : "Arranged on WhatsApp"}
+                </Detail>
+                {data.paystackRef ? (
+                  <Detail label="Paystack reference">
+                    <span className="price">{data.paystackRef}</span>
+                  </Detail>
+                ) : null}
+                {data.status === "PENDING_PAYMENT" && data.expiresAt ? (
+                  <Detail label="Payment window ends">
+                    {format(parseISO(data.expiresAt), "d MMM yyyy, h:mm a")}
+                  </Detail>
+                ) : null}
                 <Detail label="Delivery address">
                   {data.address}, {data.city}, {stateLabel(data.state)}
                 </Detail>

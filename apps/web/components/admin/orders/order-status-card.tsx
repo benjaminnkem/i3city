@@ -62,7 +62,9 @@ export function OrderStatusCard({
   const [cancelOpen, setCancelOpen] = useState(false);
   const [courier, setCourier] = useState(order.courier ?? "");
   const [tracking, setTracking] = useState(order.trackingNumber ?? "");
-  const next = NEXT_STEP[order.status];
+  const waitingForPayment =
+    order.status === "PENDING_PAYMENT" && order.paymentStatus !== "PAID";
+  const next = waitingForPayment ? undefined : NEXT_STEP[order.status];
   const canCancel = ORDER_TRANSITIONS[order.status].includes("CANCELLED");
 
   function advance() {
@@ -90,9 +92,11 @@ export function OrderStatusCard({
           </Button>
         ) : (
           <p className="text-muted-foreground">
-            {order.status === "DELIVERED"
-              ? "This order is complete."
-              : "This order was cancelled."}
+            {waitingForPayment
+              ? "Waiting for the customer to pay. It confirms automatically when payment arrives, or cancels when the payment window ends."
+              : order.status === "DELIVERED"
+                ? "This order is complete."
+                : "This order was cancelled."}
           </p>
         )}
 

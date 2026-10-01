@@ -132,9 +132,10 @@ export class CatalogService {
       openingHours: settings.openingHours,
       defaultShippingFee: settings.defaultShippingFee,
       freeShippingOver: settings.freeShippingOver,
-      paymentMethods: settings.paystackEnabled
-        ? ["WHATSAPP", "PAYSTACK"]
-        : ["WHATSAPP"],
+      paymentMethods:
+        settings.paystackEnabled && settings.paystackConfigured
+          ? ["WHATSAPP", "PAYSTACK"]
+          : ["WHATSAPP"],
       shippingRates: rates,
     };
   }

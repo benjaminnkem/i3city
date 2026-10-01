@@ -323,10 +323,10 @@ describe("Storefront and orders (e2e)", () => {
       expect(order.total).toBe(106_000);
       expect(order.items).toHaveLength(2);
       expect(await stockOf(phoneProduct.id)).toBe(before - 2);
-      expect(whatsappUrl.startsWith("https://wa.me/2348031112222?text=")).toBe(
+      expect(whatsappUrl?.startsWith("https://wa.me/2348031112222?text=")).toBe(
         true,
       );
-      expect(decodeURIComponent(whatsappUrl)).toContain(order.code);
+      expect(decodeURIComponent(whatsappUrl ?? "")).toContain(order.code);
       await new Promise((resolve) => setTimeout(resolve, 50));
       expect(sent.map((message) => message.to).sort()).toEqual(
         [`owner-${tag}@test.local`, "ada@example.com"].sort(),
@@ -357,6 +357,31 @@ describe("Storefront and orders (e2e)", () => {
       });
       expect(await stockOf(phoneProduct.id)).toBe(phoneBefore);
       expect(await stockOf(cableProduct.id)).toBe(cableBefore);
+    });
+
+    it("never oversells when several customers order the last units at once", async () => {
+      const limited = await prisma.product.create({
+        data: {
+          name: `${tag} Limited`,
+          slug: `${tag}-limited`,
+          price: 1_000,
+          stock: 3,
+        },
+      });
+      const results = await Promise.all(
+        Array.from({ length: 8 }, (_, index) =>
+          placeOrder([{ productId: limited.id, quantity: 1 }], {
+            customerName: `${tag} Racer ${index}`,
+          }),
+        ),
+      );
+      const statuses = results.map((response) => response.status).sort((a, b) => a - b);
+      expect(statuses.filter((status) => status === 201)).toHaveLength(3);
+      expect(statuses.filter((status) => status === 409)).toHaveLength(5);
+      expect(await stockOf(limited.id)).toBe(0);
+      expect(
+        await prisma.orderItem.count({ where: { productId: limited.id } }),
+      ).toBe(3);
     });
 
     it("rejects hidden products, bad phones, empty carts, unknown states and card payments", async () => {

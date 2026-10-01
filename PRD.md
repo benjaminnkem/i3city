@@ -100,7 +100,6 @@ Web:
 ```
 NEXT_PUBLIC_API_URL
 NEXT_PUBLIC_SITE_URL
-NEXT_PUBLIC_WHATSAPP_NUMBER
 NEXT_PUBLIC_CDN_URL
 NEXTAUTH_SECRET
 NEXTAUTH_URL
@@ -168,12 +167,14 @@ Acceptance: end-to-end order via WhatsApp works, the owner sees it in the dashbo
 
 ### Phase 4: Paystack
 
-- Paystack as a second payment method at checkout.
-- Initialise, callback verification, webhook with signature check.
-- "Pay with card or transfer" link on unpaid WhatsApp orders.
-- Auto-cancel unpaid Paystack orders after 30 minutes and release stock.
+- [x] Paystack as a second payment method at checkout. The owner turns it on in Admin, Settings once `PAYSTACK_SECRET_KEY` is set on the API. An email is required for card orders.
+- [x] Initialise, callback verification, webhook with signature check (`POST /api/payments/paystack/webhook`, HMAC SHA512 over the raw body).
+- [x] "Pay with card or transfer" link on unpaid WhatsApp orders (`POST /api/orders/:code/pay`).
+- [x] Auto-cancel unpaid Paystack orders after 30 minutes and release stock. A scheduler runs every minute, verifies with Paystack before cancelling, and flags late payments on cancelled orders to the owner.
 
 Acceptance: a test-mode payment marks the order paid exactly once, whether the callback, the webhook or both fire. A tampered amount is rejected.
+
+Status: the flow is covered by API end-to-end tests with a signed webhook and a fake Paystack, and the Paystack test API has been exercised for initialise and verify. Completing a test card payment on Paystack's hosted page is the one step to confirm by hand.
 
 ### Phase 5: Polish and launch
 
@@ -522,7 +523,7 @@ Light-first design system with a dark mode toggle, mobile-first, built for a Nig
 ## 13. Open items to confirm with the owner
 
 - Store name styling, logo, brand colours, domain name
-- WhatsApp number to use for orders
+- WhatsApp number to use for orders (set in Admin, Settings, no redeploy needed)
 - Product list, prices and photos to load for launch, ideally as a spreadsheet for CSV import
 - Paystack business account and verification status
 - Courier partners and real delivery rates per state

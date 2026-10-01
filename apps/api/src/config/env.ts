@@ -23,6 +23,11 @@ export const envSchema = databaseEnvSchema
     WEB_URL: z.url().default("http://localhost:3000"),
     JWT_SECRET: z.string().min(MIN_SECRET_LENGTH),
     RESEND_API_KEY: z.string().min(1).optional(),
+    PAYSTACK_API_URL: z.url().default("https://api.paystack.co"),
+    PAYSTACK_SECRET_KEY: z
+      .string()
+      .startsWith("sk_", "Must be a Paystack secret key")
+      .optional(),
     EMAIL_FROM: z.string().min(3).default("i3City <onboarding@resend.dev>"),
     ACCESS_TOKEN_TTL_SECONDS: z.coerce.number().int().positive().default(900),
     REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
