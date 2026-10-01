@@ -157,3 +157,12 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
 - [Configuration Options](https://turborepo.dev/docs/reference/configuration)
 - [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+
+## Local database
+
+The API needs PostgreSQL. Copy `apps/api/.env.example` to `apps/api/.env` and set `DATABASE_URL`.
+
+- Docker: run `pnpm db:up`. The container listens on port 5433, so it does not clash with a local Postgres.
+- Postgres.app or another local server: create a database named `i3city` and point `DATABASE_URL` at it.
+
+Then, from `apps/api`, run `pnpm db:migrate` and `pnpm db:seed`. Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` first, because the seed creates the admin user.

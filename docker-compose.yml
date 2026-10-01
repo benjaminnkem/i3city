@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: i3city-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: i3city
+      POSTGRES_PASSWORD: i3city
+      POSTGRES_DB: i3city
+    ports:
+      - "5433:5432"
+    volumes:
+      - i3city-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U i3city -d i3city"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  i3city-pgdata:
