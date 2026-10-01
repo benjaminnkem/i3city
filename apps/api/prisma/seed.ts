@@ -14,6 +14,7 @@ const seedEnv = parseEnv(
       .string()
       .regex(/^\d{10,15}$/)
       .default("2340000000000"),
+    SEED_SAMPLES: z.enum(["true", "false"]).default("true"),
   }),
 );
 
@@ -84,10 +85,16 @@ async function seedSettings(): Promise<void> {
 
 async function main(): Promise<void> {
   await seedAdmin();
-  const categoryIds = await seedCategories();
-  await seedProducts(categoryIds);
   await seedShipping();
   await seedSettings();
+  if (seedEnv.SEED_SAMPLES === "false") {
+    console.log(
+      `Seeded the admin user, store settings and ${shippingRates.length} shipping rates`,
+    );
+    return;
+  }
+  const categoryIds = await seedCategories();
+  await seedProducts(categoryIds);
   console.log(
     `Seeded ${categories.length} categories, ${products.length} products, ${shippingRates.length} shipping rates`,
   );

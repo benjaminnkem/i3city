@@ -172,6 +172,17 @@ Customers can then pay by card at checkout, or from the "Pay with card or transf
 3. The customer lands on the confirmation page and is sent to WhatsApp with the order message.
 4. The owner confirms in **Admin, Orders**, shares payment details with the ready-made message, marks the order paid, packs it, ships it with courier details and marks it delivered. Cancelling an order puts the items back in stock.
 
+## Deploying the API to Render
+
+`render.yaml` at the repository root describes the service: a Node web service that installs the workspace, builds `@repo/types` and the API with Turborepo, runs `prisma migrate deploy` before each release and starts `node apps/api/dist/main`. Health checks use `/api/health`.
+
+1. Create a PostgreSQL database. Neon works well. Use its direct (non-pooled) connection string as `DATABASE_URL`.
+2. In Render, choose **New, Blueprint**, pick this repository and fill in the variables marked as secret: `DATABASE_URL`, `WEB_URL` (the public web address, used for CORS and email links), the five `R2_*` values, `PAYSTACK_SECRET_KEY`, and optionally `RESEND_API_KEY` and `EMAIL_FROM`. `JWT_SECRET` is generated for you.
+3. After the first deploy, create the admin user and store settings from your machine. Run `pnpm --filter api db:seed:prod` with `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` and `WHATSAPP_NUMBER` set to the production values. This seeds the admin, store settings and delivery rates, without sample products.
+4. Point the web app at the new API (`NEXT_PUBLIC_API_URL=https://<service>.onrender.com/api`) and set the Paystack webhook URL to `https://<service>.onrender.com/api/payments/paystack/webhook`.
+
+Use a paid instance. The scheduler that cancels unpaid card orders and the Paystack webhook need a service that is always running, and free instances go to sleep. `NODE_ENV=production` makes the API insist on the R2 settings, so the service will not start without them. Only one origin is allowed by CORS, so `WEB_URL` must match the web app address exactly.
+
 ## Project status
 
 Phases 0 to 4 are complete: setup, catalog and admin, storefront, checkout with WhatsApp orders, and Paystack payments. Next up is launch polish (Phase 5): structured data, analytics, error monitoring, legal pages and the production deployment. The checklist lives in [`PRD.md`](./PRD.md).
