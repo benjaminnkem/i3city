@@ -75,6 +75,7 @@ async function seedSettings(): Promise<void> {
       whatsappNumber: seedEnv.WHATSAPP_NUMBER,
       supportEmail: seedEnv.ADMIN_EMAIL,
       address: "Egbeda, Ibadan, Oyo State",
+      openingHours: "Monday to Saturday, 9am to 7pm",
       defaultShippingFee: 5000,
       freeShippingOver: 100000,
     },

@@ -1,7 +1,7 @@
 import type { PaginationMeta } from "@repo/types";
 import type { AxiosRequestConfig } from "axios";
 import { getSession, signOut } from "next-auth/react";
-import { ApiError, request, requestPage, requestVoid } from "@/lib/api";
+import { ApiError, http, request, requestPage, requestVoid } from "@/lib/api";
 
 async function withAuthorization(
   config: AxiosRequestConfig,
@@ -34,4 +34,13 @@ export async function adminRequestPage<T>(
   config: AxiosRequestConfig,
 ): Promise<{ items: T[]; meta: PaginationMeta }> {
   return requestPage<T>(await withAuthorization(config));
+}
+
+export async function adminBlob(config: AxiosRequestConfig): Promise<Blob> {
+  const authorized = await withAuthorization({
+    ...config,
+    responseType: "blob",
+  });
+  const response = await http.request<Blob>(authorized);
+  return response.data;
 }

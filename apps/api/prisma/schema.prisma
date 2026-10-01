@@ -93,6 +93,7 @@ model Order {
   state          String
   note           String?
   items          OrderItem[]
+  events         OrderEvent[]
   subtotal       Int
   shippingFee    Int
   total          Int
@@ -109,6 +110,17 @@ model Order {
 
   @@index([status, createdAt])
   @@index([phone])
+}
+
+model OrderEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+
+  @@index([orderId, createdAt])
 }
 
 model OrderItem {
@@ -136,6 +148,8 @@ model StoreSettings {
   whatsappNumber     String
   supportEmail       String?
   address            String?
+  openingHours       String?
+  bankDetails        String?
   defaultShippingFee Int     @default(5000)
   freeShippingOver   Int?
   paystackEnabled    Boolean @default(false)

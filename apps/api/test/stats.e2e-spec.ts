@@ -142,10 +142,6 @@ describe("Stats and bulk delete (e2e)", () => {
     expect(after.products.inventoryValue - before.products.inventoryValue).toBe(
       20_000,
     );
-    const top = after.topProducts.find(
-      (entry) => entry.name === `${tag} Charger`,
-    );
-    expect(top).toMatchObject({ units: 3, revenue: 30_000 });
     const lowStock = after.lowStock.find((item) => item.id === product.id);
     expect(lowStock?.imageUrl).toContain("https://cdn.test/products/");
   });

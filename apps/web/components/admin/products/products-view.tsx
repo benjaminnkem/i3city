@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import type { RowSelectionState, SortingState } from "@tanstack/react-table";
 import {
+  DownloadIcon,
   EyeIcon,
   EyeOffIcon,
   PlusIcon,
@@ -51,6 +52,8 @@ import {
 } from "@/lib/admin/products";
 import { statsKeys } from "@/lib/admin/stats";
 import { toApiError } from "@/lib/api";
+import { exportProducts } from "@/lib/admin/csv";
+import { ImportProductsDialog } from "./import-products-dialog";
 import {
   DeleteProductsDialog,
   type DeleteTarget,
@@ -83,6 +86,7 @@ export function ProductsView() {
   const [selection, setSelection] = useState<RowSelectionState>({});
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
   const [searchDraft, setSearchDraft] = useState(filters.search);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     setSearchDraft(filters.search);
@@ -205,13 +209,29 @@ export function ProductsView() {
         title="Products"
         description="Add, edit and organise everything you sell."
         actions={
-          <Button
-            nativeButton={false}
-            render={<Link href="/admin/products/new" />}
-          >
-            <PlusIcon data-icon="inline-start" />
-            Add product
-          </Button>
+          <>
+            <ImportProductsDialog />
+            <Button
+              variant="outline"
+              disabled={exporting}
+              onClick={() => {
+                setExporting(true);
+                exportProducts()
+                  .catch(notifyError)
+                  .finally(() => setExporting(false));
+              }}
+            >
+              <DownloadIcon data-icon="inline-start" />
+              {exporting ? "Exporting" : "Export"}
+            </Button>
+            <Button
+              nativeButton={false}
+              render={<Link href="/admin/products/new" />}
+            >
+              <PlusIcon data-icon="inline-start" />
+              Add product
+            </Button>
+          </>
         }
       />
 

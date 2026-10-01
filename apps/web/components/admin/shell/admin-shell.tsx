@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 import { adminNav, isActive } from "./admin-nav";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AdminShell({
   children,

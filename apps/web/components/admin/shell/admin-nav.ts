@@ -1,7 +1,10 @@
 import {
   LayoutDashboardIcon,
   PackageIcon,
+  ReceiptTextIcon,
+  SettingsIcon,
   TagsIcon,
+  TruckIcon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,8 +22,11 @@ export const adminNav: AdminNavItem[] = [
     icon: LayoutDashboardIcon,
     exact: true,
   },
+  { label: "Orders", href: "/admin/orders", icon: ReceiptTextIcon },
   { label: "Products", href: "/admin/products", icon: PackageIcon },
   { label: "Categories", href: "/admin/categories", icon: TagsIcon },
+  { label: "Delivery", href: "/admin/shipping", icon: TruckIcon },
+  { label: "Settings", href: "/admin/settings", icon: SettingsIcon },
 ];
 
 export function isActive(item: AdminNavItem, pathname: string): boolean {

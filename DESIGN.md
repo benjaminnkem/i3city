@@ -115,6 +115,15 @@ The admin and storefront use shadcn components built on Base UI, installed into 
 - Add components with `pnpm dlx shadcn@latest add <name> --cwd apps/web`, then adjust the result to match this document: import `cn` from `@/lib/utils`, use token utilities only, and apply the sizes and shapes above.
 - Theming uses `next-themes` (`components/providers/theme-provider.tsx`), which sets a `data-theme` attribute on `<html>`. It defaults to light, ignores the OS setting and remembers the choice in `i3-theme`. Use its `useTheme` hook when a component needs the theme, and Tailwind's `dark:` variant for dark-only styling.
 
+## Storefront
+
+- The storefront lives in `apps/web/app/(store)`. It uses the same tokens and shadcn components as the admin, with a sticky header (wordmark, search, theme toggle, cart) and a category row beneath it.
+- Product cards follow the Showcase pattern: a square tone-coloured tile, the category in `text-small`, name and price on one row, then a full-width pill "Add to cart". Sale, low stock and out of stock appear as badges on the tile.
+- Out-of-stock products stay visible, dimmed, with a disabled button. Pages without photos show a neutral package icon on the tone tile.
+- Product pages put a sticky bottom bar with price and add to cart on mobile.
+- Forms show errors under the field in `destructive` and clear each error as the field is edited.
+- The store never mentions the Egbeda shop in heroes or headlines. The address and opening hours come from store settings and appear in the footer.
+
 ## Motion
 
 - Motion only responds to a user action: hover, focus, press, opening a panel.

@@ -1,5 +1,21 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+function cdnHost(): string | null {
+  const url = process.env.NEXT_PUBLIC_CDN_URL;
+  if (!url) return null;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}
+
+const host = cdnHost();
+
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: host ? [{ protocol: "https", hostname: host }] : [],
+  },
+};
 
 export default nextConfig;

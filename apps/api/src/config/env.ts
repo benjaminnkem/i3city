@@ -22,6 +22,8 @@ export const envSchema = databaseEnvSchema
     PORT: z.coerce.number().int().positive().default(4000),
     WEB_URL: z.url().default("http://localhost:3000"),
     JWT_SECRET: z.string().min(MIN_SECRET_LENGTH),
+    RESEND_API_KEY: z.string().min(1).optional(),
+    EMAIL_FROM: z.string().min(3).default("i3City <onboarding@resend.dev>"),
     ACCESS_TOKEN_TTL_SECONDS: z.coerce.number().int().positive().default(900),
     REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(7),
     R2_ACCOUNT_ID: z.string().min(1).optional(),
@@ -60,7 +62,10 @@ export function parseEnv<T extends z.ZodType>(
   schema: T,
   source: NodeJS.ProcessEnv = process.env,
 ): z.infer<T> {
-  const result = schema.safeParse(source);
+  const present = Object.fromEntries(
+    Object.entries(source).filter(([, value]) => value !== ""),
+  );
+  const result = schema.safeParse(present);
   if (!result.success) {
     throw new Error(
       `Invalid environment variables:\n${formatIssues(result.error)}`,

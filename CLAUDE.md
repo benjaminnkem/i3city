@@ -33,6 +33,13 @@ All styling must use the design tokens defined in `DESIGN.md` and `apps/web/app/
 - The web app makes all HTTP calls with axios through `apps/web/lib/api.ts` (`request`, `requestPage`, `requestVoid`) and handles failures as `ApiError`. Do not call `fetch` for the API.
 - Admin routes use `JwtAuthGuard`. The web app signs in through NextAuth and sends the access token as a bearer token.
 
+## Orders and stock
+
+- Orders are created only through `OrdersService.create`. It runs in one transaction, claims stock with a conditional decrement (`stock >= quantity`), prices everything from the database and never trusts client prices.
+- Order status changes go through `OrdersService.update` and the `ORDER_TRANSITIONS` map in `@repo/types`. Cancelling restocks inside the same transaction.
+- Shipping fees come from `calculateShipping` in `@repo/types`, used by both the API and the checkout screen.
+- Storefront pages are server components that read from the public API. The cart lives in `lib/cart/store.ts` (Zustand, persisted) and is revalidated with `/cart/validate`.
+
 ## Process
 
 - Each phase: write the code, run lint, typecheck and tests, then summarise what changed in a few lines before moving on.

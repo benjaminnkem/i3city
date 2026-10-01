@@ -158,6 +158,7 @@ export function DashboardView() {
               value={String(stats.orders.awaitingAction)}
               tone={stats.orders.awaitingAction > 0 ? "warning" : "default"}
               hint="orders to confirm"
+              href="/admin/orders?status=AWAITING_CONFIRMATION"
               icon={<BellRingIcon className="size-4" />}
             />
           </div>

@@ -90,6 +90,7 @@ R2_SECRET_ACCESS_KEY
 R2_BUCKET_NAME
 R2_PUBLIC_URL
 RESEND_API_KEY
+EMAIL_FROM
 ```
 
 `JWT_SECRET` must be at least 32 characters. `ACCESS_TOKEN_TTL_SECONDS` defaults to 900 and `REFRESH_TOKEN_TTL_DAYS` to 7. `ADMIN_EMAIL` and `ADMIN_PASSWORD` are read by the seed script only.
@@ -137,7 +138,7 @@ Acceptance: `pnpm dev` runs both apps, the API connects to the database, seed ru
 - [x] Category and product CRUD with direct-to-R2 image upload (multiple images, reorder, set primary, client-side resize and WebP conversion).
 - [x] Stock tracking, low stock list, active/inactive and featured toggles, inline stock edits and bulk show, hide and delete.
 - [x] Admin dashboard analytics: revenue and order trends, order status mix, top products, category spread, inventory health and low stock.
-- CSV import and export of products.
+- [x] CSV import and export of products: download template, preview with per-row errors, update by SKU, new categories created on import.
 - [x] Admin shell, responsive and usable on a phone: sidebar, theme toggle, account menu.
 - [x] Category management screens: list, add, edit, reorder, delete.
 
@@ -145,22 +146,23 @@ Acceptance: the owner can log in, add a product with photos from her phone, and 
 
 ### Phase 2: Storefront
 
-- Home, shop listing, category pages, search, product detail.
-- Server-rendered pages with metadata, sitemap and robots.
-- Cart (persisted locally), cart page.
-- Empty, loading and error states throughout.
+- [x] Home, shop listing, category pages, search, product detail.
+- [x] Server-rendered pages with metadata, sitemap and robots.
+- [x] Cart (persisted locally with Zustand), cart page, revalidated against the API.
+- [x] Empty, loading and error states throughout.
+- [ ] Lighthouse mobile performance check on home and product pages.
 
 Acceptance: a visitor can find a product, view it and fill a cart. Lighthouse mobile performance 90 or higher on home and product pages.
 
 ### Phase 3: Checkout, shipping and WhatsApp orders
 
-- Checkout form with state-based shipping fee calculation.
-- Server-side order creation with price and stock verification.
-- WhatsApp checkout: order saved, customer redirected to WhatsApp with a prefilled message.
-- Order confirmation and public tracking page.
-- Admin orders: list, filters, detail, status updates, courier and tracking number, mark as paid, cancel with automatic restock.
-- Admin shipping rates and store settings.
-- Order notification email to the owner and confirmation email to the customer when an email is provided.
+- [x] Checkout form with state-based shipping fee calculation.
+- [x] Server-side order creation with price and stock verification.
+- [x] WhatsApp checkout: order saved, customer redirected to WhatsApp with a prefilled message.
+- [x] Order confirmation and public tracking page.
+- [x] Admin orders: list, filters, detail, status updates, courier and tracking number, mark as paid, cancel with automatic restock, packing slip, copyable WhatsApp messages.
+- [x] Admin shipping rates and store settings.
+- [x] Order notification email to the owner and confirmation email to the customer when an email is provided, and a shipped notice. Emails are sent with Resend when `RESEND_API_KEY` is set and skipped otherwise.
 
 Acceptance: end-to-end order via WhatsApp works, the owner sees it in the dashboard and moves it through to delivered, stock adjusts correctly, cancelling restores stock.
 
@@ -318,6 +320,7 @@ model Order {
   state          String
   note           String?
   items          OrderItem[]
+  events         OrderEvent[]
   subtotal       Int
   shippingFee    Int
   total          Int
@@ -334,6 +337,17 @@ model Order {
 
   @@index([status, createdAt])
   @@index([phone])
+}
+
+model OrderEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+
+  @@index([orderId, createdAt])
 }
 
 model OrderItem {
@@ -361,6 +375,8 @@ model StoreSettings {
   whatsappNumber     String
   supportEmail       String?
   address            String?
+  openingHours       String?
+  bankDetails        String?
   defaultShippingFee Int     @default(5000)
   freeShippingOver   Int?
   paystackEnabled    Boolean @default(false)

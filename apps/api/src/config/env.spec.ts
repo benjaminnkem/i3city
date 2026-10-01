@@ -23,6 +23,19 @@ describe("loadEnv", () => {
     expect(env.NODE_ENV).toBe("development");
   });
 
+  it("treats blank values like missing ones", () => {
+    const env = loadEnv({
+      ...base,
+      RESEND_API_KEY: "",
+      EMAIL_FROM: "",
+      R2_ACCOUNT_ID: "",
+      PORT: "",
+    });
+    expect(env.RESEND_API_KEY).toBeUndefined();
+    expect(env.EMAIL_FROM).toBe("i3City <onboarding@resend.dev>");
+    expect(env.PORT).toBe(4000);
+  });
+
   it("coerces numeric values", () => {
     expect(loadEnv({ ...base, PORT: "5000" }).PORT).toBe(5000);
   });

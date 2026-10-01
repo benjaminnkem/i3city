@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,6 +17,7 @@ export function KpiCard({
   hint,
   tone = "default",
   icon,
+  href,
 }: Readonly<{
   title: string;
   value: string;
@@ -23,10 +25,13 @@ export function KpiCard({
   hint?: string;
   tone?: "default" | "warning";
   icon?: React.ReactNode;
+  href?: string;
 }>) {
   const showChange = change !== undefined;
-  return (
-    <Card>
+  const card = (
+    <Card
+      className={href ? "hover:border-primary transition-colors" : undefined}
+    >
       <CardHeader>
         <CardDescription className="flex items-center justify-between gap-2">
           {title}
@@ -61,5 +66,12 @@ export function KpiCard({
         {hint ? <span className="text-muted-foreground">{hint}</span> : null}
       </CardContent>
     </Card>
+  );
+  return href ? (
+    <Link href={href} className="block rounded-md">
+      {card}
+    </Link>
+  ) : (
+    card
   );
 }

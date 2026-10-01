@@ -6,10 +6,10 @@ import {
   type CategoryShare,
   type OrderStatusName,
   type RevenuePoint,
-  type TopProduct,
 } from "@repo/types";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { StorageService } from "../storage/storage.service.js";
+import { topProducts } from "./top-products.js";
 import { lagosDayKey, lagosDayStart, lastDayKeys } from "./lagos-time.js";
 
 const WINDOW_DAYS = 60;
@@ -129,7 +129,7 @@ export class StatsService {
           ? [{ status: status as OrderStatusName, count: group._count._all }]
           : [];
       }),
-      topProducts: this.topProducts(items),
+      topProducts: topProducts(items, TOP_PRODUCT_COUNT),
       categories: this.categoryShares(categoryRows, uncategorised),
       lowStock: lowStockRows.map((row) => ({
         id: row.id,
@@ -158,25 +158,6 @@ export class StatsService {
       lowStock,
       outOfStock,
     };
-  }
-
-  private topProducts(
-    items: { name: string; price: number; quantity: number }[],
-  ): TopProduct[] {
-    const totals = new Map<string, TopProduct>();
-    for (const item of items) {
-      const entry = totals.get(item.name) ?? {
-        name: item.name,
-        units: 0,
-        revenue: 0,
-      };
-      entry.units += item.quantity;
-      entry.revenue += item.price * item.quantity;
-      totals.set(item.name, entry);
-    }
-    return [...totals.values()]
-      .sort((a, b) => b.revenue - a.revenue)
-      .slice(0, TOP_PRODUCT_COUNT);
   }
 
   private categoryShares(

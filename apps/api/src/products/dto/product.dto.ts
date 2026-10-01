@@ -1,6 +1,7 @@
 import { PartialType } from "@nestjs/mapped-types";
 import {
   IMAGE_KEY_PATTERN,
+  MAX_IMPORT_ROWS,
   MAX_PRODUCT_IMAGES,
   PRODUCT_SORTS,
   PRODUCT_STATUS_FILTERS,
@@ -19,6 +20,7 @@ import {
   IsIn,
   IsInt,
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
   Matches,
@@ -141,4 +143,14 @@ export class ProductListQueryDto extends PageQueryDto {
   @IsOptional()
   @IsIn(PRODUCT_SORTS)
   sort: ProductSort = "newest";
+}
+
+export class ImportProductsDto {
+  @IsArray()
+  @ArrayMaxSize(MAX_IMPORT_ROWS)
+  @IsObject({ each: true })
+  rows!: Record<string, string>[];
+
+  @IsBoolean()
+  dryRun!: boolean;
 }

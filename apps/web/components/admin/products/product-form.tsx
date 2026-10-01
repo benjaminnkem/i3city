@@ -135,6 +135,7 @@ export function ProductForm({
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setState((current) => ({ ...current, [key]: value }));
+    setErrors((current) => ({ ...current, [key]: undefined }));
   }
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
