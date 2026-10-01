@@ -4,9 +4,7 @@ export default function HomePage() {
       <p className="text-h2 font-extrabold">
         i3<span className="text-accent">city</span>
       </p>
-      <h1 className="text-h1 font-extrabold">
-        The store is coming soon.
-      </h1>
+      <h1 className="text-h1 font-extrabold">The store is coming soon.</h1>
       <p className="text-muted max-w-prose">
         Phones, audio and everyday accessories, delivered anywhere in Nigeria.
       </p>
