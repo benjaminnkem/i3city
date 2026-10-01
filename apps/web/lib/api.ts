@@ -6,8 +6,8 @@ import type {
   PaginationMeta,
 } from "@repo/types";
 import axios, { type AxiosRequestConfig } from "axios";
+import { publicEnv } from "./env";
 
-const DEFAULT_API_URL = "http://localhost:4000/api";
 const REQUEST_TIMEOUT_MS = 10_000;
 
 export type ClientErrorCode = ApiErrorCode | "NETWORK_ERROR";
@@ -55,7 +55,7 @@ export function toApiError(error: unknown): ApiError {
 }
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API_URL,
+  baseURL: publicEnv.NEXT_PUBLIC_API_URL,
   timeout: REQUEST_TIMEOUT_MS,
   headers: { "Content-Type": "application/json" },
 });

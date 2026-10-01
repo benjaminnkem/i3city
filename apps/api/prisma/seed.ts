@@ -2,24 +2,28 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "../src/generated/prisma/client.js";
-import { databaseUrl } from "../src/prisma/database-url.js";
+import { z } from "zod";
+import { databaseEnvSchema, parseEnv } from "../src/config/env.js";
 import { categories, products, shippingRates } from "./seed-data.js";
 
+const seedEnv = parseEnv(
+  databaseEnvSchema.extend({
+    ADMIN_EMAIL: z.email().transform((email) => email.toLowerCase()),
+    ADMIN_PASSWORD: z.string().min(8),
+    WHATSAPP_NUMBER: z
+      .string()
+      .regex(/^\d{10,15}$/)
+      .default("2340000000000"),
+  }),
+);
+
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: databaseUrl() }),
+  adapter: new PrismaPg({ connectionString: seedEnv.DATABASE_URL }),
 });
 
-function requiredEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`${name} is not set`);
-  }
-  return value;
-}
-
 async function seedAdmin(): Promise<void> {
-  const email = requiredEnv("ADMIN_EMAIL").toLowerCase();
-  const passwordHash = await bcrypt.hash(requiredEnv("ADMIN_PASSWORD"), 12);
+  const email = seedEnv.ADMIN_EMAIL;
+  const passwordHash = await bcrypt.hash(seedEnv.ADMIN_PASSWORD, 12);
   await prisma.adminUser.upsert({
     where: { email },
     update: {},
@@ -68,8 +72,8 @@ async function seedSettings(): Promise<void> {
     create: {
       id: 1,
       storeName: "i3City",
-      whatsappNumber: process.env.WHATSAPP_NUMBER ?? "2340000000000",
-      supportEmail: process.env.ADMIN_EMAIL ?? null,
+      whatsappNumber: seedEnv.WHATSAPP_NUMBER,
+      supportEmail: seedEnv.ADMIN_EMAIL,
       address: "Egbeda, Ibadan, Oyo State",
       defaultShippingFee: 5000,
       freeShippingOver: 100000,

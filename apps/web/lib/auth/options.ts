@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { ApiError } from "@/lib/api";
+import { serverEnv } from "@/lib/env";
 import { requestLogin, requestLogout, requestRefresh } from "./api-client";
 import { loginSchema } from "./schemas";
 
@@ -25,6 +26,9 @@ async function renewAccessToken(token: JWT): Promise<JWT> {
 }
 
 export const authOptions: NextAuthOptions = {
+  get secret() {
+    return serverEnv().NEXTAUTH_SECRET;
+  },
   session: { strategy: "jwt", maxAge: SESSION_MAX_AGE_SECONDS },
   pages: { signIn: "/admin/login" },
   providers: [

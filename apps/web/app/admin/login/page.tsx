@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/admin/login-form";
 import { authOptions } from "@/lib/auth/options";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Admin sign in" };
 
 export default async function AdminLoginPage() {

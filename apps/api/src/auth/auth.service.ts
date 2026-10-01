@@ -3,7 +3,7 @@ import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import bcrypt from "bcryptjs";
 import { PrismaService } from "../prisma/prisma.service.js";
-import { AUTH_CONFIG, type AuthConfig } from "./auth.config.js";
+import { ENV, type Env } from "../config/env.js";
 import type { AccessGrant, AdminPrincipal, LoginResult } from "@repo/types";
 import type { AccessTokenPayload } from "./auth.types.js";
 import type { LoginDto } from "./dto/login.dto.js";
@@ -21,7 +21,7 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
-    @Inject(AUTH_CONFIG) private readonly config: AuthConfig,
+    @Inject(ENV) private readonly env: Env,
   ) {}
 
   async login(dto: LoginDto): Promise<LoginResult> {
@@ -65,7 +65,7 @@ export class AuthService {
   async verifyAccessToken(token: string): Promise<AdminPrincipal> {
     try {
       const payload = await this.jwt.verifyAsync<AccessTokenPayload>(token, {
-        secret: this.config.jwtSecret,
+        secret: this.env.JWT_SECRET,
       });
       return { id: payload.sub, email: payload.email };
     } catch {
@@ -76,13 +76,13 @@ export class AuthService {
   private async signAccessToken(admin: AdminPrincipal): Promise<AccessGrant> {
     const payload: AccessTokenPayload = { sub: admin.id, email: admin.email };
     const accessToken = await this.jwt.signAsync(payload, {
-      secret: this.config.jwtSecret,
-      expiresIn: this.config.accessTokenTtlSeconds,
+      secret: this.env.JWT_SECRET,
+      expiresIn: this.env.ACCESS_TOKEN_TTL_SECONDS,
     });
     return {
       accessToken,
       accessTokenExpiresAt:
-        Date.now() + this.config.accessTokenTtlSeconds * 1000,
+        Date.now() + this.env.ACCESS_TOKEN_TTL_SECONDS * 1000,
     };
   }
 
@@ -91,7 +91,7 @@ export class AuthService {
   ): Promise<{ refreshToken: string; refreshTokenExpiresAt: number }> {
     const refreshToken = randomBytes(48).toString("base64url");
     const expiresAt = new Date(
-      Date.now() + this.config.refreshTokenTtlDays * MS_PER_DAY,
+      Date.now() + this.env.REFRESH_TOKEN_TTL_DAYS * MS_PER_DAY,
     );
     await this.prisma.refreshToken.create({
       data: { tokenHash: hashToken(refreshToken), adminUserId, expiresAt },

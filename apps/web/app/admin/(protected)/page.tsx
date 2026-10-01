@@ -2,6 +2,7 @@ import { SignOutButton } from "@/components/admin/sign-out-button";
 import { requestProfile } from "@/lib/auth/api-client";
 import { requireAdminSession } from "@/lib/auth/session";
 
+export const dynamic = "force-dynamic";
 export const metadata = { title: "Dashboard" };
 
 export default async function AdminDashboardPage() {

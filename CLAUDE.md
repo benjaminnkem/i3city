@@ -14,6 +14,7 @@ Read `PRD.md` for scope and `DESIGN.md` for the visual system. Work one phase at
 - Do not write code comments.
 - Prefer small, single-purpose modules. Business logic lives in NestJS services, controllers stay thin.
 - Validate all input with DTOs on the API and zod on the web.
+- Read environment variables only through the zod-validated modules: `apps/api/src/config/env.ts` (injected with the `ENV` token) and `apps/web/lib/env.ts`. Never read `process.env` elsewhere. Add new variables to the schema and to `.env.example`.
 - Money is integer naira. Format only at the edge, in one shared helper.
 - All writes that touch stock or order state run in a Prisma transaction.
 - Server components by default on the web, client components only where interaction needs them.

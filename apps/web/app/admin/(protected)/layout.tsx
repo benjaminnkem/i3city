@@ -1,6 +1,8 @@
 import { AdminSessionProvider } from "@/components/admin/session-provider";
 import { requireAdminSession } from "@/lib/auth/session";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProtectedAdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

@@ -37,19 +37,19 @@ A single admin account at launch. The schema should allow adding staff later.
 
 ## 4. Tech stack
 
-| Layer      | Choice                                                                       |
-| ---------- | ---------------------------------------------------------------------------- |
-| Monorepo   | pnpm workspaces                                                              |
-| Web        | Next.js 16 (App Router), TypeScript, Tailwind CSS 4, TanStack Query, Zustand |
-| API        | NestJS 12, TypeScript                                                        |
-| Database   | PostgreSQL 17 with Prisma 7 (`@prisma/adapter-pg`)                           |
-| Auth       | API-issued JWT access tokens and refresh tokens, NextAuth 4 on the web       |
-| Payments   | Paystack                                                                     |
-| Images     | Cloudflare R2 (S3-compatible) behind a custom domain                         |
-| Email      | Resend                                                                       |
-| Hosting    | Vercel (web), Railway or Render (API), Neon (Postgres)                       |
-| HTTP       | axios on the web, through one shared client in `apps/web/lib/api.ts`         |
-| Validation | class-validator on the API, zod on the web forms                             |
+| Layer      | Choice                                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------- |
+| Monorepo   | pnpm workspaces                                                                             |
+| Web        | Next.js 16 (App Router), TypeScript, Tailwind CSS 4, TanStack Query, Zustand                |
+| API        | NestJS 12, TypeScript                                                                       |
+| Database   | PostgreSQL 17 with Prisma 7 (`@prisma/adapter-pg`)                                          |
+| Auth       | API-issued JWT access tokens and refresh tokens, NextAuth 4 on the web                      |
+| Payments   | Paystack                                                                                    |
+| Images     | Cloudflare R2 (S3-compatible) behind a custom domain                                        |
+| Email      | Resend                                                                                      |
+| Hosting    | Vercel (web), Railway or Render (API), Neon (Postgres)                                      |
+| HTTP       | axios on the web, through one shared client in `apps/web/lib/api.ts`                        |
+| Validation | class-validator on the API, zod on the web forms and for environment variables in both apps |
 
 ### Repository layout
 
@@ -423,26 +423,28 @@ Error codes: `BAD_REQUEST`, `VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NO
 
 ### Admin
 
-| Method             | Path                     | Purpose                                                 |
-| ------------------ | ------------------------ | ------------------------------------------------------- |
-| POST               | `/auth/login`            | Issue access and refresh tokens                         |
-| POST               | `/auth/refresh`          | Exchange a refresh token for a new access token         |
-| POST               | `/auth/logout`           | Revoke the refresh token                                |
-| GET                | `/auth/me`               | Current admin from the access token                     |
-| GET                | `/admin/stats`           | Dashboard figures                                       |
-| GET, POST          | `/admin/products`        | List and create                                         |
-| GET, PATCH, DELETE | `/admin/products/:id`    | Read, update, delete                                    |
-| POST               | `/admin/products/import` | CSV import                                              |
-| GET                | `/admin/products/export` | CSV export                                              |
-| GET, POST          | `/admin/categories`      | List and create                                         |
-| PATCH, DELETE      | `/admin/categories/:id`  | Update, delete                                          |
-| GET                | `/admin/orders`          | List with filters                                       |
-| GET                | `/admin/orders/:id`      | Detail                                                  |
-| PATCH              | `/admin/orders/:id`      | Update status, payment status, courier, tracking number |
-| GET, PUT           | `/admin/shipping-rates`  | Read and replace rates                                  |
-| GET, PUT           | `/admin/settings`        | Read and update store settings                          |
-| POST               | `/admin/uploads/sign`    | Presigned R2 PUT URL and object key                     |
-| DELETE             | `/admin/uploads`         | Remove an object from R2 by key                         |
+| Method             | Path                      | Purpose                                                 |
+| ------------------ | ------------------------- | ------------------------------------------------------- |
+| POST               | `/auth/login`             | Issue access and refresh tokens                         |
+| POST               | `/auth/refresh`           | Exchange a refresh token for a new access token         |
+| POST               | `/auth/logout`            | Revoke the refresh token                                |
+| GET                | `/auth/me`                | Current admin from the access token                     |
+| GET                | `/admin/stats`            | Dashboard figures                                       |
+| GET, POST          | `/admin/products`         | List (search, filters, sort, pagination) and create     |
+| POST               | `/admin/products/status`  | Bulk activate or deactivate                             |
+| GET, PATCH, DELETE | `/admin/products/:id`     | Read, update, delete                                    |
+| POST               | `/admin/products/import`  | CSV import                                              |
+| GET                | `/admin/products/export`  | CSV export                                              |
+| GET, POST          | `/admin/categories`       | List and create                                         |
+| PUT                | `/admin/categories/order` | Reorder with the full list of ids                       |
+| PATCH, DELETE      | `/admin/categories/:id`   | Update, delete                                          |
+| GET                | `/admin/orders`           | List with filters                                       |
+| GET                | `/admin/orders/:id`       | Detail                                                  |
+| PATCH              | `/admin/orders/:id`       | Update status, payment status, courier, tracking number |
+| GET, PUT           | `/admin/shipping-rates`   | Read and replace rates                                  |
+| GET, PUT           | `/admin/settings`         | Read and update store settings                          |
+| POST               | `/admin/uploads/sign`     | Presigned R2 PUT URL and object key (WebP, up to 5 MB)  |
+| DELETE             | `/admin/uploads`          | Remove an object from R2 by key                         |
 
 ## 9. Payment flows
 
