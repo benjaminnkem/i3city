@@ -3,11 +3,10 @@ services:
     name: i3city-api
     runtime: node
     region: frankfurt
-    plan: starter
+    plan: free
     autoDeploy: true
-    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm turbo run build --filter=api
-    preDeployCommand: pnpm --filter api db:deploy
-    startCommand: node apps/api/dist/main
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm turbo run build --filter=api
+    startCommand: pnpm --filter api db:deploy && node apps/api/dist/main
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
