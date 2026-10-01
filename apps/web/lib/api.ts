@@ -8,7 +8,7 @@ import type {
 import axios, { type AxiosRequestConfig } from "axios";
 import { publicEnv } from "./env";
 
-const REQUEST_TIMEOUT_MS = 10_000;
+const REQUEST_TIMEOUT_MS = 45_000;
 
 export type ClientErrorCode = ApiErrorCode | "NETWORK_ERROR";
 

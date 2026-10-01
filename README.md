@@ -183,6 +183,28 @@ Customers can then pay by card at checkout, or from the "Pay with card or transf
 
 The service runs on the free plan for now. Upgrade it to a paid instance before launch. The scheduler that cancels unpaid card orders and the Paystack webhook need a service that is always running, and free instances go to sleep. `NODE_ENV=production` makes the API insist on the R2 settings, so the service will not start without them. Only one origin is allowed by CORS, so `WEB_URL` must match the web app address exactly.
 
+## Deploying the web app to Vercel
+
+The web app lives in `apps/web` inside a pnpm and Turborepo workspace, so the Vercel project needs these settings:
+
+| Setting         | Value                                                                    |
+| --------------- | ------------------------------------------------------------------------ |
+| Root Directory  | `apps/web`, with "Include source files outside of the Root Directory" on |
+| Install Command | `cd ../.. && pnpm install --frozen-lockfile`                             |
+| Build Command   | `cd ../.. && pnpm turbo run build --filter=web`                          |
+
+Environment variables for Production:
+
+| Variable                               | Value                                                                               |
+| -------------------------------------- | ----------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`                  | The API address ending in `/api`, for example `https://i3city-api.onrender.com/api` |
+| `NEXT_PUBLIC_SITE_URL`, `NEXTAUTH_URL` | The public address of the web app                                                   |
+| `NEXTAUTH_SECRET`                      | A random string of at least 32 characters                                           |
+| `NEXT_PUBLIC_CDN_URL`                  | The public URL of the R2 bucket                                                     |
+| `ENABLE_EXPERIMENTAL_COREPACK`         | `1`, so Vercel uses the pnpm version pinned in `package.json`                       |
+
+`NEXT_PUBLIC_*` values are baked in at build time, so redeploy after changing them. The API only accepts browser requests from the address in its `WEB_URL`, so keep the two in step. From the CLI: `vercel deploy --prod` from the repository root.
+
 ## Project status
 
 Phases 0 to 4 are complete: setup, catalog and admin, storefront, checkout with WhatsApp orders, and Paystack payments. Next up is launch polish (Phase 5): structured data, analytics, error monitoring, legal pages and the production deployment. The checklist lives in [`PRD.md`](./PRD.md).
