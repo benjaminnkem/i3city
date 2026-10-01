@@ -6,6 +6,7 @@ import { MessageCircleIcon } from "lucide-react";
 import { AddToCart } from "@/components/store/add-to-cart";
 import { ProductCard } from "@/components/store/product-card";
 import { ProductGallery } from "@/components/store/product-gallery";
+import { JsonLdScript } from "@/components/seo/json-ld";
 import { Container, SectionHeading } from "@/components/store/section";
 import { ShareButton } from "@/components/store/share-button";
 import { StickyBuyBar } from "@/components/store/sticky-buy-bar";
@@ -13,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { publicEnv } from "@/lib/env";
 import { fetchProduct, fetchSettings } from "@/lib/store/api";
+import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/json-ld";
+import { trimDescription } from "@/lib/seo/site";
 import { whatsappLink } from "@/lib/store/whatsapp";
 
 export const dynamic = "force-dynamic";
@@ -24,15 +27,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await fetchProduct(slug);
   if (!product) return {};
   const description =
-    product.description.trim().slice(0, 160) ||
-    `${product.name}, ${formatNaira(product.price)}. Delivered across Nigeria.`;
+    trimDescription(product.description) ||
+    `Buy ${product.name} for ${formatNaira(product.price)}. Delivered across Nigeria.`;
+  const images = product.imageUrls.slice(0, 1);
   return {
     title: product.name,
     description,
+    alternates: { canonical: `/product/${product.slug}` },
     openGraph: {
+      type: "website",
       title: product.name,
       description,
-      images: product.imageUrls.slice(0, 1),
+      url: `/product/${product.slug}`,
+      ...(images.length > 0 ? { images } : {}),
+    },
+    twitter: {
+      card: images.length > 0 ? "summary_large_image" : "summary",
+      title: product.name,
+      description,
+      ...(images.length > 0 ? { images } : {}),
     },
   };
 }
@@ -64,6 +77,24 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <Container className="pt-6 pb-24 md:pb-8">
+      <JsonLdScript
+        data={[
+          productJsonLd(product),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Shop", path: "/shop" },
+            ...(product.category
+              ? [
+                  {
+                    name: product.category.name,
+                    path: `/category/${product.category.slug}`,
+                  },
+                ]
+              : []),
+            { name: product.name, path: `/product/${product.slug}` },
+          ]),
+        ]}
+      />
       <nav
         aria-label="Breadcrumb"
         className="text-muted-foreground mb-4 text-sm"

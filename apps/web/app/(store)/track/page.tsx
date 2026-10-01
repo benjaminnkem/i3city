@@ -1,7 +1,7 @@
 import { TrackForm } from "@/components/store/track-form";
 import { Container } from "@/components/store/section";
 
-export const metadata = { title: "Track your order" };
+export const metadata = { title: "Track your order", robots: { index: false } };
 
 export default function TrackPage() {
   return (

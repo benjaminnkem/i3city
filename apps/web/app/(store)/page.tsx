@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/store/product-card";
 import { ProductImage } from "@/components/store/product-image";
+import { JsonLdScript } from "@/components/seo/json-ld";
 import { Container, SectionHeading } from "@/components/store/section";
 import { fetchCategories, fetchProducts, fetchSettings } from "@/lib/store/api";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
 import { whatsappLink } from "@/lib/store/whatsapp";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +29,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLdScript data={[organizationJsonLd(settings), websiteJsonLd()]} />
       <Container className="pt-6">
         <section
           aria-label="Welcome"

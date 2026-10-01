@@ -18,6 +18,19 @@
     @apply border-border;
   }
 
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="submit"]:not(:disabled),
+  summary,
+  select:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
   :focus-visible {
     outline: 3px solid var(--ring);
     outline-offset: 3px;

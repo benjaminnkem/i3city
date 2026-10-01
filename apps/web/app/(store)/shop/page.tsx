@@ -11,11 +11,15 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 export async function generateMetadata({
   searchParams,
 }: Readonly<{ searchParams: SearchParams }>): Promise<Metadata> {
-  const { search } = parseShopParams(await searchParams);
+  const { search, page } = parseShopParams(await searchParams);
   return {
     title: search ? `Results for "${search}"` : "Shop all products",
     description:
       "Phones, chargers, earbuds, smartwatches and accessories, delivered across Nigeria.",
+    alternates: {
+      canonical: page && page > 1 ? `/shop?page=${page}` : "/shop",
+    },
+    ...(search ? { robots: { index: false, follow: true } } : {}),
   };
 }
 
