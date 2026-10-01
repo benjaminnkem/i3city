@@ -1,13 +1,14 @@
-import { NestFactory } from '@nestjs/core';
-import helmet from 'helmet';
-import { AppModule } from './app.module.js';
+import "dotenv/config";
+import { NestFactory } from "@nestjs/core";
+import helmet from "helmet";
+import { AppModule } from "./app.module.js";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix("api");
   app.enableCors({
-    origin: process.env.WEB_URL ?? 'http://localhost:3000',
+    origin: process.env.WEB_URL ?? "http://localhost:3000",
     credentials: true,
   });
   app.enableShutdownHooks();
