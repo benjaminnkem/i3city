@@ -18,7 +18,7 @@ function requiredEnv(name: string): string {
 }
 
 async function seedAdmin(): Promise<void> {
-  const email = requiredEnv("ADMIN_EMAIL");
+  const email = requiredEnv("ADMIN_EMAIL").toLowerCase();
   const passwordHash = await bcrypt.hash(requiredEnv("ADMIN_PASSWORD"), 12);
   await prisma.adminUser.upsert({
     where: { email },

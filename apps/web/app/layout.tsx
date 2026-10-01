@@ -13,8 +13,7 @@ export const metadata: Metadata = {
     default: "i3City",
     template: "%s | i3City",
   },
-  description:
-    "Phones, accessories and gadgets, delivered across Nigeria.",
+  description: "Phones, accessories and gadgets, delivered across Nigeria.",
 };
 
 export const viewport: Viewport = {

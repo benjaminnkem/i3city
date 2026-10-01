@@ -9,3 +9,9 @@ All styling must use the design tokens defined in `DESIGN.md` and `apps/web/app/
 ## Code
 
 Do not write code comments.
+
+## API and web conventions
+
+- Every API response uses the envelope from `@repo/types` (`ApiSuccess`, `ApiFailure`, `PaginationMeta`). Controllers return plain values or a `Paginated` result and throw Nest exceptions. Never build the envelope by hand.
+- The web app makes all HTTP calls with axios through `apps/web/lib/api.ts` (`request`, `requestPage`, `requestVoid`) and handles failures as `ApiError`. Do not call `fetch` for the API.
+- Shared enums, DTO shapes and API types live in `packages/types`. Never duplicate them in an app.

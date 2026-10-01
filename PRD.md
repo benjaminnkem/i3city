@@ -37,17 +37,19 @@ A single admin account at launch. The schema should allow adding staff later.
 
 ## 4. Tech stack
 
-| Layer      | Choice                                                                  |
-| ---------- | ----------------------------------------------------------------------- |
-| Monorepo   | pnpm workspaces                                                         |
-| Web        | Next.js (App Router), TypeScript, Tailwind CSS, TanStack Query, Zustand |
-| API        | NestJS, TypeScript                                                      |
-| Database   | PostgreSQL with Prisma                                                  |
-| Payments   | Paystack                                                                |
-| Images     | Cloudflare R2 (S3-compatible) behind a custom domain                    |
-| Email      | Resend                                                                  |
-| Hosting    | Vercel (web), Railway or Render (API), Neon (Postgres)                  |
-| Validation | class-validator on the API, zod on the web forms                        |
+| Layer      | Choice                                                                       |
+| ---------- | ---------------------------------------------------------------------------- |
+| Monorepo   | pnpm workspaces                                                              |
+| Web        | Next.js 16 (App Router), TypeScript, Tailwind CSS 4, TanStack Query, Zustand |
+| API        | NestJS 12, TypeScript                                                        |
+| Database   | PostgreSQL 17 with Prisma 7 (`@prisma/adapter-pg`)                           |
+| Auth       | API-issued JWT access tokens and refresh tokens, NextAuth 4 on the web       |
+| Payments   | Paystack                                                                     |
+| Images     | Cloudflare R2 (S3-compatible) behind a custom domain                         |
+| Email      | Resend                                                                       |
+| Hosting    | Vercel (web), Railway or Render (API), Neon (Postgres)                       |
+| HTTP       | axios on the web, through one shared client in `apps/web/lib/api.ts`         |
+| Validation | class-validator on the API, zod on the web forms                             |
 
 ### Repository layout
 
@@ -58,20 +60,26 @@ i3City/
     api/
   packages/
     types/
+  design-lab/
+  docker-compose.yml
   pnpm-workspace.yaml
   PRD.md
+  DESIGN.md
   CLAUDE.md
 ```
 
-`packages/types` holds shared DTO types and enums consumed by both apps.
+`packages/types` holds shared DTO types and enums consumed by both apps. `design-lab/` holds the design explorations and is not part of the build.
 
 ### Environment variables
 
 API:
 
 ```
+PORT
 DATABASE_URL
 JWT_SECRET
+ACCESS_TOKEN_TTL_SECONDS
+REFRESH_TOKEN_TTL_DAYS
 ADMIN_EMAIL
 ADMIN_PASSWORD
 WEB_URL
@@ -79,10 +87,12 @@ PAYSTACK_SECRET_KEY
 R2_ACCOUNT_ID
 R2_ACCESS_KEY_ID
 R2_SECRET_ACCESS_KEY
-R2_BUCKET
+R2_BUCKET_NAME
 R2_PUBLIC_URL
 RESEND_API_KEY
 ```
+
+`JWT_SECRET` must be at least 32 characters. `ACCESS_TOKEN_TTL_SECONDS` defaults to 900 and `REFRESH_TOKEN_TTL_DAYS` to 7. `ADMIN_EMAIL` and `ADMIN_PASSWORD` are read by the seed script only.
 
 Web:
 
@@ -91,6 +101,8 @@ NEXT_PUBLIC_API_URL
 NEXT_PUBLIC_SITE_URL
 NEXT_PUBLIC_WHATSAPP_NUMBER
 NEXT_PUBLIC_CDN_URL
+NEXTAUTH_SECRET
+NEXTAUTH_URL
 ```
 
 ### Image storage
@@ -109,18 +121,19 @@ Each phase ends in something deployable. Do not start a phase until the previous
 
 ### Phase 0: Setup
 
-- Initialise the pnpm monorepo, TypeScript strict mode, ESLint, Prettier.
-- Scaffold `apps/web` and `apps/api`, plus `packages/types`.
-- Prisma schema, first migration, seed script (categories, a few sample products, admin user).
-- Docker Compose for local Postgres.
-- CI: lint, typecheck and build on every push.
-- Write `CLAUDE.md` from section 14.
+- [x] Initialise the pnpm monorepo, TypeScript strict mode, ESLint, Prettier.
+- [x] Scaffold `apps/web` and `apps/api`.
+- [x] Scaffold `packages/types`, built with `tsc` to `dist` and consumed by both apps.
+- [x] Prisma schema, migrations, seed script (categories, sample products, shipping rates, store settings, admin user).
+- [x] Docker Compose for local Postgres.
+- [ ] CI: lint, typecheck and build on every push, with a Postgres service for the API e2e tests.
+- [ ] Write `CLAUDE.md` from section 14. It currently holds the styling and no-comments rules only.
 
 Acceptance: `pnpm dev` runs both apps, the API connects to the database, seed runs cleanly, CI is green.
 
 ### Phase 1: Catalog and admin
 
-- Admin authentication.
+- [x] Admin authentication: API login, refresh, logout and `/auth/me`, NextAuth sign-in at `/admin/login`, protected `/admin` layout.
 - Category and product CRUD with direct-to-R2 image upload (multiple images, reorder, set primary, client-side resize and WebP conversion).
 - Stock tracking, low stock list, active/inactive and featured toggles.
 - CSV import and export of products.
@@ -208,7 +221,7 @@ Acceptance: production deployed, a real low-value order placed and refunded succ
 - Orders: filter by status and payment status, search by code, name or phone, detail drawer, status transitions, mark paid, cancel, copy customer WhatsApp link, print packing slip.
 - Shipping: rate per state with estimated delivery days, default fee, free shipping threshold.
 - Settings: store name, WhatsApp number, support email, store address and opening hours, payment methods enabled.
-- Login with email and password, token stored in an httpOnly cookie.
+- Login with email and password. The API issues a short-lived access token (15 minutes) and a refresh token (7 days, stored hashed and revocable). The web app uses NextAuth with the credentials provider and keeps both tokens in its encrypted httpOnly session cookie, renewing the access token before it expires.
 
 ### 6.6 Notifications
 
@@ -242,10 +255,23 @@ enum PaymentStatus {
 }
 
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  createdAt    DateTime @default(now())
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  createdAt     DateTime       @default(now())
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id          String    @id @default(cuid())
+  tokenHash   String    @unique
+  adminUserId String
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([adminUserId])
 }
 
 model Category {
@@ -339,11 +365,46 @@ model StoreSettings {
 }
 ```
 
+The datasource block has no URL because Prisma 7 reads `DATABASE_URL` from `prisma.config.ts`, and the client is generated to `apps/api/src/generated/prisma` and is not committed. Admin emails are stored lowercase.
+
 All money is stored as integer naira. Order items snapshot name, price and image at purchase time.
 
 ## 8. API
 
-Prefix `/api`. Admin routes require a valid admin token.
+Prefix `/api`. Admin routes require a valid admin token sent as `Authorization: Bearer <accessToken>`.
+
+### Response format
+
+Every JSON response uses one envelope, typed in `@repo/types`. Empty responses (HTTP 204) have no body.
+
+```json
+{ "success": true, "data": { "status": "ok" } }
+```
+
+Lists add pagination metadata:
+
+```json
+{
+  "success": true,
+  "data": [],
+  "meta": { "page": 1, "limit": 20, "total": 0, "totalPages": 1 }
+}
+```
+
+Errors keep the HTTP status code and add a stable code for clients to branch on. `details` appears on validation errors only, with one entry per invalid field.
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Validation failed",
+    "details": [{ "field": "email", "messages": ["email must be an email"] }]
+  }
+}
+```
+
+Error codes: `BAD_REQUEST`, `VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `CONFLICT`, `UNPROCESSABLE_ENTITY`, `PAYLOAD_TOO_LARGE`, `TOO_MANY_REQUESTS`, `INTERNAL_SERVER_ERROR`, `SERVICE_UNAVAILABLE`. The envelope is applied by a global interceptor and exception filter, so controllers return plain values, or a `Paginated` result for lists, and throw standard Nest exceptions.
 
 ### Public
 
@@ -364,8 +425,10 @@ Prefix `/api`. Admin routes require a valid admin token.
 
 | Method             | Path                     | Purpose                                                 |
 | ------------------ | ------------------------ | ------------------------------------------------------- |
-| POST               | `/auth/login`            | Issue session                                           |
-| POST               | `/auth/logout`           | Clear session                                           |
+| POST               | `/auth/login`            | Issue access and refresh tokens                         |
+| POST               | `/auth/refresh`          | Exchange a refresh token for a new access token         |
+| POST               | `/auth/logout`           | Revoke the refresh token                                |
+| GET                | `/auth/me`               | Current admin from the access token                     |
 | GET                | `/admin/stats`           | Dashboard figures                                       |
 | GET, POST          | `/admin/products`        | List and create                                         |
 | GET, PATCH, DELETE | `/admin/products/:id`    | Read, update, delete                                    |
@@ -429,7 +492,7 @@ Light-first design system with a dark mode toggle, mobile-first, built for a Nig
 ## 12. Non-functional requirements
 
 - Performance: LCP under 2.5s on a throttled mobile profile. Images served from R2 through the CDN domain with long-lived cache headers, resized per device by `next/image`.
-- Security: helmet, CORS limited to the web origin, rate limits on login, order creation and tracking, bcrypt password hashing, input validation on every endpoint, no secrets in the client bundle.
+- Security: helmet, CORS limited to the web origin, rate limits on login, order creation and tracking, bcrypt password hashing (`bcryptjs`, cost 12), refresh tokens stored only as SHA-256 hashes, input validation on every endpoint, no secrets in the client bundle.
 - Reliability: database backups enabled, order creation and stock changes inside a transaction, idempotent payment handling.
 - Accessibility: semantic markup, labelled form controls, WCAG AA contrast.
 - SEO: server-rendered catalog, sitemap generated from products and categories, JSON-LD `Product` markup, descriptive titles and meta.

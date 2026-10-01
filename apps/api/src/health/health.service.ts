@@ -14,10 +14,7 @@ export class HealthService {
     try {
       await this.prisma.$queryRaw`SELECT 1`;
     } catch {
-      throw new ServiceUnavailableException({
-        status: "error",
-        database: "down",
-      });
+      throw new ServiceUnavailableException("Database is unreachable");
     }
     return { status: "ok", database: "up" };
   }
