@@ -15,6 +15,7 @@ import type { AdminProduct } from "@repo/types";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard.js";
 import type { Paginated } from "../common/paginated.js";
 import {
+  BulkIdsDto,
   BulkStatusDto,
   CreateProductDto,
   ProductListQueryDto,
@@ -41,6 +42,12 @@ export class ProductsController {
   @HttpCode(HttpStatus.OK)
   setStatus(@Body() dto: BulkStatusDto): Promise<{ updated: number }> {
     return this.products.setStatus(dto);
+  }
+
+  @Post("delete")
+  @HttpCode(HttpStatus.OK)
+  removeMany(@Body() dto: BulkIdsDto): Promise<{ deleted: number }> {
+    return this.products.removeMany(dto);
   }
 
   @Get(":id")

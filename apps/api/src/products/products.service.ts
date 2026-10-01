@@ -17,6 +17,7 @@ import type { Prisma } from "../generated/prisma/client.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { StorageService } from "../storage/storage.service.js";
 import type {
+  BulkIdsDto,
   BulkStatusDto,
   CreateProductDto,
   ProductListQueryDto,
@@ -211,6 +212,18 @@ export class ProductsService {
     } catch (error) {
       throw this.translate(error);
     }
+  }
+
+  async removeMany(dto: BulkIdsDto): Promise<{ deleted: number }> {
+    const rows = await this.prisma.product.findMany({
+      where: { id: { in: dto.ids } },
+      select: { id: true, images: true },
+    });
+    const result = await this.prisma.product.deleteMany({
+      where: { id: { in: rows.map((row) => row.id) } },
+    });
+    await this.storage.deleteObjects(rows.flatMap((row) => row.images));
+    return { deleted: result.count };
   }
 
   async setStatus(dto: BulkStatusDto): Promise<{ updated: number }> {

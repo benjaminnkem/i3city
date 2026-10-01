@@ -134,10 +134,12 @@ Acceptance: `pnpm dev` runs both apps, the API connects to the database, seed ru
 ### Phase 1: Catalog and admin
 
 - [x] Admin authentication: API login, refresh, logout and `/auth/me`, NextAuth sign-in at `/admin/login`, protected `/admin` layout.
-- Category and product CRUD with direct-to-R2 image upload (multiple images, reorder, set primary, client-side resize and WebP conversion).
-- Stock tracking, low stock list, active/inactive and featured toggles.
+- [x] Category and product CRUD with direct-to-R2 image upload (multiple images, reorder, set primary, client-side resize and WebP conversion).
+- [x] Stock tracking, low stock list, active/inactive and featured toggles, inline stock edits and bulk show, hide and delete.
+- [x] Admin dashboard analytics: revenue and order trends, order status mix, top products, category spread, inventory health and low stock.
 - CSV import and export of products.
-- Admin shell, responsive and usable on a phone.
+- [x] Admin shell, responsive and usable on a phone: sidebar, theme toggle, account menu.
+- [x] Category management screens: list, add, edit, reorder, delete.
 
 Acceptance: the owner can log in, add a product with photos from her phone, and see it in the product list.
 
@@ -431,6 +433,7 @@ Error codes: `BAD_REQUEST`, `VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NO
 | GET                | `/auth/me`                | Current admin from the access token                     |
 | GET                | `/admin/stats`            | Dashboard figures                                       |
 | GET, POST          | `/admin/products`         | List (search, filters, sort, pagination) and create     |
+| POST               | `/admin/products/delete`  | Bulk delete, removes the photos from R2                 |
 | POST               | `/admin/products/status`  | Bulk activate or deactivate                             |
 | GET, PATCH, DELETE | `/admin/products/:id`     | Read, update, delete                                    |
 | POST               | `/admin/products/import`  | CSV import                                              |

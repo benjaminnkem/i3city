@@ -50,7 +50,7 @@ export function LoginForm() {
           type="email"
           autoComplete="email"
           required
-          className="border-line bg-bg min-h-12 rounded-pill border px-5 font-normal"
+          className="border-border bg-background min-h-12 rounded-pill border px-5 font-normal"
         />
       </label>
       <label className="grid gap-2 font-bold" htmlFor="password">
@@ -61,7 +61,7 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          className="border-line bg-bg min-h-12 rounded-pill border px-5 font-normal"
+          className="border-border bg-background min-h-12 rounded-pill border px-5 font-normal"
         />
       </label>
       {error ? (
@@ -72,7 +72,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="bg-accent text-on-accent min-h-12 rounded-pill px-6 font-bold hover:brightness-90 disabled:opacity-60"
+        className="bg-primary text-primary-foreground min-h-12 rounded-pill px-6 font-bold hover:brightness-90 disabled:opacity-60"
       >
         {pending ? "Signing in" : "Sign in"}
       </button>

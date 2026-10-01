@@ -1,5 +1,9 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "./tokens.css";
+
+@custom-variant dark (&:is([data-theme="dark"], [data-theme="dark"] *));
 
 @layer base {
   html {
@@ -7,14 +11,15 @@
   }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-bricolage), system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  * {
+    @apply border-border;
   }
 
   :focus-visible {
-    outline: 3px solid var(--accent);
+    outline: 3px solid var(--ring);
     outline-offset: 3px;
     border-radius: 8px;
   }

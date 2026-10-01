@@ -18,11 +18,14 @@ Read `PRD.md` for scope and `DESIGN.md` for the visual system. Work one phase at
 - Money is integer naira. Format only at the edge, in one shared helper.
 - All writes that touch stock or order state run in a Prisma transaction.
 - Server components by default on the web, client components only where interaction needs them.
-- Use `packages/types` for enums, DTO shapes and API types. Never duplicate them in an app.
+- Use `packages/types` for enums, DTO shapes, API types and `formatNaira`. Never duplicate them in an app.
+- Use date-fns for all date formatting and arithmetic. The API uses `@date-fns/tz` for Lagos days.
 
 ## Styling
 
 All styling must use the design tokens defined in `DESIGN.md` and `apps/web/app/tokens.css`. Never hard-code colours, font sizes, spacing, radii or font names in components. If a token is missing, add it to the tokens first and document it in `DESIGN.md`.
+
+- UI is built from shadcn components (Base UI) in `apps/web/components/ui`. Reuse them before writing new markup, and follow the rules in `DESIGN.md` when adding or editing one.
 
 ## API and web
 

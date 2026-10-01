@@ -101,14 +101,16 @@ export class CreateProductDto {
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
 
-export class BulkStatusDto {
+export class BulkIdsDto {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayMaxSize(MAX_BULK_IDS)
   @ArrayUnique()
   @IsString({ each: true })
   ids!: string[];
+}
 
+export class BulkStatusDto extends BulkIdsDto {
   @IsBoolean()
   active!: boolean;
 }

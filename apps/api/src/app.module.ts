@@ -10,6 +10,7 @@ import { CategoriesModule } from "./categories/categories.module.js";
 import { HealthModule } from "./health/health.module.js";
 import { PrismaModule } from "./prisma/prisma.module.js";
 import { ProductsModule } from "./products/products.module.js";
+import { StatsModule } from "./stats/stats.module.js";
 import { StorageModule } from "./storage/storage.module.js";
 import { UploadsModule } from "./uploads/uploads.module.js";
 
@@ -30,6 +31,7 @@ import { UploadsModule } from "./uploads/uploads.module.js";
     CategoriesModule,
     ProductsModule,
     UploadsModule,
+    StatsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
