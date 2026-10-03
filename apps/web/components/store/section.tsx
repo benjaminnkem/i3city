@@ -25,7 +25,7 @@ export function SectionHeading({
       {href ? (
         <Link
           href={href}
-          className="text-primary border-b-2 border-current font-bold whitespace-nowrap"
+          className="text-primary inline-flex min-h-11 items-center font-bold whitespace-nowrap underline decoration-2 underline-offset-4"
         >
           {linkLabel}
         </Link>

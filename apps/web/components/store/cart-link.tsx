@@ -20,7 +20,10 @@ export function CartLink() {
     >
       <ShoppingBagIcon />
       {count > 0 ? (
-        <span className="bg-primary text-primary-foreground price absolute top-1 right-1 grid min-w-5 place-items-center rounded-pill px-1 text-xs font-extrabold">
+        <span
+          key={count}
+          className="animate-bump bg-primary text-primary-foreground price absolute top-1 right-1 grid min-w-5 place-items-center rounded-pill px-1 text-xs font-extrabold"
+        >
           {count}
         </span>
       ) : null}

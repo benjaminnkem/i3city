@@ -97,17 +97,20 @@ export default async function ProductPage({ params }: Props) {
       />
       <nav
         aria-label="Breadcrumb"
-        className="text-muted-foreground mb-4 text-sm"
+        className="text-muted-foreground mb-2 flex flex-wrap items-center gap-x-2 text-sm"
       >
-        <Link href="/shop" className="hover:text-primary">
+        <Link
+          href="/shop"
+          className="hover:text-primary inline-flex min-h-11 items-center"
+        >
           Shop
         </Link>
         {product.category ? (
           <>
-            {" / "}
+            <span aria-hidden>/</span>
             <Link
               href={`/category/${product.category.slug}`}
-              className="hover:text-primary"
+              className="hover:text-primary inline-flex min-h-11 items-center"
             >
               {product.category.name}
             </Link>

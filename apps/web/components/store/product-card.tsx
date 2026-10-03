@@ -54,19 +54,19 @@ export function ProductCard({
           ) : null}
         </div>
       </Link>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-1 flex-col gap-1">
         {product.category ? (
           <span className="text-muted-foreground text-small">
             {product.category.name}
           </span>
         ) : null}
-        <div className="flex items-baseline justify-between gap-3">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
           <h3 className="text-h3 min-w-0 font-bold">
             <Link href={`/product/${product.slug}`} className="hover:underline">
               {product.name}
             </Link>
           </h3>
-          <div className="flex shrink-0 flex-col items-end leading-tight">
+          <div className="flex shrink-0 flex-row items-baseline gap-2 leading-tight sm:flex-col sm:items-end sm:gap-0">
             <span className="price text-price font-extrabold">
               {formatNaira(product.price)}
             </span>

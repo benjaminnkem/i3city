@@ -1,9 +1,8 @@
 import { formatNaira } from "@repo/types";
 import { TruckIcon, WalletCardsIcon, MessageCircleIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/store/product-card";
-import { ProductImage } from "@/components/store/product-image";
+import { HomeHero } from "@/components/store/home-hero";
 import { Reveal, RevealItem, Stagger } from "@/components/motion/reveal";
 import { JsonLdScript } from "@/components/seo/json-ld";
 import { Container, SectionHeading } from "@/components/store/section";
@@ -23,72 +22,31 @@ export default async function HomePage() {
     fetchProducts({ featured: true, limit: 8 }),
     fetchProducts({ sort: "newest", limit: 8 }),
   ]);
-  const hero =
-    featured.items.find((product) => product.imageUrls.length > 0) ??
-    featured.items[0];
+  const heroProducts = [
+    ...new Map(
+      [...featured.items, ...latest.items].map((product) => [
+        product.id,
+        product,
+      ]),
+    ).values(),
+  ]
+    .sort(
+      (a, b) => Number(b.imageUrls.length > 0) - Number(a.imageUrls.length > 0),
+    )
+    .slice(0, 3);
   const shownCategories = categories.slice(0, 6);
 
   return (
     <>
       <JsonLdScript data={[organizationJsonLd(settings), websiteJsonLd()]} />
       <Container className="pt-6">
-        <section
-          aria-label="Welcome"
-          className="bg-tone-1 grid items-center gap-8 overflow-hidden rounded-lg md:grid-cols-[1.1fr_1fr]"
-        >
-          <div className="flex flex-col gap-5 p-6 md:p-14">
-            <h1 className="text-h1 animate-rise-1 max-w-[11ch] font-extrabold">
-              Gadgets that earn their place.
-            </h1>
-            <p className="text-muted-foreground animate-rise-2 max-w-[34ch] text-lg">
-              Phones, audio and everyday accessories, delivered anywhere in
-              Nigeria.
-            </p>
-            <div className="animate-rise-3 flex flex-wrap gap-3">
-              <Button
-                size="lg"
-                nativeButton={false}
-                render={<Link href="/shop" />}
-              >
-                Shop all products
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                nativeButton={false}
-                render={
-                  <Link
-                    href={whatsappLink(
-                      settings.whatsappNumber,
-                      "Hello, I have a question.",
-                    )}
-                  />
-                }
-              >
-                Ask on WhatsApp
-              </Button>
-            </div>
-          </div>
-          {hero ? (
-            <Link
-              href={`/product/${hero.slug}`}
-              className="bg-tone-2 animate-scale-in relative m-6 mt-0 flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-md p-5 md:m-8 md:ml-0"
-            >
-              <ProductImage
-                src={hero.imageUrls[0]}
-                alt={hero.name}
-                sizes="(min-width: 768px) 40vw, 90vw"
-                priority
-              />
-              <div className="bg-background/95 relative w-fit rounded-md px-4 py-3 shadow-sm">
-                <p className="font-extrabold">{hero.name}</p>
-                <p className="price text-primary font-bold">
-                  {formatNaira(hero.price)}
-                </p>
-              </div>
-            </Link>
-          ) : null}
-        </section>
+        <HomeHero
+          products={heroProducts}
+          whatsappHref={whatsappLink(
+            settings.whatsappNumber,
+            "Hello, I have a question.",
+          )}
+        />
       </Container>
 
       {shownCategories.length > 0 ? (

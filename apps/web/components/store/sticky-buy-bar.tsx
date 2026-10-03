@@ -16,6 +16,7 @@ export function StickyBuyBar({
         product={product}
         size="default"
         showQuantity={false}
+        showStatus={false}
         className="flex-1"
       />
     </div>

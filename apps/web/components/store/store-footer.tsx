@@ -18,42 +18,60 @@ export async function StoreFooter() {
             Phones, accessories and gadgets, delivered across Nigeria.
           </p>
         </div>
-        <nav aria-label="Shop" className="flex flex-col gap-2">
+        <nav aria-label="Shop" className="flex flex-col">
           <h2 className="text-foreground font-bold">Shop</h2>
-          <Link href="/shop" className="hover:text-primary">
+          <Link
+            href="/shop"
+            className="hover:text-primary flex min-h-11 items-center"
+          >
             All products
           </Link>
           {categories.map((category) => (
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="hover:text-primary"
+              className="hover:text-primary flex min-h-11 items-center"
             >
               {category.name}
             </Link>
           ))}
         </nav>
-        <nav aria-label="Help" className="flex flex-col gap-2">
+        <nav aria-label="Help" className="flex flex-col">
           <h2 className="text-foreground font-bold">Help</h2>
-          <Link href="/track" className="hover:text-primary">
+          <Link
+            href="/track"
+            className="hover:text-primary flex min-h-11 items-center"
+          >
             Track your order
           </Link>
-          <Link href="/cart" className="hover:text-primary">
+          <Link
+            href="/cart"
+            className="hover:text-primary flex min-h-11 items-center"
+          >
             Your cart
           </Link>
-          <Link href="/delivery-policy" className="hover:text-primary">
+          <Link
+            href="/delivery-policy"
+            className="hover:text-primary flex min-h-11 items-center"
+          >
             Delivery policy
           </Link>
-          <Link href="/returns-policy" className="hover:text-primary">
+          <Link
+            href="/returns-policy"
+            className="hover:text-primary flex min-h-11 items-center"
+          >
             Returns policy
           </Link>
-          <Link href="/privacy" className="hover:text-primary">
+          <Link
+            href="/privacy"
+            className="hover:text-primary flex min-h-11 items-center"
+          >
             Privacy policy
           </Link>
           {settings?.supportEmail ? (
             <a
               href={`mailto:${settings.supportEmail}`}
-              className="hover:text-primary"
+              className="hover:text-primary flex min-h-11 items-center"
             >
               {settings.supportEmail}
             </a>

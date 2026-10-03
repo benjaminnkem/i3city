@@ -51,14 +51,15 @@ Rules:
 
 One family: **Bricolage Grotesque** (Google Fonts, optical size axis, weights 300 to 800), loaded with `next/font` and exposed as `--font-bricolage`. Prices use tabular, lining numerals (`font-variant-numeric: tabular-nums lining-nums`) through one shared price class.
 
-| Token        | Size                         | Weight     | Line height | Tracking | Use                              |
-| ------------ | ---------------------------- | ---------- | ----------- | -------- | -------------------------------- |
-| `text-h1`    | `clamp(2.3rem, 9vw, 4.6rem)` | 800        | 0.98        | -0.045em | Home hero only                   |
-| `text-h2`    | `clamp(1.7rem, 6vw, 2.6rem)` | 800        | 1.0         | -0.04em  | Section headings                 |
-| `text-h3`    | `1rem`                       | 700        | 1.25        | -0.015em | Product names                    |
-| `text-price` | `1.1rem`                     | 800        | 1.2         | 0        | Card prices                      |
-| `text-body`  | `1rem`                       | 400        | 1.55        | 0        | Paragraphs                       |
-| `text-small` | `0.85rem`                    | 400 to 600 | 1.4         | 0        | Categories, captions, old prices |
+| Token          | Size                         | Weight     | Line height | Tracking | Use                              |
+| -------------- | ---------------------------- | ---------- | ----------- | -------- | -------------------------------- |
+| `text-display` | `clamp(3rem, 14vw, 6rem)`    | 800        | 0.9         | -0.055em | Home hero headline only          |
+| `text-h1`      | `clamp(2.3rem, 9vw, 4.6rem)` | 800        | 0.98        | -0.045em | Page titles                      |
+| `text-h2`      | `clamp(1.7rem, 6vw, 2.6rem)` | 800        | 1.0         | -0.04em  | Section headings                 |
+| `text-h3`      | `1rem`                       | 700        | 1.25        | -0.015em | Product names                    |
+| `text-price`   | `1.1rem`                     | 800        | 1.2         | 0        | Card prices                      |
+| `text-body`    | `1rem`                       | 400        | 1.55        | 0        | Paragraphs                       |
+| `text-small`   | `0.85rem`                    | 400 to 600 | 1.4         | 0        | Categories, captions, old prices |
 
 Rules:
 
@@ -100,7 +101,8 @@ Layout: content max width 1240px, centred, gutter 16px on mobile and 32px from 7
 - **Product card.** Tile, then category in `text-small` muted, then name and price on one row, then a full-width pill button. Out of stock shows a disabled button reading "Out of stock".
 - **Buttons.** Pill, minimum height 50px (44px inside cards). Primary uses `accent` with `on-accent` text. Secondary is a 2px `text` outline that fills on hover.
 - **Badges.** Pill. Sale uses `accent`. Low stock and out of stock sit on `bg` with `warning` and `muted` text.
-- **Header.** Centred wordmark, category links on the left, search, cart and theme toggle on the right. Search moves into its own row on mobile.
+- **Header.** Wordmark on the left, search, theme toggle and cart on the right, category links in a scrolling row beneath. Below 768px the search field becomes an icon that opens a dialog. With nothing typed it shows recent searches (kept on the device) and category chips. From two characters it shows up to five matching products with photo, category and price, and a "See all" button when there are more. The category row fades at the edge where more items are hidden, underlines the current category and scrolls it into view.
+- **Home hero.** Oversized headline beside a collage of up to three products, preferring ones with photos. The first tile is large, the others tilt slightly on desktop. Each tile links to its product and shows its name, price and saving. With no products the collage is omitted.
 - **Footer.** Brand, shop links, help links, then the store address, opening hours and a WhatsApp button.
 - **Wordmark.** Text placeholder "i3city" in `font-weight: 800`, with "city" in `accent`, until the owner supplies a logo.
 
@@ -109,7 +111,7 @@ Layout: content max width 1240px, centred, gutter 16px on mobile and 32px from 7
 The admin and storefront use shadcn components built on Base UI, installed into `apps/web/components/ui`. They are ours to edit, and they follow the system above:
 
 - Sizes: buttons and inputs are `h-11` (44px) by default, `h-12` for large, `h-9` for dense toolbars. Do not go below 36px except for compact table controls.
-- Shape: buttons, inputs, selects, tabs and badges are pills. Textareas, cards, dialogs and popovers use `rounded-md` (20px). The radius scale maps shadcn's `xl` to 20px, `2xl` and `3xl` to 32px and `4xl` to a pill.
+- Shape: buttons, inputs, selects, tabs and badges are pills. Textareas, cards, dialogs and form popovers use `rounded-md` (20px). List panels (select, dropdown menu, combobox) use `rounded-sm` (10px), and their rows use the panel radius minus the panel padding, `rounded-[calc(var(--radius-sm)-var(--spacing))]`, so corners nest evenly. The radius scale maps shadcn's `xl` to 20px, `2xl` and `3xl` to 32px and `4xl` to a pill.
 - Buttons: bold, `primary` filled for the main action, a 2px `foreground` outline for secondary, `destructive` only for deletes.
 - Data tables use `components/ui/data-table.tsx` (TanStack Table v8). Pass `pagination` for server-side paging and `sorting` with `onSortingChange` for server-side sorting. Prices use the `price` class.
 - Add components with `pnpm dlx shadcn@latest add <name> --cwd apps/web`, then adjust the result to match this document: import `cn` from `@/lib/utils`, use token utilities only, and apply the sizes and shapes above.
@@ -121,6 +123,9 @@ The admin and storefront use shadcn components built on Base UI, installed into 
 - Product cards follow the Showcase pattern: a square tone-coloured tile, the category in `text-small`, name and price on one row, then a full-width pill "Add to cart". Sale, low stock and out of stock appear as badges on the tile.
 - Out-of-stock products stay visible, dimmed, with a disabled button. Pages without photos show a neutral package icon on the tone tile.
 - Product pages put a sticky bottom bar with price and add to cart on mobile.
+- Shop and category pages show Sort and a Filters button on phones. Filters opens a bottom sheet with price presets, a from and to range and an in stock switch, applied with "Show results". From 768px the price popover and in stock switch sit inline. Active filters appear below as removable chips, with "Clear all" when there are two or more.
+- The product gallery is a scroll-snap carousel. Swipe the main photo on touch, use the arrows on desktop, or tap a thumbnail. A counter shows the position.
+- On a product card, "Add to cart" becomes a "n in cart" stepper once the item is in the cart. The product page toast offers "View cart", and the button reads "Add more" with a line showing how many are already in the cart. The cart badge bumps when the count changes.
 - Forms show errors under the field in `destructive` and clear each error as the field is edited.
 - The store never mentions the Egbeda shop in heroes or headlines. The address and opening hours come from store settings and appear in the footer.
 
