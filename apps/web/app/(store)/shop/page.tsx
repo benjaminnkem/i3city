@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ShopView } from "@/components/store/shop-view";
+import { filteredRobots } from "@/lib/seo/meta";
 import { fetchProducts } from "@/lib/store/api";
 import { parseShopParams } from "@/lib/store/shop-params";
 import { SHOP_PAGE_SIZE } from "@repo/types";
@@ -11,15 +12,19 @@ type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 export async function generateMetadata({
   searchParams,
 }: Readonly<{ searchParams: SearchParams }>): Promise<Metadata> {
-  const { search, page } = parseShopParams(await searchParams);
+  const params = parseShopParams(await searchParams);
+  const page = params.page ?? 1;
+  const base = params.search
+    ? `Results for "${params.search}"`
+    : "Shop Phones, Earbuds & Gadgets";
   return {
-    title: search ? `Results for "${search}"` : "Shop all products",
+    title: page > 1 ? `${base}, Page ${page}` : base,
     description:
-      "Phones, chargers, earbuds, smartwatches and accessories, delivered across Nigeria.",
+      "Browse phones, earbuds, smartwatches, chargers, power banks and accessories at i3City. Prices in naira and delivery to every state in Nigeria.",
     alternates: {
-      canonical: page && page > 1 ? `/shop?page=${page}` : "/shop",
+      canonical: page > 1 ? `/shop?page=${page}` : "/shop",
     },
-    ...(search ? { robots: { index: false, follow: true } } : {}),
+    ...filteredRobots(params),
   };
 }
 

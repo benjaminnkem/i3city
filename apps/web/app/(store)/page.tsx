@@ -1,4 +1,5 @@
 import { formatNaira } from "@repo/types";
+import type { Metadata } from "next";
 import { TruckIcon, WalletCardsIcon, MessageCircleIcon } from "lucide-react";
 import { CategoryPills } from "@/components/store/category-pills";
 import { ProductCard } from "@/components/store/product-card";
@@ -11,6 +12,10 @@ import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
 import { whatsappLink } from "@/lib/store/whatsapp";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function HomePage() {
   const [settings, categories, featured, latest] = await Promise.all([

@@ -4,7 +4,7 @@ import {
   type PublicProductDetail,
   type PublicSettings,
 } from "@repo/types";
-import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME } from "./site";
+import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "./site";
 
 export type JsonLd = Record<string, unknown>;
 
@@ -18,6 +18,15 @@ export function organizationJsonLd(settings: PublicSettings): JsonLd {
     url: absoluteUrl("/"),
     description: SITE_DESCRIPTION,
     image: absoluteUrl("/opengraph-image"),
+    slogan: SITE_TAGLINE,
+    knowsAbout: [
+      "Smartphones",
+      "Smartwatches",
+      "Earbuds",
+      "Phone chargers",
+      "Power banks",
+      "Phone accessories",
+    ],
     areaServed: { "@type": "Country", name: "Nigeria" },
     currenciesAccepted: "NGN",
     ...(hasPhone ? { telephone: `+${settings.whatsappNumber}` } : {}),
@@ -95,6 +104,13 @@ export function productJsonLd(product: PublicProductDetail): JsonLd {
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
       seller: { "@id": absoluteUrl("/#store") },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "NG",
+        },
+      },
     },
   };
 }

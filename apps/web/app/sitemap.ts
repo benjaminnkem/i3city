@@ -35,6 +35,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         entries.push({
           url: `${site}/product/${product.slug}`,
           lastModified: product.createdAt,
+          ...(product.imageUrls.length > 0
+            ? { images: product.imageUrls.slice(0, 1) }
+            : {}),
           changeFrequency: "weekly",
           priority: 0.6,
         });

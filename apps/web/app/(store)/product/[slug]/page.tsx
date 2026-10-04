@@ -15,7 +15,11 @@ import { Button } from "@/components/ui/button";
 import { publicEnv } from "@/lib/env";
 import { fetchProduct, fetchSettings } from "@/lib/store/api";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo/json-ld";
-import { trimDescription } from "@/lib/seo/site";
+import {
+  productDescription,
+  productKeywords,
+  productTitle,
+} from "@/lib/seo/meta";
 import { whatsappLink } from "@/lib/store/whatsapp";
 
 export const dynamic = "force-dynamic";
@@ -26,26 +30,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await fetchProduct(slug);
   if (!product) return {};
-  const description =
-    trimDescription(product.description) ||
-    `Buy ${product.name} for ${formatNaira(product.price)}. Delivered across Nigeria.`;
-  const images = product.imageUrls.slice(0, 1);
+  const title = productTitle(product.name);
+  const description = productDescription(product);
+  const images = product.imageUrls
+    .slice(0, 1)
+    .map((url) => ({ url, alt: product.name }));
   return {
-    title: product.name,
+    title,
     description,
+    keywords: productKeywords(product),
     alternates: { canonical: `/product/${product.slug}` },
     openGraph: {
       type: "website",
-      title: product.name,
+      title,
       description,
       url: `/product/${product.slug}`,
       ...(images.length > 0 ? { images } : {}),
     },
     twitter: {
       card: images.length > 0 ? "summary_large_image" : "summary",
-      title: product.name,
+      title,
       description,
-      ...(images.length > 0 ? { images } : {}),
+      ...(images.length > 0
+        ? { images: images.map((image) => image.url) }
+        : {}),
     },
   };
 }
@@ -137,7 +145,9 @@ export default async function ProductPage({ params }: Props) {
                 {formatNaira(product.compareAtPrice)}
               </span>
             ) : null}
-            {saving > 0 ? <Badge variant="highlight">Save {formatNaira(saving)}</Badge> : null}
+            {saving > 0 ? (
+              <Badge variant="highlight">Save {formatNaira(saving)}</Badge>
+            ) : null}
           </div>
 
           <p className="font-bold">

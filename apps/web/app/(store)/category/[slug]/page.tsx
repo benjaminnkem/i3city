@@ -3,6 +3,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JsonLdScript } from "@/components/seo/json-ld";
 import { ShopView } from "@/components/store/shop-view";
+import {
+  categoryDescription,
+  categoryTitle,
+  filteredRobots,
+} from "@/lib/seo/meta";
 import { fetchCategories, fetchProducts } from "@/lib/store/api";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/seo/json-ld";
 import { parseShopParams } from "@/lib/store/shop-params";
@@ -23,16 +28,19 @@ export async function generateMetadata({
     (entry) => entry.slug === slug,
   );
   if (!category) return {};
-  const page = parseShopParams(await searchParams).page ?? 1;
-  const description = `Shop ${category.name.toLowerCase()} at i3City. ${category.productCount} products with delivery across Nigeria.`;
+  const query = parseShopParams(await searchParams);
+  const page = query.page ?? 1;
+  const title = categoryTitle(category.name, page);
+  const description = categoryDescription(category.name, category.productCount);
   return {
-    title: category.name,
+    title,
     description,
     alternates: {
       canonical:
         page > 1 ? `/category/${slug}?page=${page}` : `/category/${slug}`,
     },
-    openGraph: { title: category.name, description, url: `/category/${slug}` },
+    openGraph: { title, description, url: `/category/${slug}` },
+    ...filteredRobots(query),
   };
 }
 
