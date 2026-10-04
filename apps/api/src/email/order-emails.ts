@@ -55,9 +55,9 @@ function wrap(
     )
     .join("");
   const action = link
-    ? `<p style="margin:20px 0"><a href="${escapeHtml(link.href)}" style="background:#c21e5b;color:#fff;padding:12px 20px;border-radius:24px;text-decoration:none;font-weight:700">${escapeHtml(link.label)}</a></p>`
+    ? `<p style="margin:20px 0"><a href="${escapeHtml(link.href)}" style="background:#a21caf;color:#fff;padding:12px 20px;border-radius:24px;text-decoration:none;font-weight:700">${escapeHtml(link.label)}</a></p>`
     : "";
-  return `<div style="font-family:Arial,sans-serif;color:#1d1320;max-width:520px"><h2 style="margin:0 0 16px">${escapeHtml(title)}</h2>${body}${action}</div>`;
+  return `<div style="font-family:Arial,sans-serif;color:#200f2b;max-width:520px"><h2 style="margin:0 0 16px">${escapeHtml(title)}</h2>${body}${action}</div>`;
 }
 
 export function ownerNewOrderEmail(

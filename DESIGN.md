@@ -1,6 +1,6 @@
 # i3City Design System
 
-Direction: **Showcase**. Light first, with a dark theme. Soft pastel product tiles, a raspberry accent, large confident headlines, pill-shaped actions. Reference page: `design-lab/b-showcase.html`. Token source: `apps/web/app/tokens.css`, imported by the web app's global CSS.
+Direction: **Showcase**. Light first, with a dark theme. Soft pastel product tiles, an orchid purple accent with a pink highlight, large confident headlines, pill-shaped actions. Reference page: `design-lab/b-showcase.html`. Token source: `apps/web/app/tokens.css`, imported by the web app's global CSS.
 
 Every colour, size, space and radius below is a token. Components use tokens only, never raw values.
 
@@ -17,35 +17,36 @@ Every colour, size, space and radius below is a token. Components use tokens onl
 
 The tokens use shadcn's semantic names, so every shadcn component works without changes. Values live in `apps/web/app/tokens.css`: light on `:root`, dark on `:root[data-theme="dark"]`. Use them as Tailwind utilities: `bg-primary`, `text-muted-foreground`, `border-border`.
 
-| Token                           | Light                                         | Dark                                       | Use                                                                     |
-| ------------------------------- | --------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------- |
-| `background`                    | `#FFFFFF`                                     | `#150E19`                                  | Page background                                                         |
-| `foreground`                    | `#1D1320`                                     | `#F7EEF3`                                  | Body text, headings, outline buttons                                    |
-| `card`, `card-foreground`       | `#FFFFFF`, `#1D1320`                          | `#150E19`, `#F7EEF3`                       | Cards and panels, separated by `border`                                 |
-| `popover`, `popover-foreground` | `#FFFFFF`, `#1D1320`                          | `#1F1525`, `#F7EEF3`                       | Menus, dialogs, tooltips                                                |
-| `primary`                       | `#C21E5B`                                     | `#FF7BA9`                                  | The one accent: primary buttons, prices, sale badges, links, focus ring |
-| `primary-foreground`            | `#FFFFFF`                                     | `#150E19`                                  | Text on `primary`                                                       |
-| `secondary`, `muted`            | `#FAF5F8`                                     | `#1F1525`                                  | Inputs, footer, hover fills, delivery panel                             |
-| `secondary-foreground`          | `#1D1320`                                     | `#F7EEF3`                                  | Text on `secondary`                                                     |
-| `muted-foreground`              | `#675B6C`                                     | `#B9A9BF`                                  | Secondary text, categories, old prices                                  |
-| `accent`, `accent-foreground`   | `#FBE6EF`, `#1D1320`                          | `#3A1B2B`, `#F7EEF3`                       | Soft highlight: hovered and selected rows, active nav item              |
-| `destructive`                   | `#B42318`                                     | `#FF8D84`                                  | Delete and error states only                                            |
-| `border`, `input`               | `#EBE1E8`                                     | `#33263A`                                  | Borders and dividers                                                    |
-| `ring`                          | `#C21E5B`                                     | `#FF7BA9`                                  | Focus outline                                                           |
-| `tone-1` to `tone-4`            | `#FBE9F0`, `#EEE9FB`, `#E3F0FA`, `#FFEEE0`    | `#2E1B30`, `#272040`, `#1B2A3A`, `#35241F` | Product tile backgrounds: pink, lilac, sky, peach                       |
-| `success`                       | `#0B7A4B`                                     | `#5FD3A0`                                  | In stock, confirmed                                                     |
-| `warning`                       | `#A5480A`                                     | `#F5B15A`                                  | Low stock                                                               |
-| `sidebar*`                      | follow `muted`, `primary`, `accent`, `border` | same                                       | Admin sidebar                                                           |
+| Token                               | Light                                         | Dark                                       | Use                                                              |
+| ----------------------------------- | --------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------------- |
+| `background`                        | `#FFFFFF`                                     | `#170B1F`                                  | Page background                                                  |
+| `foreground`                        | `#200F2B`                                     | `#F9EEFB`                                  | Body text, headings, outline buttons                             |
+| `card`, `card-foreground`           | `#FFFFFF`, `#200F2B`                          | `#170B1F`, `#F9EEFB`                       | Cards and panels, separated by `border`                          |
+| `popover`, `popover-foreground`     | `#FFFFFF`, `#200F2B`                          | `#22112D`, `#F9EEFB`                       | Menus, dialogs, tooltips                                         |
+| `primary`                           | `#A21CAF`                                     | `#E879F9`                                  | Brand purple: primary buttons, prices, links, focus ring         |
+| `primary-foreground`                | `#FFFFFF`                                     | `#170B1F`                                  | Text on `primary`                                                |
+| `secondary`, `muted`                | `#FAF4FC`                                     | `#22112D`                                  | Inputs, footer, hover fills, delivery panel                      |
+| `secondary-foreground`              | `#200F2B`                                     | `#F9EEFB`                                  | Text on `secondary`                                              |
+| `muted-foreground`                  | `#6A5577`                                     | `#C3A9CF`                                  | Secondary text, categories, old prices                           |
+| `accent`, `accent-foreground`       | `#F7E4FA`, `#200F2B`                          | `#3A1A47`, `#F9EEFB`                       | Soft highlight: hovered and selected rows, active nav item       |
+| `destructive`                       | `#B42318`                                     | `#FF8D84`                                  | Delete and error states only                                     |
+| `border`, `input`                   | `#EEDFF2`                                     | `#3A2247`                                  | Borders and dividers                                             |
+| `ring`                              | `#A21CAF`                                     | `#E879F9`                                  | Focus outline                                                    |
+| `highlight`, `highlight-foreground` | `#E11D74`, `#FFFFFF`                          | `#F472B6`, `#170B1F`                       | The pink second accent: sale and saving badges, chart highlights |
+| `tone-1` to `tone-4`                | `#F7E4FA`, `#FDE4EF`, `#E6ECFB`, `#FFEDE0`    | `#33173F`, `#3A1830`, `#1B2641`, `#35241F` | Product tile backgrounds: lilac, pink, periwinkle, peach         |
+| `success`                           | `#0B7A4B`                                     | `#5FD3A0`                                  | In stock, confirmed                                              |
+| `warning`                           | `#A5480A`                                     | `#F5B15A`                                  | Low stock                                                        |
+| `sidebar*`                          | follow `muted`, `primary`, `accent`, `border` | same                                       | Admin sidebar                                                    |
 
-Note that in shadcn's vocabulary `accent` is the soft highlight, and our brand accent colour is `primary`.
+Note that in shadcn's vocabulary `accent` is the soft highlight, our brand colour is `primary` and the pink second accent is `highlight`.
 
-Contrast (WCAG): light foreground 18.0, muted-foreground 6.4 (5.9 on `muted`, 5.5 on `tone-1`), primary on background 5.8, primary-foreground on primary 5.8, warning 5.9, success 5.4. Dark foreground 16.7, muted-foreground 8.6, primary 7.8, warning and success 10.2. All pass AA for normal text.
+Contrast (WCAG): light foreground 18.0, muted-foreground 6.6 (6.1 on `muted`, 5.5 on `tone-1`), primary on background 6.3 (5.8 on `muted`), primary-foreground on primary 6.3, highlight-foreground on highlight 4.5, warning 5.9, success 5.4. Dark foreground 16.9, muted-foreground 9.0, primary 7.7, highlight-foreground on highlight 7.2, warning and success 10.2. All pass AA for normal text.
 
 Rules:
 
 - Product tiles cycle through `tone-1` to `tone-4` by product position, so neighbours differ.
 - Out-of-stock states use `muted-foreground`, never red. `destructive` is for delete actions and errors.
-- Do not introduce a second accent. `success` and `warning` are for text and small badges only.
+- `primary` is for actions, prices and links. `highlight` is only for sale and saving badges and chart highlights, never for buttons or links. Do not add a third accent. `success` and `warning` are for text and small badges only.
 
 ## Typography
 

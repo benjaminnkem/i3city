@@ -15,17 +15,17 @@ export default function OpenGraphImage() {
         flexDirection: "column",
         justifyContent: "center",
         padding: 96,
-        background: "#FBE9F0",
-        color: "#1D1320",
+        background: "#F7E4FA",
+        color: "#200F2B",
       }}
     >
       <div style={{ display: "flex", fontSize: 120, fontWeight: 800 }}>
-        i3<span style={{ color: "#C21E5B" }}>city</span>
+        i3<span style={{ color: "#A21CAF" }}>city</span>
       </div>
       <div style={{ fontSize: 56, fontWeight: 700, marginTop: 24 }}>
         {SITE_TAGLINE}
       </div>
-      <div style={{ fontSize: 34, marginTop: 24, color: "#675B6C" }}>
+      <div style={{ fontSize: 34, marginTop: 24, color: "#6A5577" }}>
         Delivery to every state. Order on WhatsApp or pay by card.
       </div>
     </div>,

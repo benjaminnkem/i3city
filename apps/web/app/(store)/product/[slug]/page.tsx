@@ -137,7 +137,7 @@ export default async function ProductPage({ params }: Props) {
                 {formatNaira(product.compareAtPrice)}
               </span>
             ) : null}
-            {saving > 0 ? <Badge>Save {formatNaira(saving)}</Badge> : null}
+            {saving > 0 ? <Badge variant="highlight">Save {formatNaira(saving)}</Badge> : null}
           </div>
 
           <p className="font-bold">

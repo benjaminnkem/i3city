@@ -45,7 +45,7 @@ export function ProductCard({
             </Badge>
           ) : null}
           {!soldOut && saving > 0 ? (
-            <Badge>Save {formatNaira(saving)}</Badge>
+            <Badge variant="highlight">Save {formatNaira(saving)}</Badge>
           ) : null}
           {!soldOut && product.stock <= LOW_STOCK_THRESHOLD ? (
             <Badge variant="outline" className="bg-background text-warning">
