@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
 import { fetchCategories, fetchSettings } from "@/lib/store/api";
 import { whatsappLink } from "@/lib/store/whatsapp";
 
@@ -11,9 +12,7 @@ export async function StoreFooter() {
     <footer className="bg-muted text-muted-foreground mt-16">
       <div className="mx-auto grid w-full max-w-page gap-8 px-4 py-12 sm:grid-cols-2 md:grid-cols-4 md:px-8">
         <div className="flex flex-col gap-2">
-          <p className="text-foreground text-2xl font-extrabold tracking-tight">
-            i3<span className="text-primary">city</span>
-          </p>
+          <Logo className="text-foreground text-2xl" />
           <p className="max-w-[30ch]">
             Phones, accessories and gadgets, delivered across Nigeria.
           </p>

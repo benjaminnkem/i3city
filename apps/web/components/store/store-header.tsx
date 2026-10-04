@@ -1,5 +1,6 @@
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { fetchCategories } from "@/lib/store/api";
 import { CartLink } from "./cart-link";
@@ -13,10 +14,10 @@ export async function StoreHeader() {
       <div className="mx-auto grid w-full max-w-page grid-cols-[1fr_auto] items-center gap-x-2 px-4 py-1 md:grid-cols-[auto_1fr_auto] md:gap-x-8 md:px-8 md:py-3">
         <Link
           href="/"
-          className="inline-flex min-h-11 items-center text-2xl font-extrabold tracking-tight"
+          className="inline-flex min-h-11 items-center"
           aria-label="i3City home"
         >
-          i3<span className="text-primary">city</span>
+          <Logo className="text-2xl" />
         </Link>
         <div className="flex items-center justify-end gap-1 md:order-3">
           <Link

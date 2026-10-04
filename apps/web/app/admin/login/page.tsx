@@ -1,3 +1,4 @@
+import { Logo } from "@/components/brand/logo";
 import { BarChart3, PackageCheck, Smartphone } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -31,11 +32,7 @@ const highlights = [
 ];
 
 function Wordmark() {
-  return (
-    <p className="text-h3 font-extrabold">
-      i3<span className="text-primary">city</span>
-    </p>
-  );
+  return <Logo className="text-h3" markClassName="size-8" />;
 }
 
 export default async function AdminLoginPage() {

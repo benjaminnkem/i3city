@@ -1,26 +1,15 @@
 import { ImageResponse } from "next/og";
+import { markShapes } from "@/components/brand/logo-mark";
+import { MARK_HEX } from "@/components/brand/mark-hex";
 
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
 
 export default function Icon() {
   return new ImageResponse(
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 16,
-        background: "#A21CAF",
-        color: "#FFFFFF",
-        fontSize: 38,
-        fontWeight: 800,
-      }}
-    >
-      i3
-    </div>,
+    <svg width="64" height="64" viewBox="0 0 100 100">
+      {markShapes(MARK_HEX)}
+    </svg>,
     size,
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { Logo } from "@/components/brand/logo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -25,10 +26,13 @@ export function AppSidebar() {
       <SidebarHeader>
         <Link
           href="/admin"
-          className="px-2 py-1 text-2xl font-extrabold tracking-tight group-data-[collapsible=icon]:text-lg"
+          className="px-2 py-1"
           aria-label="i3City admin home"
         >
-          i3<span className="text-primary">city</span>
+          <Logo
+            className="text-2xl"
+            textClassName="group-data-[collapsible=icon]:hidden"
+          />
         </Link>
       </SidebarHeader>
       <SidebarContent>

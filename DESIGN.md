@@ -17,26 +17,27 @@ Every colour, size, space and radius below is a token. Components use tokens onl
 
 The tokens use shadcn's semantic names, so every shadcn component works without changes. Values live in `apps/web/app/tokens.css`: light on `:root`, dark on `:root[data-theme="dark"]`. Use them as Tailwind utilities: `bg-primary`, `text-muted-foreground`, `border-border`.
 
-| Token                               | Light                                         | Dark                                       | Use                                                              |
-| ----------------------------------- | --------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------------- |
-| `background`                        | `#FFFFFF`                                     | `#170B1F`                                  | Page background                                                  |
-| `foreground`                        | `#200F2B`                                     | `#F9EEFB`                                  | Body text, headings, outline buttons                             |
-| `card`, `card-foreground`           | `#FFFFFF`, `#200F2B`                          | `#170B1F`, `#F9EEFB`                       | Cards and panels, separated by `border`                          |
-| `popover`, `popover-foreground`     | `#FFFFFF`, `#200F2B`                          | `#22112D`, `#F9EEFB`                       | Menus, dialogs, tooltips                                         |
-| `primary`                           | `#A21CAF`                                     | `#E879F9`                                  | Brand purple: primary buttons, prices, links, focus ring         |
-| `primary-foreground`                | `#FFFFFF`                                     | `#170B1F`                                  | Text on `primary`                                                |
-| `secondary`, `muted`                | `#FAF4FC`                                     | `#22112D`                                  | Inputs, footer, hover fills, delivery panel                      |
-| `secondary-foreground`              | `#200F2B`                                     | `#F9EEFB`                                  | Text on `secondary`                                              |
-| `muted-foreground`                  | `#6A5577`                                     | `#C3A9CF`                                  | Secondary text, categories, old prices                           |
-| `accent`, `accent-foreground`       | `#F7E4FA`, `#200F2B`                          | `#3A1A47`, `#F9EEFB`                       | Soft highlight: hovered and selected rows, active nav item       |
-| `destructive`                       | `#B42318`                                     | `#FF8D84`                                  | Delete and error states only                                     |
-| `border`, `input`                   | `#EEDFF2`                                     | `#3A2247`                                  | Borders and dividers                                             |
-| `ring`                              | `#A21CAF`                                     | `#E879F9`                                  | Focus outline                                                    |
-| `highlight`, `highlight-foreground` | `#E11D74`, `#FFFFFF`                          | `#F472B6`, `#170B1F`                       | The pink second accent: sale and saving badges, chart highlights |
-| `tone-1` to `tone-4`                | `#F7E4FA`, `#FDE4EF`, `#E6ECFB`, `#FFEDE0`    | `#33173F`, `#3A1830`, `#1B2641`, `#35241F` | Product tile backgrounds: lilac, pink, periwinkle, peach         |
-| `success`                           | `#0B7A4B`                                     | `#5FD3A0`                                  | In stock, confirmed                                              |
-| `warning`                           | `#A5480A`                                     | `#F5B15A`                                  | Low stock                                                        |
-| `sidebar*`                          | follow `muted`, `primary`, `accent`, `border` | same                                       | Admin sidebar                                                    |
+| Token                                     | Light                                         | Dark                                       | Use                                                              |
+| ----------------------------------------- | --------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------------- |
+| `background`                              | `#FFFFFF`                                     | `#170B1F`                                  | Page background                                                  |
+| `foreground`                              | `#200F2B`                                     | `#F9EEFB`                                  | Body text, headings, outline buttons                             |
+| `card`, `card-foreground`                 | `#FFFFFF`, `#200F2B`                          | `#170B1F`, `#F9EEFB`                       | Cards and panels, separated by `border`                          |
+| `popover`, `popover-foreground`           | `#FFFFFF`, `#200F2B`                          | `#22112D`, `#F9EEFB`                       | Menus, dialogs, tooltips                                         |
+| `primary`                                 | `#A21CAF`                                     | `#E879F9`                                  | Brand purple: primary buttons, prices, links, focus ring         |
+| `primary-foreground`                      | `#FFFFFF`                                     | `#170B1F`                                  | Text on `primary`                                                |
+| `secondary`, `muted`                      | `#FAF4FC`                                     | `#22112D`                                  | Inputs, footer, hover fills, delivery panel                      |
+| `secondary-foreground`                    | `#200F2B`                                     | `#F9EEFB`                                  | Text on `secondary`                                              |
+| `muted-foreground`                        | `#6A5577`                                     | `#C3A9CF`                                  | Secondary text, categories, old prices                           |
+| `accent`, `accent-foreground`             | `#F7E4FA`, `#200F2B`                          | `#3A1A47`, `#F9EEFB`                       | Soft highlight: hovered and selected rows, active nav item       |
+| `destructive`                             | `#B42318`                                     | `#FF8D84`                                  | Delete and error states only                                     |
+| `border`, `input`                         | `#EEDFF2`                                     | `#3A2247`                                  | Borders and dividers                                             |
+| `ring`                                    | `#A21CAF`                                     | `#E879F9`                                  | Focus outline                                                    |
+| `highlight`, `highlight-foreground`       | `#E11D74`, `#FFFFFF`                          | `#F472B6`, `#170B1F`                       | The pink second accent: sale and saving badges, chart highlights |
+| `brand-deep`, `brand-tint`, `brand-blush` | `#5B1470`, `#E9C4F4`, `#FF8AB8`               | `#B35BC9`, `#6A2D82`, `#FFA8CB`            | Logo only: straps and eyes, screen, ear centres. Not for UI      |
+| `tone-1` to `tone-4`                      | `#F7E4FA`, `#FDE4EF`, `#E6ECFB`, `#FFEDE0`    | `#33173F`, `#3A1830`, `#1B2641`, `#35241F` | Product tile backgrounds: lilac, pink, periwinkle, peach         |
+| `success`                                 | `#0B7A4B`                                     | `#5FD3A0`                                  | In stock, confirmed                                              |
+| `warning`                                 | `#A5480A`                                     | `#F5B15A`                                  | Low stock                                                        |
+| `sidebar*`                                | follow `muted`, `primary`, `accent`, `border` | same                                       | Admin sidebar                                                    |
 
 Note that in shadcn's vocabulary `accent` is the soft highlight, our brand colour is `primary` and the pink second accent is `highlight`.
 
@@ -47,6 +48,14 @@ Rules:
 - Product tiles cycle through `tone-1` to `tone-4` by product position, so neighbours differ.
 - Out-of-stock states use `muted-foreground`, never red. `destructive` is for delete actions and errors.
 - `primary` is for actions, prices and links. `highlight` is only for sale and saving badges and chart highlights, never for buttons or links. Do not add a third accent. `success` and `warning` are for text and small badges only.
+
+## Brand
+
+- The logo is "Watch buddy": a smartwatch with a smiling screen and earbud ears, on a soft rounded square. It is drawn once in `components/brand/logo-mark.tsx` and coloured by tokens, so it follows the light and dark themes.
+- The name is always written i3City, in the page font at weight 800, one colour, never split or styled. Use the `Logo` component for the mark with the name, and `LogoMark` for the mark alone.
+- Colours come from `primary`, `highlight`, `accent` and the `brand-*` tokens. The `brand-*` tokens are for the logo only. Favicon, Apple icon and share image cannot read CSS variables, so they use the light palette in `components/brand/mark-hex.ts`. Keep it in step with `tokens.css`.
+- Minimum size is 24px for the mark alone. Leave a quarter of the mark's width clear on every side. Do not recolour, rotate, stretch or add effects.
+- The mark may also appear as a mascot on empty states, such as an empty cart. Keep its face friendly and do not change its colours.
 
 ## Typography
 
@@ -105,7 +114,7 @@ Layout: content max width 1240px, centred, gutter 16px on mobile and 32px from 7
 - **Header.** Wordmark on the left, search, theme toggle and cart on the right, category links in a scrolling row beneath. Below 768px the search field becomes an icon that opens a dialog. With nothing typed it shows recent searches (kept on the device) and category chips. From two characters it shows up to five matching products with photo, category and price, and a "See all" button when there are more. The category row fades at the edge where more items are hidden, underlines the current category and scrolls it into view.
 - **Home hero.** Oversized headline beside a collage of up to three products, preferring ones with photos. The first tile is large, the others tilt slightly on desktop. Each tile links to its product and shows its name, price and saving. With no products the collage is omitted.
 - **Footer.** Brand, shop links, help links, then the store address, opening hours and a WhatsApp button.
-- **Wordmark.** Text placeholder "i3city" in `font-weight: 800`, with "city" in `accent`, until the owner supplies a logo.
+- **Logo.** The watch buddy mark beside the plain text "i3City", through the shared `Logo` component in `apps/web/components/brand`. See Brand below.
 
 ## UI components
 
