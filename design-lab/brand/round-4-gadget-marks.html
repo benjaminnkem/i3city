@@ -1,0 +1,360 @@
+<title>i3City Brand Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: one reading column. Each variant is a full-width row: light and dark logo stages, a big mark study, spec columns, then real-use mockups */
+:root {
+  --bg: #FFFBFC;
+  --surface: #FFFFFF;
+  --fg: #1D1320;
+  --muted: #675B6C;
+  --line: #EBE1E8;
+  --accent: #D00A55;
+  --accent-fg: #FFFFFF;
+  --soft: #FFE4EE;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #150E19; --surface: #1F1525; --fg: #F7EEF3; --muted: #B9A9BF; --line: #33263A;
+    --accent: #FF4D8D; --accent-fg: #150E19; --soft: #3A1B2B; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #150E19; --surface: #1F1525; --fg: #F7EEF3; --muted: #B9A9BF; --line: #33263A;
+  --accent: #FF4D8D; --accent-fg: #150E19; --soft: #3A1B2B; color-scheme: dark;
+}
+
+.p-a-l { --pbg:#FFFFFF; --p:#E10F5E; --hi:#FF7AA8; --lo:#A30848; --ink:#1D1320; --on:#FFFFFF; --soft:#FFE4EE; }
+.p-a-d { --pbg:#150E19; --p:#FF4D8D; --hi:#FFA3C4; --lo:#C41766; --ink:#F7EEF3; --on:#150E19; --soft:#3A1B2B; }
+.p-b-l { --pbg:#FFF8FB; --p:#E0147A; --hi:#E0147A; --lo:#E0147A; --ink:#26091B; --on:#FFFFFF; --soft:#FFE3F1; }
+.p-b-d { --pbg:#190A14; --p:#FF5DAE; --hi:#FF5DAE; --lo:#FF5DAE; --ink:#FCEEF6; --on:#190A14; --soft:#3B1430; }
+.p-c-l { --pbg:#FFF9F6; --p:#D00A55; --hi:#D00A55; --lo:#D00A55; --ink:#2B0A17; --on:#FFFFFF; --soft:#FFE8E0; }
+.p-c-d { --pbg:#1A0D12; --p:#FF4D8D; --hi:#FF4D8D; --lo:#FF4D8D; --ink:#FFEDE8; --on:#1A0D12; --soft:#40201F; }
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 400 16px/1.55 var(--font-display);
+  padding-inline: clamp(16px, 4vw, 48px); padding-block: 40px 80px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3, p, ul, ol { margin: 0; }
+h1 { font-size: clamp(36px, 7vw, 68px); font-weight: 800; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; max-width: 16ch; }
+h1 em { font-style: normal; color: var(--accent); }
+h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; text-wrap: balance; }
+h3 { font-size: 13px; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 19px; color: var(--muted); max-width: 62ch; margin-top: 20px; }
+.eyebrow { font: 500 12px var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+section { display: grid; gap: 24px; min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; }
+.cols > div { display: grid; gap: 12px; align-content: start; min-width: 0; }
+ul.plain { list-style: none; padding: 0; display: grid; gap: 8px; }
+ul.plain li { padding-left: 18px; position: relative; }
+ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.65em; width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg); }
+
+.variant { border-top: 1px solid var(--line); padding-top: 40px; display: grid; gap: 28px; min-width: 0; }
+.vhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+.vhead .letter { font: 500 13px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.vhead .vtag { color: var(--muted); }
+.stages { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+.stage { background: var(--pbg); color: var(--ink); min-height: 240px; display: grid; place-items: center; padding: 40px 20px; min-width: 0; }
+.stage + .stage { border-left: 1px solid var(--line); }
+@media (max-width: 640px) {
+  .stages { grid-template-columns: 1fr; }
+  .stage + .stage { border-left: 0; border-top: 1px solid var(--line); }
+}
+.lock { display: inline-flex; align-items: center; gap: 0.2em; color: var(--ink); white-space: nowrap; font: 800 var(--fs) var(--font-display); letter-spacing: -0.035em; line-height: 1; }
+.lock svg { display: block; flex: none; height: 1.3em; width: 1.3em; }
+.lock b { color: var(--p); font-weight: inherit; }
+
+.study { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 0; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+.study .big { background: var(--soft); display: grid; place-items: center; padding: 32px; min-height: 280px; }
+.study .big svg { width: min(100%, 220px); height: auto; display: block; }
+.study .why { background: var(--pbg); color: var(--ink); padding: 28px; display: grid; gap: 14px; align-content: center; }
+.study .why p { max-width: 52ch; }
+.study .why h3 { color: color-mix(in srgb, var(--ink) 60%, transparent); }
+@media (max-width: 700px) { .study { grid-template-columns: 1fr; } }
+
+.details { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
+.details > div { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.swatches { list-style: none; padding: 0; display: grid; gap: 10px; }
+.swatches li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center; }
+.chip { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); }
+.swatches b { font-weight: 700; display: block; line-height: 1.2; }
+.swatches span { color: var(--muted); font-size: 14px; }
+.swatches code { font: 400 12px var(--font-mono); color: var(--muted); }
+.sample { font-size: 14px; color: var(--muted); max-width: 70ch; }
+
+.apps { background: var(--pbg); color: var(--ink); border: 1px solid var(--line); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; }
+.app { display: grid; gap: 8px; justify-items: start; min-width: 0; }
+.app small { font: 400 11px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 60%, transparent); }
+.avatar { width: 88px; height: 88px; border-radius: 50%; background: var(--soft); overflow: hidden; }
+.avatar svg { display: block; width: 100%; height: 100%; }
+.icorow { display: flex; align-items: flex-end; gap: 12px; }
+.icorow svg { display: block; }
+.hdr { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); border-radius: 16px; min-width: 0; width: 100%; }
+.hdr .sp { flex: 1; min-width: 8px; }
+.hdr .search { flex: 1 1 60px; max-width: 220px; height: 34px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.hdr .cart { width: 34px; height: 34px; border-radius: 50%; background: var(--p); flex: none; }
+.app.wide { flex: 1 1 320px; }
+.sticker { border: 1.5px dashed color-mix(in srgb, var(--ink) 45%, transparent); border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; }
+.sticker .mono { font: 400 10px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 65%, transparent); }
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; }
+th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--soft); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+
+ol.phases { list-style: none; padding: 0; display: grid; gap: 0; counter-reset: ph; border-left: 2px solid var(--line); margin-left: 14px; }
+ol.phases > li { counter-increment: ph; padding: 0 0 32px 32px; position: relative; display: grid; gap: 8px; min-width: 0; }
+ol.phases > li:last-child { padding-bottom: 0; }
+ol.phases > li::before { content: counter(ph); position: absolute; left: -15px; top: -2px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font: 500 13px/28px var(--font-mono); text-align: center; }
+ol.phases h3 { color: var(--fg); font-family: var(--font-display); font-size: 20px; text-transform: none; letter-spacing: -0.01em; font-weight: 700; }
+ol.phases p { color: var(--muted); max-width: 68ch; }
+.files { font: 400 13px var(--font-mono); color: var(--muted); overflow-wrap: anywhere; }
+.decisions { display: grid; gap: 12px; list-style: none; padding: 0; }
+.decisions li { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; display: grid; gap: 4px; }
+.decisions b { font-weight: 700; }
+.decisions span { color: var(--muted); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="g-bud">
+      <g transform="rotate(8 36 40)">
+        <circle cx="36" cy="38" r="20" fill="var(--p)"/>
+        <path d="M24 50L48 50L43 84A7 7 0 0 1 29 84Z" fill="var(--p)"/>
+        <circle cx="36" cy="38" r="8" fill="var(--on)"/>
+      </g>
+      <g fill="none" stroke="var(--p)" stroke-width="6" stroke-linecap="round">
+        <path d="M62 20A30 30 0 0 1 62 56"/>
+        <path d="M71 13A41 41 0 0 1 71 63" stroke-opacity=".62"/>
+        <path d="M80 7A52 52 0 0 1 80 69" stroke-opacity=".3"/>
+      </g>
+    </g>
+    <g id="g-lens-eye">
+        <circle r="16" fill="var(--on)"/>
+        <circle r="9" fill="var(--p)"/>
+        <circle cx="-3" cy="-3" r="3" fill="var(--on)"/>
+      </g>
+    <g id="g-lens">
+      <rect width="100" height="100" rx="28" fill="var(--p)"/>
+      <use href="#g-lens-eye" x="31" y="31"/>
+      <use href="#g-lens-eye" x="31" y="69"/>
+      <use href="#g-lens-eye" x="69" y="50"/>
+      <circle cx="70" cy="19" r="5.5" fill="var(--on)"/>
+    </g>
+    <g id="g-lens-sq">
+      <rect width="100" height="100" fill="var(--p)"/>
+      <use href="#g-lens-eye" x="31" y="31"/>
+      <use href="#g-lens-eye" x="31" y="69"/>
+      <use href="#g-lens-eye" x="69" y="50"/>
+      <circle cx="70" cy="19" r="5.5" fill="var(--on)"/>
+    </g>
+    <g id="g-bag">
+      <path d="M32 36C32 12 68 12 68 36" fill="none" stroke="var(--p)" stroke-width="6" stroke-linecap="round"/>
+      <rect x="17" y="30" width="66" height="66" rx="17" fill="var(--p)"/>
+      <rect x="83" y="50" width="4" height="14" rx="2" fill="var(--p)"/>
+      <rect x="13" y="46" width="4" height="10" rx="2" fill="var(--p)"/>
+      <rect x="13" y="60" width="4" height="10" rx="2" fill="var(--p)"/>
+      <rect x="24" y="37" width="52" height="52" rx="11" fill="var(--on)" fill-opacity=".2"/>
+      <rect x="40" y="43" width="20" height="6" rx="3" fill="var(--on)"/>
+      <circle cx="40" cy="70" r="5" fill="var(--on)"/>
+      <circle cx="60" cy="70" r="5" fill="var(--on)"/>
+      <circle cx="50" cy="70" r="5" fill="var(--on)"/>
+    </g>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">i3City · brand plan · round 4</div>
+    <h1>Marks drawn from the <em>gadgets</em> themselves</h1>
+    <p class="lede">Each logo now starts from something customers actually hold: an earbud, the camera on the back of a phone, the phone itself. The name sits beside it in i3City, in the font the site already uses, so only the symbol changes between options. The pinks stay sharp.</p>
+  </header>
+
+  <section>
+    <div class="cols">
+      <div>
+        <h3>Where each shape comes from</h3>
+        <ul class="plain">
+          <li>An earbud is a round head on a thin stem, which already looks like a lowercase i.</li>
+          <li>Modern phones carry three camera lenses, and the 3 in the name can be those lenses.</li>
+          <li>The shop sells phones and people carry them home, so a phone can double as a shopping bag.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What it still has to do</h3>
+        <ul class="plain">
+          <li>Read as a 16px browser tab icon.</li>
+          <li>Crop to a circle for the WhatsApp Business profile.</li>
+          <li>Work in the light and dark themes of the site.</li>
+          <li>Print in one colour on a sticker or box.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div id="variants"></div>
+
+  <section>
+    <div>
+      <div class="eyebrow">Side by side</div>
+      <h2>How the three compare</h2>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>A · Bud</th><th>B · Lens</th><th>C · Carry</th></tr></thead>
+        <tbody>
+          <tr><td>Picture</td><td>An earbud with three sound waves</td><td>A phone camera island with three lenses</td><td>A phone with a shopping-bag handle</td></tr>
+          <tr><td>Says</td><td>Audio and accessories, made for your ears</td><td>Latest phones, and good photos</td><td>Buy it here, carry it home</td></tr>
+          <tr><td>Where three hides</td><td>Three sound waves, and the bud is the i</td><td>Three lenses, and the flash is the i dot</td><td>The handle, the camera pill and the home bar</td></tr>
+          <tr><td>Strong point</td><td>Ties straight to the name. Nothing else looks like it.</td><td>Bold, and reads as three dots even at 16px</td><td>The only one about retail as well as gadgets</td></tr>
+          <tr><td>Watch out for</td><td>The outer wave fades out at tiny sizes</td><td>Resembles a generic camera icon unless the pink is strong</td><td>Looks like a plain phone if the handle is dropped</td></tr>
+          <tr><td>Fonts to add</td><td>None</td><td>None</td><td>None</td></tr>
+          <tr><td>Primary pink</td><td>#E10F5E</td><td>#E0147A</td><td>#D00A55</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sample">All three pinks keep white button text at or above 4.5:1 contrast. These are working drawings. Before locking one, check it in a real browser tab at 16px and on a phone, and have a designer redraw the final artwork.</p>
+  </section>
+
+  <section>
+    <div>
+      <div class="eyebrow">Rollout</div>
+      <h2>From decision to a live brand</h2>
+    </div>
+    <ol class="phases">
+      <li>
+        <h3>Decide</h3>
+        <p>Pick a direction and a tagline. A few options: "Original gadgets. Delivered nationwide." / "Gadgets from Egbeda, to your door." / "Everything your phone needs."</p>
+      </li>
+      <li>
+        <h3>Draw the master files</h3>
+        <p>Produce the full lockup, the standalone symbol, a one-colour version, a reversed version for dark backgrounds, a 512px app icon with safe padding, a 1200 by 630 share image and a round-safe WhatsApp avatar. Keep each as SVG with a PNG export.</p>
+      </li>
+      <li>
+        <h3>Update the design system first</h3>
+        <p>The new pinks go into the tokens before any component uses them, then get documented. Add a Brand section to DESIGN.md covering clear space, minimum size and what not to do, and replace the note that calls the wordmark a placeholder.</p>
+        <div class="files">apps/web/app/tokens.css · DESIGN.md</div>
+      </li>
+      <li>
+        <h3>Ship it in the product</h3>
+        <p>Build one shared Logo component and use it in the storefront header and footer, the admin sidebar and sign-in page, the email templates and the packing slip. Regenerate the favicon, Apple icon, manifest icons and default share image from the new artwork.</p>
+        <div class="files">apps/web/components · apps/web/app/icon.tsx · apps/web/app/opengraph-image.tsx · apps/web/app/manifest.ts</div>
+      </li>
+      <li>
+        <h3>Carry it offline and into chat</h3>
+        <p>Set the WhatsApp Business profile photo and description, update the Instagram avatar, and print order stickers and a thank-you card for each parcel. Match the shop signage in Egbeda last, once the digital version has settled.</p>
+      </li>
+      <li>
+        <h3>Check and lock</h3>
+        <p>Run the Lighthouse mobile check that is still open in the PRD, confirm the icon in light and dark browser tabs, and share the link on WhatsApp to see the preview card. Then freeze the files.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div>
+      <div class="eyebrow">Needed from you</div>
+      <h2>Three decisions to start</h2>
+    </div>
+    <ul class="decisions">
+      <li><b>Which symbol?</b><span>A, B or C. You can also describe your own picture and I will draw it, or mix them, for example the earbud waves coming out of the phone bag.</span></li>
+      <li><b>Does the physical shop already have colours or a sign?</b><span>If so, the online brand should rhyme with it. A photo of the storefront would help.</span></li>
+      <li><b>Should I start building it?</b><span>Once you choose, I can turn the winner into SVG files and a Logo component, then update the site in small commits.</span></li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function () {
+  function tile(id, s) { return '<div style="width:' + s + 'px;height:' + s + 'px;border-radius:22%;background:var(--soft);display:grid;place-items:center"><svg viewBox="0 0 100 100" style="width:76%;height:76%;display:block" aria-hidden="true"><use href="#' + id + '"/></svg></div>'; }
+  function self(id, s) { return '<svg viewBox="0 0 100 100" style="width:' + s + 'px;height:' + s + 'px" aria-hidden="true"><use href="#' + id + '"/></svg>'; }
+
+  var variants = [
+    {
+      id: 'a', letter: 'Variant A', name: 'Bud', tag: 'The earbud is the i',
+      concept: 'A round head over a thin stem is both an earbud and a lowercase i. Three sound waves leave it and fade out, which gives you the 3. Earbuds and audio accessories are among the first things people come to a gadget shop for.',
+      why: 'It is built from circles and one pill, so it stays crisp when small and cuts cleanly from vinyl for the shop window. The fading waves give it movement without gradients.',
+      palette: [
+        ['Raspberry', '#E10F5E', 'The bud and the waves, buttons, prices'],
+        ['White', '#FFFFFF', 'The speaker dot'],
+        ['Blush', '#FFE4EE', 'Tiles and icon ground'],
+        ['Ink plum', '#1D1320', 'The word City']
+      ],
+      markId: 'g-bud',
+      icon: function (s) { return tile('g-bud', s); },
+      avatar: '<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#g-bud" transform="translate(50 50) scale(.8) translate(-49.5 -48.5)"/></svg>'
+    },
+    {
+      id: 'b', letter: 'Variant B', name: 'Lens', tag: 'The camera bump on the back of every phone',
+      concept: 'A pink rounded square with three lenses in the layout of a modern phone camera. The three lenses are the 3 and the small flash dot is the dot of the i. People photograph things before they buy them, so the symbol is familiar.',
+      why: 'Three white circles on one flat colour is about as simple as a logo can be, so it holds up at 16px. It also makes a good pattern for tissue paper and a good sticker for the back of a phone case.',
+      palette: [
+        ['Magenta', '#E0147A', 'The tile, buttons, prices'],
+        ['White', '#FFFFFF', 'The lenses and flash'],
+        ['Blush', '#FFE3F1', 'Tiles and icon ground'],
+        ['Deep plum', '#26091B', 'The word City']
+      ],
+      markId: 'g-lens',
+      icon: function (s) { return self('g-lens', s); },
+      avatar: '<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#g-lens-sq"/></svg>'
+    },
+    {
+      id: 'c', letter: 'Variant C', name: 'Carry', tag: 'A phone that is also a shopping bag',
+      concept: 'A phone with a bag handle on top and the camera pill at the top of the screen. It says the shop sells phones and that you carry them home. It is the only option that speaks about retail as well as gadgets.',
+      why: 'The shape is easy to read as a phone at any size, and the handle adds the shopping idea without extra detail. It sits well as a bag icon on the cart button and the empty-cart screen.',
+      palette: [
+        ['Raspberry', '#D00A55', 'The phone, buttons, prices'],
+        ['White', '#FFFFFF', 'Camera pill and home bar'],
+        ['Peach blush', '#FFE8E0', 'Tiles and icon ground'],
+        ['Cocoa plum', '#2B0A17', 'The word City']
+      ],
+      markId: 'g-bag',
+      icon: function (s) { return tile('g-bag', s); },
+      avatar: '<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#g-bag" transform="translate(50 50) scale(.78) translate(-50 -56)"/></svg>'
+    }
+  ];
+
+  var host = document.getElementById('variants');
+  host.style.display = 'grid';
+  host.style.gap = '56px';
+
+  variants.forEach(function (v) {
+    var l = 'p-' + v.id + '-l', d = 'p-' + v.id + '-d';
+    function lock(fs) { return '<span class="lock" style="--fs:' + fs + 'px"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#' + v.markId + '"/></svg><span><b>i3</b>City</span></span>'; }
+    var swatches = v.palette.map(function (p) {
+      return '<li><span class="chip" style="background:' + p[1] + '"></span><div><b>' + p[0] + ' <code>' + p[1] + '</code></b><span>' + p[2] + '</span></div></li>';
+    }).join('');
+    var el = document.createElement('article');
+    el.className = 'variant';
+    el.innerHTML =
+      '<div class="vhead"><span class="letter">' + v.letter + '</span><h2>' + v.name + '</h2><span class="vtag">' + v.tag + '</span></div>' +
+      '<div class="stages">' +
+        '<div class="stage ' + l + '">' + lock(58) + '</div>' +
+        '<div class="stage ' + d + '">' + lock(58) + '</div>' +
+      '</div>' +
+      '<div class="study ' + l + '">' +
+        '<div class="big"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#' + v.markId + '"/></svg></div>' +
+        '<div class="why"><h3>The idea</h3><p>' + v.concept + '</p><h3>Why it works</h3><p>' + v.why + '</p></div>' +
+      '</div>' +
+      '<div class="details">' +
+        '<div><h3>Colour</h3><ul class="swatches">' + swatches + '</ul></div>' +
+      '</div>' +
+      '<div class="apps ' + l + '">' +
+        '<div class="app"><div class="avatar">' + v.avatar + '</div><small>WhatsApp avatar</small></div>' +
+        '<div class="app"><div class="icorow">' + v.icon(56) + v.icon(32) + v.icon(16) + '</div><small>App icon · 56 / 32 / 16</small></div>' +
+        '<div class="app wide"><div class="hdr">' + lock(24) + '<span class="sp"></span><span class="search"></span><span class="cart"></span></div><small>Storefront header</small></div>' +
+        '<div class="app"><div class="sticker">' + lock(22) + '<div class="mono">Original gadgets · Nationwide delivery</div></div><small>Parcel sticker</small></div>' +
+      '</div>';
+    host.appendChild(el);
+  });
+})();
+</script>
