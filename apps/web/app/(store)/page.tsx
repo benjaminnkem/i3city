@@ -1,6 +1,6 @@
 import { formatNaira } from "@repo/types";
 import { TruckIcon, WalletCardsIcon, MessageCircleIcon } from "lucide-react";
-import Link from "next/link";
+import { CategoryPills } from "@/components/store/category-pills";
 import { ProductCard } from "@/components/store/product-card";
 import { HomeHero } from "@/components/store/home-hero";
 import { Reveal, RevealItem, Stagger } from "@/components/motion/reveal";
@@ -9,11 +9,8 @@ import { Container, SectionHeading } from "@/components/store/section";
 import { fetchCategories, fetchProducts, fetchSettings } from "@/lib/store/api";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
 import { whatsappLink } from "@/lib/store/whatsapp";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
-
-const TONES = ["bg-tone-1", "bg-tone-2", "bg-tone-3", "bg-tone-4"] as const;
 
 export default async function HomePage() {
   const [settings, categories, featured, latest] = await Promise.all([
@@ -34,7 +31,6 @@ export default async function HomePage() {
       (a, b) => Number(b.imageUrls.length > 0) - Number(a.imageUrls.length > 0),
     )
     .slice(0, 3);
-  const shownCategories = categories.slice(0, 6);
 
   return (
     <>
@@ -49,34 +45,16 @@ export default async function HomePage() {
         />
       </Container>
 
-      {shownCategories.length > 0 ? (
+      {categories.length > 0 ? (
         <Container className="pt-14">
           <SectionHeading
             title="Shop by category"
             href="/shop"
             linkLabel="All products"
           />
-          <Stagger as="ul" className="grid grid-cols-2 gap-3 md:grid-cols-3">
-            {shownCategories.map((category, index) => (
-              <RevealItem as="li" key={category.id}>
-                <Link
-                  href={`/category/${category.slug}`}
-                  className={cn(
-                    "flex min-h-32 flex-col justify-end gap-1 rounded-md p-5 transition-transform duration-200 hover:-translate-y-1 active:scale-[0.98] md:min-h-40",
-                    TONES[index % TONES.length],
-                  )}
-                >
-                  <span className="text-lg font-extrabold">
-                    {category.name}
-                  </span>
-                  <span className="price text-muted-foreground text-sm">
-                    {category.productCount}{" "}
-                    {category.productCount === 1 ? "product" : "products"}
-                  </span>
-                </Link>
-              </RevealItem>
-            ))}
-          </Stagger>
+          <Reveal>
+            <CategoryPills categories={categories} />
+          </Reveal>
         </Container>
       ) : null}
 
