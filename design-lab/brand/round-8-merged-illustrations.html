@@ -1,0 +1,191 @@
+<title>i3City Logo Marks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: intro, then one row per wordmark: light and dark stages, three notes, a strip of real-use mockups */
+:root {
+  --bg: #FFFFFF; --surface: #FAF4FC; --fg: #200F2B; --muted: #6A5577; --line: #EEDFF2; --accent: #A21CAF; --soft: #F7E4FA;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif; --font-mono: 'DM Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #170B1F; --surface: #22112D; --fg: #F9EEFB; --muted: #C3A9CF; --line: #3A2247; --accent: #E879F9; --soft: #3A1A47; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #170B1F; --surface: #22112D; --fg: #F9EEFB; --muted: #C3A9CF; --line: #3A2247; --accent: #E879F9; --soft: #3A1A47; color-scheme: dark; }
+.p-l { --pbg:#FFFFFF; --p:#A21CAF; --ink:#200F2B; --hl:#E11D74; --on:#FFFFFF; --soft:#F7E4FA; --c1:#A21CAF; --c2:#E11D74; --c3:#5B1470; --c4:#E9C4F4; --c5:#FF8AB8; }
+.p-d { --pbg:#170B1F; --p:#E879F9; --ink:#F9EEFB; --hl:#F472B6; --on:#170B1F; --soft:#3A1A47; --c1:#E879F9; --c2:#F472B6; --c3:#B35BC9; --c4:#6A2D82; --c5:#FFA8CB; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.55 var(--font-display); padding-inline: clamp(16px, 4vw, 48px); padding-block: 40px 80px; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 64px; }
+h1, h2, h3, p, ul { margin: 0; }
+h1 { font-size: clamp(34px, 6.5vw, 60px); font-weight: 800; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; max-width: 18ch; }
+h1 em { font-style: normal; color: var(--accent); }
+h2 { font-size: clamp(24px, 4vw, 34px); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; }
+h3 { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.eyebrow { font: 500 12px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+.lede { font-size: 19px; color: var(--muted); max-width: 64ch; margin-top: 20px; }
+ul.plain { list-style: none; padding: 0; display: grid; gap: 8px; }
+ul.plain li { padding-left: 18px; position: relative; max-width: 60ch; }
+ul.plain li::before { content: ""; position: absolute; left: 0; top: .65em; width: 7px; height: 7px; background: var(--accent); transform: rotate(45deg); }
+.v { border-top: 1px solid var(--line); padding-top: 40px; display: grid; gap: 28px; min-width: 0; }
+.vhd { display: grid; gap: 6px; }
+.vhd span { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.vhd p { color: var(--muted); }
+.stages { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+.stage { background: var(--pbg); min-height: 260px; display: grid; place-items: center; padding: 40px 24px; min-width: 0; }
+.stage + .stage { border-left: 1px solid var(--line); }
+@media (max-width: 640px) { .stages { grid-template-columns: 1fr; } .stage + .stage { border-left: 0; border-top: 1px solid var(--line); } }
+.wm { display: inline-flex; color: var(--ink); max-width: 100%; }
+.wm svg { display: block; height: auto; width: 100%; }
+.wm-a { width: min(100%, 360px); } .wm-b { width: min(100%, 260px); } .wm-c { width: min(100%, 370px); }
+.wm.sm.wm-a { width: 118px; } .wm.sm.wm-b { width: 92px; } .wm.sm.wm-c { width: 118px; }
+.wm.xs.wm-a { width: 100px; } .wm.xs.wm-b { width: 80px; } .wm.xs.wm-c { width: 100px; }
+.wm.inv.wm-a { width: 230px; } .wm.inv.wm-b { width: 180px; } .wm.inv.wm-c { width: 240px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+.notes > div { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.apps { background: var(--pbg); color: var(--ink); border: 1px solid var(--line); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; }
+.app { display: grid; gap: 8px; justify-items: start; min-width: 0; }
+.app small { font: 400 11px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 60%, transparent); }
+.avatar { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; }
+.avatar svg { display: block; width: 100%; height: 100%; }
+.icorow { display: flex; align-items: flex-end; gap: 12px; }
+.icorow svg { display: block; }
+.hdr { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); border-radius: 16px; width: 100%; min-width: 0; }
+.hdr .sp { flex: 1; min-width: 8px; }
+.hdr .search { flex: 1 1 60px; max-width: 220px; height: 34px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.hdr .cart { width: 34px; height: 34px; border-radius: 50%; background: var(--p); flex: none; }
+.app.wide { flex: 1 1 320px; }
+.sticker { border: 1.5px dashed color-mix(in srgb, var(--ink) 45%, transparent); border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; }
+.sticker .mono { font: 400 10px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--ink) 65%, transparent); }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 20px; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 15px; }
+th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--soft); }
+td:first-child { font-weight: 700; white-space: nowrap; }
+.callout { background: var(--soft); border-radius: 20px; padding: 24px; display: grid; gap: 8px; }
+section { display: grid; gap: 24px; min-width: 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.lock { display: inline-flex; align-items: center; gap: .3em; color: var(--ink); white-space: nowrap; font: 800 var(--fs, 44px) var(--font-display); letter-spacing: -0.035em; line-height: 1; }
+.lock svg { display: block; flex: none; height: 1.9em; width: 1.9em; }
+.lock.xl { --fs: 56px; } .lock.md { --fs: 40px; } .lock.sm { --fs: 20px; } .lock.xs { --fs: 18px; }
+.study { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+.study .big { background: var(--soft); display: grid; place-items: center; padding: 32px; min-height: 280px; }
+.study .big svg { width: min(100%, 220px); height: auto; display: block; }
+.study .why { background: var(--pbg); color: var(--ink); padding: 28px; display: grid; gap: 12px; align-content: center; }
+.study .why h3 { color: color-mix(in srgb, var(--ink) 60%, transparent); }
+.study .why p { max-width: 52ch; }
+@media (max-width: 700px) { .study { grid-template-columns: 1fr; } }
+.avatar { background: var(--soft); display: grid; place-items: center; }
+.avatar svg { width: 74%; height: 74%; }
+.ico { display: grid; place-items: center; border-radius: 22%; background: var(--soft); }
+.ico svg { width: 78%; height: 78%; display: block; }
+.onpink { background: var(--p); border-radius: 18px; padding: 28px 32px; display: grid; place-items: center; width: 100%; }
+.onpink .lock { --p: #FFFFFF; --hl: #FFFFFF; --soft: #A21CAF; --pbg: #A21CAF; --ink: #FFFFFF; --c1: #FFFFFF; --c3: #FFFFFF; --c2: rgba(255,255,255,.75); --c4: #A21CAF; --c5: rgba(255,255,255,.6); --soft: rgba(255,255,255,.14); }
+</style>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">i3City · logo mark</div>
+    <h1>Gadgets merged into <em>one illustration</em></h1>
+    <p class="lede">Each logo is now a single square illustration where the gadgets are fused into one object, not placed side by side. The name stays plain text beside it. Because the illustration has its own rounded square background, the same artwork works as the app icon, the favicon and (cropped to a circle) the WhatsApp photo.</p>
+  </header>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="iA">
+<rect width="100" height="100" rx="26" fill="var(--soft)"/>
+<path d="M22 58C22 -2 78 -2 78 58" fill="none" stroke="var(--c3)" stroke-width="7" stroke-linecap="round"/>
+<rect x="19" y="46" width="19" height="30" rx="8" fill="var(--c2)"/><rect x="62" y="46" width="19" height="30" rx="8" fill="var(--c2)"/>
+<rect x="19" y="52" width="6" height="18" rx="3" fill="var(--c5)"/><rect x="75" y="52" width="6" height="18" rx="3" fill="var(--c5)"/>
+<rect x="31" y="22" width="38" height="68" rx="11" fill="var(--c1)"/>
+<rect x="35.5" y="26.5" width="29" height="59" rx="7.5" fill="var(--c4)"/>
+<rect x="43" y="29.5" width="14" height="4" rx="2" fill="var(--c1)"/>
+<rect x="39.5" y="38" width="9.5" height="9.5" rx="3" fill="var(--c2)"/><rect x="51" y="38" width="9.5" height="9.5" rx="3" fill="var(--c1)"/>
+<rect x="28" y="56" width="44" height="19" rx="4" fill="var(--c3)"/>
+<rect x="28" y="56" width="44" height="3.2" fill="var(--c5)" fill-opacity=".5"/>
+<circle cx="40" cy="67" r="2.6" fill="var(--c4)"/><circle cx="50" cy="67" r="2.6" fill="var(--c4)"/><circle cx="60" cy="67" r="2.6" fill="var(--c4)"/>
+<path d="M84 14L86 20L92 22L86 24L84 30L82 24L76 22L82 20Z" fill="var(--c2)"/>
+</g><g id="iB">
+<rect width="100" height="100" rx="26" fill="var(--soft)"/>
+<g transform="translate(50 52) scale(.84) translate(-50 -50)">
+<g transform="rotate(14 14 40)"><rect x="6" y="38" width="12" height="34" rx="6" fill="var(--c2)"/></g><circle cx="15" cy="36" r="13" fill="var(--c2)"/><circle cx="15" cy="36" r="5" fill="var(--c5)"/>
+<g transform="rotate(-14 86 40)"><rect x="82" y="38" width="12" height="34" rx="6" fill="var(--c2)"/></g><circle cx="85" cy="36" r="13" fill="var(--c2)"/><circle cx="85" cy="36" r="5" fill="var(--c5)"/>
+<rect x="34" y="4" width="32" height="28" rx="10" fill="var(--c3)"/><rect x="34" y="68" width="32" height="28" rx="10" fill="var(--c3)"/>
+<rect x="18" y="16" width="64" height="68" rx="24" fill="var(--c1)"/>
+<rect x="25" y="23" width="50" height="54" rx="18" fill="var(--c4)"/>
+<circle cx="40" cy="46" r="4.6" fill="var(--c3)"/><circle cx="60" cy="46" r="4.6" fill="var(--c3)"/>
+<circle cx="41.4" cy="44.6" r="1.4" fill="var(--c4)"/><circle cx="61.4" cy="44.6" r="1.4" fill="var(--c4)"/>
+<path d="M39 59Q50 70 61 59" fill="none" stroke="var(--c2)" stroke-width="4.4" stroke-linecap="round"/>
+</g>
+</g><g id="iC">
+<rect width="100" height="100" rx="26" fill="var(--soft)"/>
+<path d="M17 56C17 18 83 18 83 56" fill="none" stroke="var(--c2)" stroke-width="5" stroke-linecap="round"/>
+<rect x="8" y="46" width="22" height="46" rx="8" fill="var(--c5)"/><circle cx="19" cy="57" r="2.8" fill="var(--c2)"/><circle cx="19" cy="66" r="2.8" fill="var(--c2)"/><circle cx="19" cy="75" r="2.8" fill="var(--c2)" fill-opacity=".5"/>
+<rect x="70" y="40" width="22" height="52" rx="9" fill="var(--c3)"/><circle cx="81" cy="52" r="3" fill="var(--c5)"/><circle cx="81" cy="73" r="8.5" fill="none" stroke="var(--c5)" stroke-width="3.2"/><circle cx="81" cy="73" r="2.4" fill="var(--c5)"/>
+<rect x="33" y="10" width="34" height="84" rx="11" fill="var(--c1)"/>
+<rect x="37.5" y="14.5" width="25" height="75" rx="7.5" fill="var(--c3)"/>
+<circle cx="50" cy="34" r="10" fill="var(--c4)"/><path d="M50 34V27M50 34L55 37" stroke="var(--c3)" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+<g fill="var(--c5)"><rect x="41.5" y="52" width="6" height="6" rx="1.8"/><rect x="52.5" y="52" width="6" height="6" rx="1.8" fill="var(--c4)"/><rect x="41.5" y="63" width="6" height="6" rx="1.8" fill="var(--c4)"/><rect x="52.5" y="63" width="6" height="6" rx="1.8"/><rect x="41.5" y="74" width="6" height="6" rx="1.8"/><rect x="52.5" y="74" width="6" height="6" rx="1.8" fill="var(--c4)"/></g>
+<path d="M82 12L84 18L90 20L84 22L82 28L80 22L74 20L80 18Z" fill="var(--c2)"/>
+</g></defs></svg>
+<article class="v">
+  <div class="vhd"><span>Variant A</span><h2>Headphone phone</h2><p>One object wearing three gadgets</p></div>
+  <div class="stages"><div class="stage p-l"><span class="lock xl"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iA"/></svg><span class="nm">i3City</span></span></div><div class="stage p-d"><span class="lock xl"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iA"/></svg><span class="nm">i3City</span></span></div></div>
+  <div class="study p-l"><div class="big"><svg viewBox="0 0 100 100" style="width:min(100%,240px)" aria-hidden="true"><use href="#iA"/></svg></div><div class="why"><h3>The idea</h3><p>A phone with headphones clamped over its sides and a watch strap buckled around its middle. The ear cups, the band and the strap are all parts of the phone, so three gadgets become one object. The strap has three holes, a quiet nod to the 3 in the name, and a pink sparkle adds a lift.</p></div></div>
+  <div class="notes">
+    <div><h3>Good</h3><ul class="plain"><li>Anyone can read it in a second: a phone, headphones, a strap.</li><li>The headphone arch gives it a bold silhouette that holds up small.</li><li>The strap, ear cups and sparkle give plenty of colour without clutter.</li></ul></div>
+    <div><h3>Watch out for</h3><ul class="plain"><li>The strap covers part of the phone screen, so the screen shows only a few app tiles.</li></ul></div>
+  </div>
+  <div class="apps p-l">
+    <div class="app"><div class="avatar"><svg viewBox="0 0 100 100" aria-hidden="true" style="width:100%;height:100%"><use href="#iA" transform="translate(50 50) scale(.82) translate(-50 -50)"/></svg></div><small>WhatsApp avatar</small></div>
+    <div class="app"><div class="icorow"><svg viewBox="0 0 100 100" style="width:56px;height:56px" aria-hidden="true"><use href="#iA"/></svg><svg viewBox="0 0 100 100" style="width:32px;height:32px" aria-hidden="true"><use href="#iA"/></svg><svg viewBox="0 0 100 100" style="width:16px;height:16px" aria-hidden="true"><use href="#iA"/></svg></div><small>App icon · 56 / 32 / 16</small></div>
+    <div class="app wide"><div class="hdr"><span class="lock sm"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iA"/></svg><span class="nm">i3City</span></span><span class="sp"></span><span class="search"></span><span class="cart"></span></div><small>Storefront header</small></div>
+    <div class="app"><div class="sticker"><span class="lock xs"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iA"/></svg><span class="nm">i3City</span></span><div class="mono">Original gadgets · Nationwide delivery</div></div><small>Parcel sticker</small></div>
+    <div class="app wide"><div class="onpink"><span class="lock md"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iA"/></svg><span class="nm">i3City</span></span></div><small>White on orchid</small></div>
+  </div>
+</article>
+<article class="v">
+  <div class="vhd"><span>Variant B</span><h2>Watch buddy</h2><p>A smartwatch with earbud ears</p></div>
+  <div class="stages"><div class="stage p-l"><span class="lock xl"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iB"/></svg><span class="nm">i3City</span></span></div><div class="stage p-d"><span class="lock xl"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iB"/></svg><span class="nm">i3City</span></span></div></div>
+  <div class="study p-l"><div class="big"><svg viewBox="0 0 100 100" style="width:min(100%,240px)" aria-hidden="true"><use href="#iB"/></svg></div><div class="why"><h3>The idea</h3><p>A smartwatch whose screen is a smiling face, with an earbud on each side as ears. The straps are its hair and chin. Gadgets are fused into a single friendly character that can blink, wink or look worried when the cart is empty.</p></div></div>
+  <div class="notes">
+    <div><h3>Good</h3><ul class="plain"><li>The most memorable and the most likeable of the three.</li><li>Doubles as a mascot for empty states, loading screens and the order thank-you page.</li><li>The simple face and ears stay readable at small sizes.</li></ul></div>
+    <div><h3>Watch out for</h3><ul class="plain"><li>Playful rather than premium, so it suits a shop for younger customers best.</li></ul></div>
+  </div>
+  <div class="apps p-l">
+    <div class="app"><div class="avatar"><svg viewBox="0 0 100 100" aria-hidden="true" style="width:100%;height:100%"><use href="#iB" transform="translate(50 50) scale(.82) translate(-50 -50)"/></svg></div><small>WhatsApp avatar</small></div>
+    <div class="app"><div class="icorow"><svg viewBox="0 0 100 100" style="width:56px;height:56px" aria-hidden="true"><use href="#iB"/></svg><svg viewBox="0 0 100 100" style="width:32px;height:32px" aria-hidden="true"><use href="#iB"/></svg><svg viewBox="0 0 100 100" style="width:16px;height:16px" aria-hidden="true"><use href="#iB"/></svg></div><small>App icon · 56 / 32 / 16</small></div>
+    <div class="app wide"><div class="hdr"><span class="lock sm"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iB"/></svg><span class="nm">i3City</span></span><span class="sp"></span><span class="search"></span><span class="cart"></span></div><small>Storefront header</small></div>
+    <div class="app"><div class="sticker"><span class="lock xs"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iB"/></svg><span class="nm">i3City</span></span><div class="mono">Original gadgets · Nationwide delivery</div></div><small>Parcel sticker</small></div>
+    <div class="app wide"><div class="onpink"><span class="lock md"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iB"/></svg><span class="nm">i3City</span></span></div><small>White on orchid</small></div>
+  </div>
+</article>
+<article class="v">
+  <div class="vhd"><span>Variant C</span><h2>Tower</h2><p>A phone as a skyscraper</p></div>
+  <div class="stages"><div class="stage p-l"><span class="lock xl"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iC"/></svg><span class="nm">i3City</span></span></div><div class="stage p-d"><span class="lock xl"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iC"/></svg><span class="nm">i3City</span></span></div></div>
+  <div class="study p-l"><div class="big"><svg viewBox="0 0 100 100" style="width:min(100%,240px)" aria-hidden="true"><use href="#iC"/></svg></div><div class="why"><h3>The idea</h3><p>A tall phone stands as a tower in a city, with a watch face as its clock, a power bank and a speaker beside it, and a headphone band arching behind like a bridge. It is the name drawn as a scene.</p></div></div>
+  <div class="notes">
+    <div><h3>Good</h3><ul class="plain"><li>Ties the picture to the City in the name.</li><li>Rich enough to grow into a skyline pattern for packaging.</li><li>The clock face in the tower ties the watch into the phone.</li></ul></div>
+    <div><h3>Watch out for</h3><ul class="plain"><li>The least merged of the three. The side gadgets are separate, so it reads as a group.</li><li>More detail, so it is the busiest at small sizes.</li></ul></div>
+  </div>
+  <div class="apps p-l">
+    <div class="app"><div class="avatar"><svg viewBox="0 0 100 100" aria-hidden="true" style="width:100%;height:100%"><use href="#iC" transform="translate(50 50) scale(.82) translate(-50 -50)"/></svg></div><small>WhatsApp avatar</small></div>
+    <div class="app"><div class="icorow"><svg viewBox="0 0 100 100" style="width:56px;height:56px" aria-hidden="true"><use href="#iC"/></svg><svg viewBox="0 0 100 100" style="width:32px;height:32px" aria-hidden="true"><use href="#iC"/></svg><svg viewBox="0 0 100 100" style="width:16px;height:16px" aria-hidden="true"><use href="#iC"/></svg></div><small>App icon · 56 / 32 / 16</small></div>
+    <div class="app wide"><div class="hdr"><span class="lock sm"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iC"/></svg><span class="nm">i3City</span></span><span class="sp"></span><span class="search"></span><span class="cart"></span></div><small>Storefront header</small></div>
+    <div class="app"><div class="sticker"><span class="lock xs"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iC"/></svg><span class="nm">i3City</span></span><div class="mono">Original gadgets · Nationwide delivery</div></div><small>Parcel sticker</small></div>
+    <div class="app wide"><div class="onpink"><span class="lock md"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#iC"/></svg><span class="nm">i3City</span></span></div><small>White on orchid</small></div>
+  </div>
+</article>
+  <section>
+    <div><div class="eyebrow">Side by side</div><h2>How the three compare</h2></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>A · Headphone phone</th><th>B · Watch buddy</th><th>C · Tower</th></tr></thead>
+      <tbody>
+        <tr><td>What is merged</td><td>Phone, headphones, watch strap</td><td>Smartwatch, earbuds, a smile</td><td>Phone, watch, power bank, speaker, headphone band</td></tr>
+        <tr><td>How merged</td><td>Fully. One object wearing the others.</td><td>Fully. One character built from gadgets.</td><td>Partly. The phone is the tower and the rest stand around it.</td></tr>
+        <tr><td>Feels</td><td>Clever and clear</td><td>Friendly and memorable</td><td>Busy and story-driven</td></tr>
+        <tr><td>Small sizes</td><td>Headphone arch and phone stay clear</td><td>Face and ears stay clear</td><td>Reads as a tall pink and purple shape</td></tr>
+        <tr><td>Extra uses</td><td>Sticker, tissue paper print</td><td>A mascot for empty cart, loading and thank-you screens</td><td>A skyline pattern for packaging</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><strong>My pick: A for the logo, B as a mascot.</strong><span>A fuses three gadgets into one object that anyone understands at a glance. B is the most lovable, and it can appear on the empty cart, the loading screens and the order confirmation page. C is the least merged, so I would drop it first.</span></div>
+  </section>
+</div>
