@@ -3,14 +3,12 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import {
   Inject,
   Injectable,
   Logger,
   ServiceUnavailableException,
 } from "@nestjs/common";
-import type { UploadSignature } from "@repo/types";
 import { ENV, type Env } from "../config/env.js";
 
 interface StorageConfig {
@@ -41,7 +39,7 @@ function storageConfig(env: Env): StorageConfig | null {
   };
 }
 
-const SIGNED_URL_TTL_SECONDS = 300;
+const IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable";
 
 @Injectable()
 export class StorageService {
@@ -58,28 +56,21 @@ export class StorageService {
     return `${this.requireConfig().publicUrl}/${key}`;
   }
 
-  async signUpload(
+  async putObject(
     key: string,
+    body: Buffer,
     contentType: string,
-    size: number,
-  ): Promise<UploadSignature> {
-    const config = this.requireConfig();
-    const uploadUrl = await getSignedUrl(
-      this.s3(),
+  ): Promise<void> {
+    await this.s3().send(
       new PutObjectCommand({
-        Bucket: config.bucket,
+        Bucket: this.requireConfig().bucket,
         Key: key,
+        Body: body,
         ContentType: contentType,
-        ContentLength: size,
+        ContentLength: body.length,
+        CacheControl: IMMUTABLE_CACHE_CONTROL,
       }),
-      { expiresIn: SIGNED_URL_TTL_SECONDS },
     );
-    return {
-      key,
-      uploadUrl,
-      publicUrl: this.publicUrl(key),
-      expiresAt: Date.now() + SIGNED_URL_TTL_SECONDS * 1000,
-    };
   }
 
   async deleteObjects(keys: string[]): Promise<void> {

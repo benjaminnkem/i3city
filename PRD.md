@@ -108,10 +108,8 @@ NEXTAUTH_URL
 ### Image storage
 
 - Bucket: one private-write R2 bucket, public reads through a custom domain such as `cdn.<domain>`. Do not use the `r2.dev` URL in production.
-- Uploads: the API signs short-lived presigned PUT URLs using the S3 SDK pointed at the R2 endpoint (`https://<R2_ACCOUNT_ID>.r2.cloudflarestorage.com`, region `auto`). The admin browser uploads directly to R2.
-- Before upload, the admin client resizes images to a maximum of 1600px on the long edge and converts them to WebP.
+- Uploads: the admin browser posts the photo (up to 25 MB, any common format) as multipart to the API. The API optimises it with sharp (EXIF rotation, max 1600px on the long edge, WebP, metadata stripped, under 5 MB) and writes it to R2 with the S3 SDK pointed at the R2 endpoint (`https://<R2_ACCOUNT_ID>.r2.cloudflarestorage.com`, region `auto`) and an immutable cache header. Encoding happens on the server because iOS browsers cannot encode WebP from a canvas.
 - Object keys: `products/<uuid>.webp`. Only the key is allowed from the client, the API builds the final URL from `R2_PUBLIC_URL`.
-- Bucket CORS allows `PUT` from the admin web origin only.
 - Storefront renders images with `next/image`, with the CDN host in `remotePatterns`, so responsive sizes are generated on demand.
 - Deleting a product image or a product removes the object from R2.
 
@@ -463,7 +461,7 @@ Error codes: `BAD_REQUEST`, `VALIDATION_ERROR`, `UNAUTHORIZED`, `FORBIDDEN`, `NO
 | PATCH              | `/admin/orders/:id`       | Update status, payment status, courier, tracking number |
 | GET, PUT           | `/admin/shipping-rates`   | Read and replace rates                                  |
 | GET, PUT           | `/admin/settings`         | Read and update store settings                          |
-| POST               | `/admin/uploads/sign`     | Presigned R2 PUT URL and object key (WebP, up to 5 MB)  |
+| POST               | `/admin/uploads`          | Multipart photo, optimised to WebP, stored in R2        |
 | DELETE             | `/admin/uploads`          | Remove an object from R2 by key                         |
 
 ## 9. Payment flows

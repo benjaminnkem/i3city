@@ -26,11 +26,9 @@ export interface AdminProduct {
   updatedAt: string;
 }
 
-export interface UploadSignature {
+export interface UploadedImage {
   key: string;
-  uploadUrl: string;
   publicUrl: string;
-  expiresAt: number;
 }
 
 export const PRODUCT_SORTS = [
@@ -54,5 +52,7 @@ export type ProductStatusFilter = (typeof PRODUCT_STATUS_FILTERS)[number];
 export const LOW_STOCK_THRESHOLD = 5;
 export const MAX_PRODUCT_IMAGES = 10;
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+export const MAX_SOURCE_IMAGE_BYTES = 25 * 1024 * 1024;
+export const MAX_IMAGE_EDGE_PX = 1600;
 export const IMAGE_CONTENT_TYPE = "image/webp";
 export const IMAGE_KEY_PATTERN = /^products\/[0-9a-f-]{36}\.webp$/;

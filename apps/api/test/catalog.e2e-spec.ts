@@ -5,9 +5,10 @@ import type {
   AdminCategory,
   AdminProduct,
   LoginResult,
-  UploadSignature,
+  UploadedImage,
 } from "@repo/types";
 import bcrypt from "bcryptjs";
+import sharp from "sharp";
 import request from "supertest";
 import type { App } from "supertest/types.js";
 import { AppModule } from "../src/app.module.js";
@@ -30,16 +31,14 @@ describe("Catalog (e2e)", () => {
   const tag = `e2e-${randomUUID().slice(0, 8)}`;
   const email = `admin-${tag}@test.local`;
   const deleted: string[] = [];
+  const stored: { key: string; size: number; contentType: string }[] = [];
 
   const storage = {
     publicUrl: (key: string) => `https://cdn.test/${key}`,
-    signUpload: (key: string, contentType: string, size: number) =>
-      Promise.resolve({
-        key,
-        uploadUrl: `https://upload.test/${key}?type=${contentType}&size=${size}`,
-        publicUrl: `https://cdn.test/${key}`,
-        expiresAt: Date.now() + 300_000,
-      } satisfies UploadSignature),
+    putObject: (key: string, body: Buffer, contentType: string) => {
+      stored.push({ key, size: body.length, contentType });
+      return Promise.resolve();
+    },
     deleteObjects: (keys: string[]) => {
       deleted.push(...keys);
       return Promise.resolve();
@@ -78,7 +77,7 @@ describe("Catalog (e2e)", () => {
   it("requires an access token", async () => {
     await http().get("/api/admin/categories").expect(401);
     await http().get("/api/admin/products").expect(401);
-    await http().post("/api/admin/uploads/sign").expect(401);
+    await http().post("/api/admin/uploads").expect(401);
   });
 
   describe("categories", () => {
@@ -181,27 +180,35 @@ describe("Catalog (e2e)", () => {
   });
 
   describe("uploads", () => {
-    it("signs a webp upload with a generated key", async () => {
+    it("optimises an uploaded photo to webp and stores it", async () => {
+      const photo = await sharp({
+        create: {
+          width: 3200,
+          height: 2400,
+          channels: 3,
+          background: { r: 120, g: 40, b: 160 },
+        },
+      })
+        .jpeg()
+        .toBuffer();
       const response = await http()
-        .post("/api/admin/uploads/sign")
+        .post("/api/admin/uploads")
         .set(auth())
-        .send({ contentType: "image/webp", size: 120_000 })
-        .expect(200);
-      const signature = (response.body as Envelope<UploadSignature>).data;
-      expect(signature.key).toMatch(/^products\/[0-9a-f-]{36}\.webp$/);
-      expect(signature.uploadUrl).toContain(signature.key);
+        .attach("file", photo, { filename: "photo.jpg" })
+        .expect(201);
+      const uploaded = (response.body as Envelope<UploadedImage>).data;
+      expect(uploaded.key).toMatch(/^products\/[0-9a-f-]{36}\.webp$/);
+      expect(uploaded.publicUrl).toBe(`https://cdn.test/${uploaded.key}`);
+      const record = stored.find((item) => item.key === uploaded.key);
+      expect(record?.contentType).toBe("image/webp");
     });
 
-    it("rejects other content types and oversized files", async () => {
+    it("rejects missing and non-image files", async () => {
+      await http().post("/api/admin/uploads").set(auth()).expect(400);
       await http()
-        .post("/api/admin/uploads/sign")
+        .post("/api/admin/uploads")
         .set(auth())
-        .send({ contentType: "image/png", size: 1000 })
-        .expect(400);
-      await http()
-        .post("/api/admin/uploads/sign")
-        .set(auth())
-        .send({ contentType: "image/webp", size: 50_000_000 })
+        .attach("file", Buffer.from("not an image"), { filename: "x.jpg" })
         .expect(400);
     });
 

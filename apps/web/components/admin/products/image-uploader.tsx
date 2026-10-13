@@ -1,7 +1,6 @@
 "use client";
 
-import { MAX_PRODUCT_IMAGES } from "@repo/types";
-import axios from "axios";
+import { MAX_PRODUCT_IMAGES, MAX_SOURCE_IMAGE_BYTES } from "@repo/types";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -16,13 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toApiError } from "@/lib/api";
-import {
-  MAX_SOURCE_BYTES,
-  deleteUploadedImage,
-  putToStorage,
-  resizeToWebp,
-  signUpload,
-} from "@/lib/admin/uploads";
+import { deleteUploadedImage, uploadImage } from "@/lib/admin/uploads";
 import { cn } from "@/lib/utils";
 
 export interface ImageEntry {
@@ -35,16 +28,6 @@ interface PendingUpload {
   name: string;
   progress: number;
   error?: string;
-}
-
-function describeFailure(error: unknown): string {
-  if (axios.isAxiosError(error) && !error.response) {
-    return "Could not reach photo storage. Check your connection and the bucket CORS settings.";
-  }
-  if (error instanceof Error && !axios.isAxiosError(error)) {
-    return error.message;
-  }
-  return toApiError(error).message;
 }
 
 export function ImageUploader({
@@ -73,22 +56,24 @@ export function ImageUploader({
       if (!file.type.startsWith("image/")) {
         throw new Error("Only image files are supported");
       }
-      if (file.size > MAX_SOURCE_BYTES) {
+      if (file.size > MAX_SOURCE_IMAGE_BYTES) {
         throw new Error("Choose a photo under 25 MB");
       }
-      const blob = await resizeToWebp(file);
-      const signature = await signUpload(blob.size);
-      await putToStorage(signature, blob, (fraction) =>
+      const uploaded = await uploadImage(file, (fraction) =>
         patchPending(id, { progress: fraction }),
       );
-      uploadedKeys.current.add(signature.key);
+      uploadedKeys.current.add(uploaded.key);
       onChange((current) => [
         ...current,
-        { key: signature.key, url: signature.publicUrl },
+        { key: uploaded.key, url: uploaded.publicUrl },
       ]);
       setPending((current) => current.filter((item) => item.id !== id));
     } catch (error) {
-      patchPending(id, { error: describeFailure(error), progress: 0 });
+      patchPending(id, {
+        error:
+          error instanceof Error ? error.message : toApiError(error).message,
+        progress: 0,
+      });
     }
   }
 
