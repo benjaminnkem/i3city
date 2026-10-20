@@ -44,3 +44,16 @@ export const itemVariants: Record<RevealVariant, Variants> = {
     },
   },
 };
+
+export const MARQUEE = {
+  secondsPerCharacter: 0.18,
+  minSeconds: 18,
+} as const;
+
+export function marqueeSeconds(messages: string[]): number {
+  const characters = messages.reduce((sum, text) => sum + text.length, 0);
+  return Math.max(
+    MARQUEE.minSeconds,
+    Math.round(characters * MARQUEE.secondsPerCharacter),
+  );
+}

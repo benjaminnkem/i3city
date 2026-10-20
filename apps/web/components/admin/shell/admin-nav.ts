@@ -1,5 +1,6 @@
 import {
   LayoutDashboardIcon,
+  MegaphoneIcon,
   PackageIcon,
   ReceiptTextIcon,
   SettingsIcon,
@@ -26,6 +27,11 @@ export const adminNav: AdminNavItem[] = [
   { label: "Products", href: "/admin/products", icon: PackageIcon },
   { label: "Categories", href: "/admin/categories", icon: TagsIcon },
   { label: "Delivery", href: "/admin/shipping", icon: TruckIcon },
+  {
+    label: "Announcements",
+    href: "/admin/announcements",
+    icon: MegaphoneIcon,
+  },
   { label: "Settings", href: "/admin/settings", icon: SettingsIcon },
 ];
 

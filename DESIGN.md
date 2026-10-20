@@ -104,6 +104,7 @@ Layout: content max width 1240px, centred, gutter 16px on mobile and 32px from 7
 - **Badges.** Pill. Sale uses `accent`. Low stock and out of stock sit on `bg` with `warning` and `muted` text.
 - **Header.** Wordmark on the left, search, theme toggle and cart on the right, category links in a scrolling row beneath. Below 768px the search field becomes an icon that opens a dialog. With nothing typed it shows recent searches (kept on the device) and category chips. From two characters it shows up to five matching products with photo, category and price, and a "See all" button when there are more. The category row fades at the edge where more items are hidden, underlines the current category and scrolls it into view.
 - **Home hero.** Oversized headline beside a collage of up to three products, preferring ones with photos. The first tile is large, the others tilt slightly on desktop. Each tile links to its product and shows its name, price and saving. With no products the collage is omitted.
+- **Announcement bar.** A thin strip above the sticky header, in `foreground` with `background` text and `text-small` semibold. The owner writes up to ten short messages on the admin Announcements page and turns the bar on or off there. Messages scroll right to left in a seamless loop, separated by dots, at a speed set by their length (`marqueeSeconds` in `lib/motion.ts`). The loop pauses on hover and focus. With reduced motion it does not move and the messages wrap, centred. It scrolls away with the page and is hidden when there are no messages or the bar is off.
 - **Footer.** Brand, shop links, help links, then the store address, opening hours and a WhatsApp button.
 - **Wordmark.** Text placeholder "i3city" in `font-weight: 800`, with "city" in `accent`, until the owner supplies a logo.
 
@@ -139,7 +140,7 @@ Animation uses `motion` (Framer Motion) through small client wrappers in `apps/w
 - Reveals run once, last 500ms with the shared ease-out curve, and stagger by 60 to 100ms. Never delay content by more than about a second in total.
 - Hover and press: product image scales to 1.05 and rotates -2deg over 300ms. Tiles lift 4px over 200ms and shrink slightly on press.
 - `MotionProvider` sets `reducedMotion="user"`, so visitors who prefer less motion get no movement. The global reduced-motion rule also turns CSS transitions off.
-- No auto-playing carousels, looping or ambient effects, and no parallax.
+- No auto-playing carousels, looping or ambient effects, and no parallax. The one exception is the announcement bar, which loops with the `animate-marquee` token and follows the rules in its component entry.
 
 ## Accessibility
 
