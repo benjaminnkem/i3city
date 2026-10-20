@@ -10,7 +10,11 @@ import {
 import { PrismaService } from "../prisma/prisma.service.js";
 import { StorageService } from "../storage/storage.service.js";
 import { topProducts } from "./top-products.js";
-import { lagosDayKey, lagosDayStart, lastDayKeys } from "./lagos-time.js";
+import {
+  lagosDayKey,
+  lagosDayStart,
+  lastDayKeys,
+} from "../common/lagos-time.js";
 
 const WINDOW_DAYS = 60;
 const SERIES_DAYS = 30;
