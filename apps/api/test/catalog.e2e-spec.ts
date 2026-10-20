@@ -149,6 +149,11 @@ describe("Catalog (e2e)", () => {
           (category) => category.id,
         ),
       ).toEqual(reversed);
+      await http()
+        .put("/api/admin/categories/order")
+        .set(auth())
+        .send({ ids })
+        .expect(200);
     });
 
     it("leaves products uncategorised when a category is deleted", async () => {
