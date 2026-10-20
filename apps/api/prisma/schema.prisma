@@ -156,3 +156,29 @@ model StoreSettings {
   announcementsEnabled Boolean  @default(false)
   announcements        String[] @default([])
 }
+
+enum HeroSlideKind {
+  PRODUCTS
+  IMAGE
+}
+
+model HeroSlide {
+  id         String        @id @default(cuid())
+  kind       HeroSlideKind
+  headline   String
+  subtext    String        @default("")
+  ctaLabel   String
+  ctaHref    String
+  image      String?
+  imageAlt   String        @default("")
+  productIds String[]      @default([])
+  tone       Int?
+  active     Boolean       @default(true)
+  startsAt   DateTime?
+  endsAt     DateTime?
+  sortOrder  Int           @default(0)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([active, sortOrder])
+}

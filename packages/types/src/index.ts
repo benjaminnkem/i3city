@@ -10,3 +10,4 @@ export * from "./shipping.js";
 export * from "./orders.js";
 export * from "./store.js";
 export * from "./contact.js";
+export * from "./hero.js";

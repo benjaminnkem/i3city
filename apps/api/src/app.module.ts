@@ -11,6 +11,7 @@ import { ENV, type Env } from "./config/env.js";
 import { CatalogModule } from "./catalog/catalog.module.js";
 import { CategoriesModule } from "./categories/categories.module.js";
 import { HealthModule } from "./health/health.module.js";
+import { HeroModule } from "./hero/hero.module.js";
 import { OrdersModule } from "./orders/orders.module.js";
 import { PaymentsModule } from "./payments/payments.module.js";
 import { PrismaModule } from "./prisma/prisma.module.js";
@@ -41,6 +42,7 @@ import { UploadsModule } from "./uploads/uploads.module.js";
     EmailModule,
     SettingsModule,
     CatalogModule,
+    HeroModule,
     OrdersModule,
     PaymentsModule,
     ScheduleModule.forRoot(),
