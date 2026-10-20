@@ -17,25 +17,54 @@ export interface AdminNavItem {
   exact?: boolean;
 }
 
-export const adminNav: AdminNavItem[] = [
+export interface AdminNavGroup {
+  label: string;
+  items: AdminNavItem[];
+}
+
+export const adminNavGroups: AdminNavGroup[] = [
   {
-    label: "Dashboard",
-    href: "/admin",
-    icon: LayoutDashboardIcon,
-    exact: true,
+    label: "Overview",
+    items: [
+      {
+        label: "Dashboard",
+        href: "/admin",
+        icon: LayoutDashboardIcon,
+        exact: true,
+      },
+      { label: "Orders", href: "/admin/orders", icon: ReceiptTextIcon },
+    ],
   },
-  { label: "Orders", href: "/admin/orders", icon: ReceiptTextIcon },
-  { label: "Products", href: "/admin/products", icon: PackageIcon },
-  { label: "Categories", href: "/admin/categories", icon: TagsIcon },
-  { label: "Delivery", href: "/admin/shipping", icon: TruckIcon },
-  { label: "Hero", href: "/admin/hero", icon: GalleryHorizontalIcon },
   {
-    label: "Announcements",
-    href: "/admin/announcements",
-    icon: MegaphoneIcon,
+    label: "Catalog",
+    items: [
+      { label: "Products", href: "/admin/products", icon: PackageIcon },
+      { label: "Categories", href: "/admin/categories", icon: TagsIcon },
+    ],
   },
-  { label: "Settings", href: "/admin/settings", icon: SettingsIcon },
+  {
+    label: "Storefront",
+    items: [
+      { label: "Hero", href: "/admin/hero", icon: GalleryHorizontalIcon },
+      {
+        label: "Announcements",
+        href: "/admin/announcements",
+        icon: MegaphoneIcon,
+      },
+    ],
+  },
+  {
+    label: "Store setup",
+    items: [
+      { label: "Delivery", href: "/admin/shipping", icon: TruckIcon },
+      { label: "Settings", href: "/admin/settings", icon: SettingsIcon },
+    ],
+  },
 ];
+
+export const adminNav: AdminNavItem[] = adminNavGroups.flatMap(
+  (group) => group.items,
+);
 
 export function isActive(item: AdminNavItem, pathname: string): boolean {
   return item.exact
