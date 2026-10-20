@@ -120,9 +120,10 @@ export class CatalogService {
   }
 
   async publicSettings(): Promise<PublicSettings> {
-    const [settings, rates] = await Promise.all([
+    const [settings, rates, announcements] = await Promise.all([
       this.settings.get(),
       this.settings.listRates(),
+      this.settings.getAnnouncements(),
     ]);
     return {
       storeName: settings.storeName,
@@ -137,6 +138,7 @@ export class CatalogService {
           ? ["WHATSAPP", "PAYSTACK"]
           : ["WHATSAPP"],
       shippingRates: rates,
+      announcements: announcements.enabled ? announcements.messages : [],
     };
   }
 

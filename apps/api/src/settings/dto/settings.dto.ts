@@ -1,4 +1,9 @@
-import { NIGERIA_STATES, normaliseNigerianPhone } from "@repo/types";
+import {
+  ANNOUNCEMENT_MAX_LENGTH,
+  ANNOUNCEMENT_MAX_MESSAGES,
+  NIGERIA_STATES,
+  normaliseNigerianPhone,
+} from "@repo/types";
 import { Transform, Type } from "class-transformer";
 import {
   ArrayMaxSize,
@@ -22,6 +27,14 @@ const MAX_FEE = 1_000_000;
 
 function blankToNull({ value }: { value: unknown }): unknown {
   return typeof value === "string" && value.trim() === "" ? null : value;
+}
+
+function trimEach({ value }: { value: unknown }): unknown {
+  return Array.isArray(value)
+    ? value.map((item: unknown) =>
+        typeof item === "string" ? item.trim() : item,
+      )
+    : value;
 }
 
 function toInternationalPhone({ value }: { value: unknown }): unknown {
@@ -105,4 +118,17 @@ export class UpdateShippingRatesDto {
   @ValidateNested({ each: true })
   @Type(() => ShippingRateDto)
   rates!: ShippingRateDto[];
+}
+
+export class UpdateAnnouncementsDto {
+  @IsBoolean()
+  enabled!: boolean;
+
+  @Transform(trimEach)
+  @IsArray()
+  @ArrayMaxSize(ANNOUNCEMENT_MAX_MESSAGES)
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  @MaxLength(ANNOUNCEMENT_MAX_LENGTH, { each: true })
+  messages!: string[];
 }

@@ -37,6 +37,7 @@ export interface PublicSettings {
   freeShippingOver: number | null;
   paymentMethods: PaymentMethodName[];
   shippingRates: ShippingRateInfo[];
+  announcements: string[];
 }
 
 export interface AdminSettings {
@@ -50,6 +51,14 @@ export interface AdminSettings {
   freeShippingOver: number | null;
   paystackEnabled: boolean;
   paystackConfigured: boolean;
+}
+
+export const ANNOUNCEMENT_MAX_MESSAGES = 10;
+export const ANNOUNCEMENT_MAX_LENGTH = 120;
+
+export interface AnnouncementSettings {
+  enabled: boolean;
+  messages: string[];
 }
 
 export interface CartLineInput {

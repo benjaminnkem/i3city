@@ -1,7 +1,12 @@
 import { Body, Controller, Get, Put, UseGuards } from "@nestjs/common";
-import type { AdminSettings, ShippingRateInfo } from "@repo/types";
+import type {
+  AdminSettings,
+  AnnouncementSettings,
+  ShippingRateInfo,
+} from "@repo/types";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard.js";
 import {
+  UpdateAnnouncementsDto,
   UpdateSettingsDto,
   UpdateShippingRatesDto,
 } from "./dto/settings.dto.js";
@@ -20,6 +25,18 @@ export class SettingsController {
   @Put("settings")
   update(@Body() dto: UpdateSettingsDto): Promise<AdminSettings> {
     return this.settings.update(dto);
+  }
+
+  @Get("announcements")
+  getAnnouncements(): Promise<AnnouncementSettings> {
+    return this.settings.getAnnouncements();
+  }
+
+  @Put("announcements")
+  updateAnnouncements(
+    @Body() dto: UpdateAnnouncementsDto,
+  ): Promise<AnnouncementSettings> {
+    return this.settings.updateAnnouncements(dto);
   }
 
   @Get("shipping-rates")

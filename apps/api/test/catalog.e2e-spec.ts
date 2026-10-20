@@ -4,7 +4,9 @@ import { Test } from "@nestjs/testing";
 import type {
   AdminCategory,
   AdminProduct,
+  AnnouncementSettings,
   LoginResult,
+  PublicSettings,
   UploadedImage,
 } from "@repo/types";
 import bcrypt from "bcryptjs";
@@ -396,6 +398,78 @@ describe("Catalog (e2e)", () => {
         .delete(`/api/admin/products/${product.id}`)
         .set(auth())
         .expect(404);
+    });
+  });
+
+  describe("announcements", () => {
+    let original: AnnouncementSettings;
+    const publicAnnouncements = async () =>
+      (
+        (await http().get("/api/settings/public").expect(200))
+          .body as Envelope<PublicSettings>
+      ).data.announcements;
+
+    beforeAll(async () => {
+      original = (
+        (await http().get("/api/admin/announcements").set(auth()).expect(200))
+          .body as Envelope<AnnouncementSettings>
+      ).data;
+    });
+
+    afterAll(async () => {
+      await http()
+        .put("/api/admin/announcements")
+        .set(auth())
+        .send(original)
+        .expect(200);
+    });
+
+    it("requires an access token", async () => {
+      await http().get("/api/admin/announcements").expect(401);
+      await http()
+        .put("/api/admin/announcements")
+        .send({ enabled: false, messages: [] })
+        .expect(401);
+    });
+
+    it("saves trimmed messages and shows them only when enabled", async () => {
+      const saved = await http()
+        .put("/api/admin/announcements")
+        .set(auth())
+        .send({
+          enabled: true,
+          messages: ["  Free delivery  ", "New arrivals"],
+        })
+        .expect(200);
+      expect((saved.body as Envelope<AnnouncementSettings>).data).toEqual({
+        enabled: true,
+        messages: ["Free delivery", "New arrivals"],
+      });
+      expect(await publicAnnouncements()).toEqual([
+        "Free delivery",
+        "New arrivals",
+      ]);
+
+      await http()
+        .put("/api/admin/announcements")
+        .set(auth())
+        .send({ enabled: false, messages: ["Free delivery"] })
+        .expect(200);
+      expect(await publicAnnouncements()).toEqual([]);
+    });
+
+    it("rejects blank, long and too many messages", async () => {
+      for (const messages of [
+        ["   "],
+        ["x".repeat(121)],
+        Array.from({ length: 11 }, (_, index) => `Message ${index}`),
+      ]) {
+        await http()
+          .put("/api/admin/announcements")
+          .set(auth())
+          .send({ enabled: true, messages })
+          .expect(400);
+      }
     });
   });
 });

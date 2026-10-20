@@ -1,8 +1,13 @@
 import { Injectable, UnprocessableEntityException } from "@nestjs/common";
 import { PaystackService } from "../payments/paystack.service.js";
-import type { AdminSettings, ShippingRateInfo } from "@repo/types";
+import type {
+  AdminSettings,
+  AnnouncementSettings,
+  ShippingRateInfo,
+} from "@repo/types";
 import { PrismaService } from "../prisma/prisma.service.js";
 import type {
+  UpdateAnnouncementsDto,
   UpdateSettingsDto,
   UpdateShippingRatesDto,
 } from "./dto/settings.dto.js";
@@ -16,12 +21,16 @@ export class SettingsService {
     private readonly paystack: PaystackService,
   ) {}
 
-  async get(): Promise<AdminSettings> {
-    const row = await this.prisma.storeSettings.upsert({
+  private row() {
+    return this.prisma.storeSettings.upsert({
       where: { id: 1 },
       update: {},
       create: { id: 1, whatsappNumber: DEFAULT_WHATSAPP },
     });
+  }
+
+  async get(): Promise<AdminSettings> {
+    const row = await this.row();
     return {
       storeName: row.storeName,
       whatsappNumber: row.whatsappNumber,
@@ -58,6 +67,28 @@ export class SettingsService {
       },
     });
     return this.get();
+  }
+
+  async getAnnouncements(): Promise<AnnouncementSettings> {
+    const row = await this.row();
+    return {
+      enabled: row.announcementsEnabled,
+      messages: row.announcements,
+    };
+  }
+
+  async updateAnnouncements(
+    dto: UpdateAnnouncementsDto,
+  ): Promise<AnnouncementSettings> {
+    await this.row();
+    await this.prisma.storeSettings.update({
+      where: { id: 1 },
+      data: {
+        announcementsEnabled: dto.enabled,
+        announcements: dto.messages,
+      },
+    });
+    return this.getAnnouncements();
   }
 
   async listRates(): Promise<ShippingRateInfo[]> {

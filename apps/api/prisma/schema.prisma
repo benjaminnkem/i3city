@@ -143,14 +143,16 @@ model ShippingRate {
 }
 
 model StoreSettings {
-  id                 Int     @id @default(1)
-  storeName          String  @default("i3City")
-  whatsappNumber     String
-  supportEmail       String?
-  address            String?
-  openingHours       String?
-  bankDetails        String?
-  defaultShippingFee Int     @default(5000)
-  freeShippingOver   Int?
-  paystackEnabled    Boolean @default(false)
+  id                   Int      @id @default(1)
+  storeName            String   @default("i3City")
+  whatsappNumber       String
+  supportEmail         String?
+  address              String?
+  openingHours         String?
+  bankDetails          String?
+  defaultShippingFee   Int      @default(5000)
+  freeShippingOver     Int?
+  paystackEnabled      Boolean  @default(false)
+  announcementsEnabled Boolean  @default(false)
+  announcements        String[] @default([])
 }
