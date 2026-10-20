@@ -7,7 +7,12 @@ import { HomeHero } from "@/components/store/home-hero";
 import { Reveal, RevealItem, Stagger } from "@/components/motion/reveal";
 import { JsonLdScript } from "@/components/seo/json-ld";
 import { Container, SectionHeading } from "@/components/store/section";
-import { fetchCategories, fetchProducts, fetchSettings } from "@/lib/store/api";
+import {
+  fetchCategories,
+  fetchHeroSlides,
+  fetchProducts,
+  fetchSettings,
+} from "@/lib/store/api";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
 import { whatsappLink } from "@/lib/store/whatsapp";
 
@@ -18,11 +23,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [settings, categories, featured, latest] = await Promise.all([
+  const [settings, categories, featured, latest, slides] = await Promise.all([
     fetchSettings(),
     fetchCategories(),
     fetchProducts({ featured: true, limit: 8 }),
     fetchProducts({ sort: "newest", limit: 8 }),
+    fetchHeroSlides().catch(() => []),
   ]);
   const heroProducts = [
     ...new Map(
@@ -42,7 +48,8 @@ export default async function HomePage() {
       <JsonLdScript data={[organizationJsonLd(settings), websiteJsonLd()]} />
       <Container className="pt-6">
         <HomeHero
-          products={heroProducts}
+          slides={slides}
+          fallbackProducts={heroProducts}
           whatsappHref={whatsappLink(
             settings.whatsappNumber,
             "Hello, I have a question.",

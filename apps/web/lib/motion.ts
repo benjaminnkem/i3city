@@ -57,3 +57,5 @@ export function marqueeSeconds(messages: string[]): number {
     Math.round(characters * MARQUEE.secondsPerCharacter),
   );
 }
+
+export const HERO_AUTOPLAY_MS = 6000;

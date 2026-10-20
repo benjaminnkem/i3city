@@ -1,6 +1,7 @@
 import type {
   PaginationMeta,
   PublicCategory,
+  PublicHeroSlide,
   PublicOrder,
   PublicProduct,
   PublicProductDetail,
@@ -24,6 +25,10 @@ export interface ShopParams {
 
 export const fetchSettings = cache(() =>
   request<PublicSettings>({ url: "/settings/public" }),
+);
+
+export const fetchHeroSlides = cache(() =>
+  request<PublicHeroSlide[]>({ url: "/hero" }),
 );
 
 export const fetchCategories = cache(() =>
