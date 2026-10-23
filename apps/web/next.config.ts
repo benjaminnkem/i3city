@@ -15,6 +15,7 @@ const host = cdnHost();
 const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   images: {
+    unoptimized: true,
     remotePatterns: host ? [{ protocol: "https", hostname: host }] : [],
   },
 };

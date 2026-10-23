@@ -2,7 +2,6 @@ import type { PublicHeroSlide } from "@repo/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { publicEnv } from "@/lib/env";
 import { cn } from "@/lib/utils";
 import { HERO_TONE_CLASS, heroHref } from "./hero-link";
 
@@ -30,7 +29,6 @@ export function HeroImageSlide({
           fill
           priority={first}
           sizes="(min-width: 1240px) 1240px, 100vw"
-          unoptimized={!publicEnv.NEXT_PUBLIC_CDN_URL}
           className="object-cover"
         />
       ) : null}

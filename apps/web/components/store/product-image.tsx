@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { PackageIcon } from "lucide-react";
-import { publicEnv } from "@/lib/env";
 import { cn } from "@/lib/utils";
 
 export function ProductImage({
@@ -35,7 +34,6 @@ export function ProductImage({
       fill
       sizes={sizes}
       priority={priority}
-      unoptimized={!publicEnv.NEXT_PUBLIC_CDN_URL}
       className={cn("object-cover", className)}
     />
   );

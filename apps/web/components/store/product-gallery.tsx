@@ -4,7 +4,6 @@ import Image from "next/image";
 import { ChevronLeftIcon, ChevronRightIcon, PackageIcon } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { publicEnv } from "@/lib/env";
 import { cn } from "@/lib/utils";
 
 export function ProductGallery({
@@ -13,7 +12,6 @@ export function ProductGallery({
 }: Readonly<{ images: string[]; name: string }>) {
   const track = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const unoptimized = !publicEnv.NEXT_PUBLIC_CDN_URL;
   const multiple = images.length > 1;
 
   const goTo = useCallback((index: number) => {
@@ -60,7 +58,6 @@ export function ProductGallery({
                   fill
                   priority={index === 0}
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  unoptimized={unoptimized}
                   draggable={false}
                   className="object-cover"
                 />
@@ -121,7 +118,6 @@ export function ProductGallery({
                   alt=""
                   fill
                   sizes="96px"
-                  unoptimized={unoptimized}
                   className="object-cover"
                 />
               </button>
