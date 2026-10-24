@@ -44,7 +44,7 @@ export default async function AdminLoginPage() {
     redirect("/admin");
   }
   return (
-    <main className="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
+    <main className="grid min-h-screen  lg:grid-cols-[1.05fr_1fr]">
       <section className="bg-muted hidden flex-col justify-between gap-10 p-12 lg:flex">
         <Wordmark />
         <div className="grid gap-8">
