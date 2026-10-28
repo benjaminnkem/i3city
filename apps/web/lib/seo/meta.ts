@@ -1,6 +1,7 @@
 import { formatNaira, type PublicProductDetail } from "@repo/types";
 import type { Metadata } from "next";
 import type { ShopParams } from "@/lib/store/api";
+import { shopQueryString } from "@/lib/store/shop-params";
 import { SITE_NAME, trimDescription } from "./site";
 
 const TITLE_LIMIT = 60 - ` | ${SITE_NAME}`.length;
@@ -62,8 +63,20 @@ export function isFilteredView(params: ShopParams): boolean {
   );
 }
 
+const NOINDEX: Metadata["robots"] = {
+  index: false,
+  follow: true,
+  googleBot: { index: false, follow: true },
+};
+
+export function listingCanonical(basePath: string, params: ShopParams): string {
+  if (isFilteredView(params)) {
+    return `${basePath}${shopQueryString(params)}`;
+  }
+  const page = params.page ?? 1;
+  return page > 1 ? `${basePath}?page=${page}` : basePath;
+}
+
 export function filteredRobots(params: ShopParams): Pick<Metadata, "robots"> {
-  return isFilteredView(params)
-    ? { robots: { index: false, follow: true } }
-    : {};
+  return isFilteredView(params) ? { robots: NOINDEX } : {};
 }

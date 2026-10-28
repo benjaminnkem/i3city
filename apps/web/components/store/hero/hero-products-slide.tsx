@@ -76,7 +76,7 @@ function Collage({
       >
         <ProductImage
           src={product.imageUrl}
-          alt=""
+          alt={product.name}
           sizes="(min-width: 768px) 30vw, 90vw"
           priority={first && index === 0}
           className="transition-transform duration-300 group-hover:scale-105"

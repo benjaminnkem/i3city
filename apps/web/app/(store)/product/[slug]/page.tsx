@@ -87,7 +87,7 @@ export default async function ProductPage({ params }: Props) {
     <Container className="pt-6 pb-24 md:pb-8">
       <JsonLdScript
         data={[
-          productJsonLd(product),
+          productJsonLd(product, settings),
           breadcrumbJsonLd([
             { name: "Home", path: "/" },
             { name: "Shop", path: "/shop" },
@@ -107,6 +107,13 @@ export default async function ProductPage({ params }: Props) {
         aria-label="Breadcrumb"
         className="text-muted-foreground mb-2 flex flex-wrap items-center gap-x-2 text-sm"
       >
+        <Link
+          href="/"
+          className="hover:text-primary inline-flex min-h-11 items-center"
+        >
+          Home
+        </Link>
+        <span aria-hidden>/</span>
         <Link
           href="/shop"
           className="hover:text-primary inline-flex min-h-11 items-center"

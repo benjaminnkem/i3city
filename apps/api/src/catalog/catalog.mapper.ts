@@ -18,6 +18,7 @@ export function toPublicProduct(
     id: row.id,
     name: row.name,
     slug: row.slug,
+    sku: row.sku,
     price: row.price,
     compareAtPrice: row.compareAtPrice,
     stock: row.stock,
@@ -26,5 +27,6 @@ export function toPublicProduct(
     featured: row.featured,
     category: row.category,
     createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
   };
 }

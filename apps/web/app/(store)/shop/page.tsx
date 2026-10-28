@@ -1,9 +1,11 @@
+import { SHOP_PAGE_SIZE } from "@repo/types";
 import type { Metadata } from "next";
+import { JsonLdScript } from "@/components/seo/json-ld";
 import { ShopView } from "@/components/store/shop-view";
-import { filteredRobots } from "@/lib/seo/meta";
+import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/seo/json-ld";
+import { filteredRobots, listingCanonical } from "@/lib/seo/meta";
 import { fetchProducts } from "@/lib/store/api";
 import { parseShopParams } from "@/lib/store/shop-params";
-import { SHOP_PAGE_SIZE } from "@repo/types";
 
 export const dynamic = "force-dynamic";
 
@@ -21,9 +23,7 @@ export async function generateMetadata({
     title: page > 1 ? `${base}, Page ${page}` : base,
     description:
       "Browse phones, earbuds, smartwatches, chargers, power banks and accessories at i3City. Prices in naira and delivery to every state in Nigeria.",
-    alternates: {
-      canonical: page > 1 ? `/shop?page=${page}` : "/shop",
-    },
+    alternates: { canonical: listingCanonical("/shop", params) },
     ...filteredRobots(params),
   };
 }
@@ -36,13 +36,34 @@ export default async function ShopPage({
     ...params,
     limit: SHOP_PAGE_SIZE,
   });
+  const title = params.search ? `Results for "${params.search}"` : "All products";
   return (
-    <ShopView
-      title={params.search ? `Results for "${params.search}"` : "All products"}
-      basePath="/shop"
-      params={params}
-      products={items}
-      meta={meta}
-    />
+    <>
+      <JsonLdScript
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Shop", path: "/shop" },
+          ]),
+          itemListJsonLd(title, items),
+        ]}
+      />
+      <ShopView
+        title={title}
+        description={
+          params.search
+            ? undefined
+            : `Prices in naira, with delivery to every state in Nigeria. ${meta.total} ${meta.total === 1 ? "product" : "products"}.`
+        }
+        basePath="/shop"
+        params={params}
+        products={items}
+        meta={meta}
+        crumbs={[
+          { name: "Home", href: "/" },
+          { name: "Shop" },
+        ]}
+      />
+    </>
   );
 }

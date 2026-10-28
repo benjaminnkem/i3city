@@ -7,6 +7,7 @@ import {
   categoryDescription,
   categoryTitle,
   filteredRobots,
+  listingCanonical,
 } from "@/lib/seo/meta";
 import { fetchCategories, fetchProducts } from "@/lib/store/api";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/seo/json-ld";
@@ -32,14 +33,12 @@ export async function generateMetadata({
   const page = query.page ?? 1;
   const title = categoryTitle(category.name, page);
   const description = categoryDescription(category.name, category.productCount);
+  const canonical = listingCanonical(`/category/${slug}`, query);
   return {
     title,
     description,
-    alternates: {
-      canonical:
-        page > 1 ? `/category/${slug}?page=${page}` : `/category/${slug}`,
-    },
-    openGraph: { title, description, url: `/category/${slug}` },
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical },
     ...filteredRobots(query),
   };
 }
@@ -70,10 +69,16 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       />
       <ShopView
         title={category.name}
+        description={categoryDescription(category.name, category.productCount)}
         basePath={`/category/${slug}`}
         params={query}
         products={items}
         meta={meta}
+        crumbs={[
+          { name: "Home", href: "/" },
+          { name: "Shop", href: "/shop" },
+          { name: category.name },
+        ]}
       />
     </>
   );
