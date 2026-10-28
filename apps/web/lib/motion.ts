@@ -21,25 +21,22 @@ export type RevealVariant = "rise" | "scale" | "fade";
 
 export const itemVariants: Record<RevealVariant, Variants> = {
   rise: {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { y: 12 },
     show: {
-      opacity: 1,
       y: 0,
       transition: { duration: DURATION.base, ease: EASE_OUT },
     },
   },
   scale: {
-    hidden: { opacity: 0, scale: 0.95 },
+    hidden: { scale: 0.98 },
     show: {
-      opacity: 1,
       scale: 1,
       transition: { duration: 0.7, ease: EASE_OUT },
     },
   },
   fade: {
-    hidden: { opacity: 0 },
+    hidden: {},
     show: {
-      opacity: 1,
       transition: { duration: DURATION.base, ease: EASE_OUT },
     },
   },

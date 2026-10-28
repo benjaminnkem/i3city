@@ -1,6 +1,13 @@
 import { PackingSlip } from "@/components/admin/orders/packing-slip";
 
-export const metadata = { title: "Packing slip", robots: { index: false } };
+export const metadata = {
+  title: "Packing slip",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+};
 
 export default async function PackingSlipPage({
   params,

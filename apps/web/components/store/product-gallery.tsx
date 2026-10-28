@@ -115,7 +115,7 @@ export function ProductGallery({
               >
                 <Image
                   src={image}
-                  alt=""
+                  alt={`${name}, photo ${index + 1}`}
                   fill
                   sizes="96px"
                   className="object-cover"

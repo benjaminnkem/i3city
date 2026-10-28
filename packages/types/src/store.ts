@@ -5,6 +5,7 @@ export interface PublicProduct {
   id: string;
   name: string;
   slug: string;
+  sku: string | null;
   price: number;
   compareAtPrice: number | null;
   stock: number;
@@ -13,6 +14,7 @@ export interface PublicProduct {
   featured: boolean;
   category: { name: string; slug: string } | null;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface PublicProductDetail extends PublicProduct {

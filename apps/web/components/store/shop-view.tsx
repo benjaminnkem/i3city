@@ -65,6 +65,7 @@ export function ShopView({
   params,
   products,
   meta,
+  crumbs,
 }: Readonly<{
   title: string;
   description?: string;
@@ -72,9 +73,37 @@ export function ShopView({
   params: ShopParams;
   products: PublicProduct[];
   meta: PaginationMeta;
+  crumbs?: readonly { name: string; href?: string }[];
 }>) {
   return (
     <Container className="py-8">
+      {crumbs && crumbs.length > 0 ? (
+        <nav
+          aria-label="Breadcrumb"
+          className="text-muted-foreground mb-2 flex flex-wrap items-center gap-x-2 text-sm"
+        >
+          {crumbs.map((crumb, index) => (
+            <span
+              key={`${crumb.name}-${index}`}
+              className="inline-flex items-center gap-x-2"
+            >
+              {index > 0 ? <span aria-hidden>/</span> : null}
+              {crumb.href ? (
+                <Link
+                  href={crumb.href}
+                  className="hover:text-primary inline-flex min-h-11 items-center"
+                >
+                  {crumb.name}
+                </Link>
+              ) : (
+                <span className="text-foreground inline-flex min-h-11 items-center">
+                  {crumb.name}
+                </span>
+              )}
+            </span>
+          ))}
+        </nav>
+      ) : null}
       <div className="mb-6 flex flex-col gap-1">
         <h1 className="text-h2 font-extrabold">{title}</h1>
         <p className="text-muted-foreground">

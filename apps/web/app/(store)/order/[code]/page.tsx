@@ -28,7 +28,14 @@ type Props = Readonly<{
 
 export async function generateMetadata({ params }: Props) {
   const { code } = await params;
-  return { title: `Order ${code.toUpperCase()}`, robots: { index: false } };
+  return {
+    title: `Order ${code.toUpperCase()}`,
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: { index: false, follow: false },
+    },
+  };
 }
 
 export default async function OrderPage({ params, searchParams }: Props) {

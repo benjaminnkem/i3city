@@ -15,6 +15,9 @@ const publicSchema = z.object({
 const serverSchema = z.object({
   NEXTAUTH_SECRET: z.string().min(32),
   NEXTAUTH_URL: optionalString(z.url()),
+  VERCEL_ENV: optionalString(
+    z.enum(["production", "preview", "development"]),
+  ),
 });
 
 function formatIssues(error: z.ZodError): string {
@@ -45,6 +48,10 @@ export const publicEnv = parseOrThrow(publicSchema, {
 let cachedServerEnv: z.infer<typeof serverSchema> | null = null;
 
 export function serverEnv(): z.infer<typeof serverSchema> {
-  cachedServerEnv ??= parseOrThrow(serverSchema, process.env);
+  cachedServerEnv ??= parseOrThrow(serverSchema, {
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    VERCEL_ENV: process.env.VERCEL_ENV,
+  });
   return cachedServerEnv;
 }
